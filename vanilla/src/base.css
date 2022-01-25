@@ -1,0 +1,19 @@
+@import "open-props/style";
+@import "open-props/normalize";
+
+:root {
+  --brand: MediumPurple;
+}
+
+input {
+  border-radius: var(--radius-2);
+  border-width: var(--border-size-1);
+  border-color: var(--gray-6);
+}
+
+button {
+  padding: var(--size-2) var(--size-3);
+  border-radius: var(--radius-2);
+  background-color: var(--brand);
+  color: var(--gray-0)
+}
