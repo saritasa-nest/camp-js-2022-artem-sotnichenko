@@ -8,21 +8,19 @@ on:
 jobs:
   linting:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./vanilla
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Install nodejs
-        working-directory: ./vanilla
         uses: actions/setup-node@v2
         with:
           node-version: '14'
       - name: Install dependencies
-        working-directory: ./vanilla
         run: npm ci
       - name: Lint typescript
-        working-directory: ./vanilla
         run: npm run lint
       - name: Lint styles
-        working-directory: ./vanilla
         run: npm run stylelint
