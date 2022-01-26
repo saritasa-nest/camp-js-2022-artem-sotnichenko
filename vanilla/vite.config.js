@@ -14,7 +14,8 @@ export default defineConfig({
     rollupOptions: {
       input: [
         resolve(root, 'index.html'),
-        resolve(root, 'auth', 'login.html'),
+        resolve(root, 'auth', 'login', 'index.html'),
+        resolve(root, 'auth', 'register', 'index.html'),
       ]
     }
   }
