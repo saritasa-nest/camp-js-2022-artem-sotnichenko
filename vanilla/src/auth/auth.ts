@@ -3,7 +3,7 @@
  * @param errorEl Error DOM element.
  * @param text Message.
  */
-export function setError(errorEl: HTMLElement | null, text: string): void {
+export function setFormErrorText(errorEl: HTMLElement | null, text: string): void {
   if (errorEl) {
     errorEl.textContent = text;
   }
@@ -13,7 +13,7 @@ export function setError(errorEl: HTMLElement | null, text: string): void {
  * Clears error message.
  * @param errorEl Error DOM element.
  */
-export function clearError(errorEl: HTMLElement | null): void {
+export function clearFormErrorText(errorEl: HTMLElement | null): void {
   if (errorEl) {
     errorEl.textContent = '';
   }
