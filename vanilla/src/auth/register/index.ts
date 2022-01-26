@@ -7,20 +7,20 @@ const passwordEl = document.querySelector<HTMLInputElement>('.auth-form__passwor
 const errorEl = document.querySelector<HTMLDivElement>('.auth-form__error');
 
 formEl?.addEventListener('submit', async e => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const email = emailEl?.value;
-    const password = passwordEl?.value;
+  const email = emailEl?.value;
+  const password = passwordEl?.value;
 
-    if (!email || !password) {
-        return setError(errorEl, 'All fields should be filled.');
-    }
+  if (!email || !password) {
+    return setError(errorEl, 'All fields should be filled.');
+  }
 
-    clearError(errorEl);
-    try {
-        await signUp(email, password);
-        window.location.href = '/auth/login/';
-    } catch (err: unknown) {
-        setError(errorEl, (err as Error).message);
-    }
+  clearError(errorEl);
+  try {
+    await signUp(email, password);
+    window.location.href = '/auth/login/';
+  } catch (err: unknown) {
+    setError(errorEl, (err as Error).message);
+  }
 });
