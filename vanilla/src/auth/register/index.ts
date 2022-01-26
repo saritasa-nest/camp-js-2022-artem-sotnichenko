@@ -1,5 +1,5 @@
 import { signUp } from '../../firebase/auth';
-import { clearError, setError } from '../auth';
+import { clearFormErrorText, setFormErrorText } from '../auth';
 
 const formEl = document.querySelector<HTMLFormElement>('.auth-form');
 const emailEl = document.querySelector<HTMLInputElement>('.auth-form__email');
@@ -13,14 +13,14 @@ formEl?.addEventListener('submit', async e => {
   const password = passwordEl?.value;
 
   if (!email || !password) {
-    return setError(errorEl, 'All fields should be filled.');
+    return setFormErrorText(errorEl, 'All fields should be filled.');
   }
 
-  clearError(errorEl);
+  clearFormErrorText(errorEl);
   try {
     await signUp(email, password);
     window.location.href = '/auth/login/';
   } catch (err: unknown) {
-    setError(errorEl, (err as Error).message);
+    setFormErrorText(errorEl, (err as Error).message);
   }
 });
