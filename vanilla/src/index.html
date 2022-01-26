@@ -10,6 +10,20 @@
   <body>
     <main class='films'>
       <h1>films</h1>
+      <div class='films__controls'>
+        <div class='films__sort sort'>
+          <label class='sort__label' for='sort'>sort by</label>
+          <select class='sort__select' name='sort' id='sort'>
+            <option value='titleAscending'>title ascending</option>
+            <option value='titleDescending'>title descending</option>
+          </select>
+        </div>
+        <div class='films__pagination pagination'>
+          <button class='is-secondary pagination__prev pagination__button'>prev</button>
+          <div class='pagination__pages'></div>
+          <button class='is-secondary pagination__next pagination__button'>next</button>
+        </div>
+      </div>
       <div class='films__list'></div>
     </main>
     <script type="module" src="./index.ts"></script>

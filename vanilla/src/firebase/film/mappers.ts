@@ -1,5 +1,8 @@
 import { Film, FilmDto, FilmDocument } from './types';
 
+/** Maps Film DTO to Film model.
+ * @param dto Film DTO.
+ */
 export function toModel(dto: FilmDto): Film {
   return {
     id: dto.id,
@@ -20,6 +23,9 @@ export function toModel(dto: FilmDto): Film {
   };
 }
 
+/** Maps Film model to Film document.
+ * @param film Film model.
+ */
 export function toDoc(film: Film): FilmDocument {
   return {
     fields: {

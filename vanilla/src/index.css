@@ -6,6 +6,13 @@
   gap: var(--size-4);
 }
 
+.films__controls {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: var(--size-4)
+}
+
 .films__list {
   display: flex;
   flex-wrap: wrap;
@@ -20,4 +27,27 @@
 
 .film__title {
   font-weight: 700;
+}
+
+.sort {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-1);
+}
+
+.sort__select {
+  /* height: var(--size-7); */
+}
+
+.pagination,
+.pagination__pages {
+  display: flex;
+  flex-direction: row;
+  gap: var(--size-1);
+}
+
+.pagination__page--current {
+  background-color: transparent;
+  color: var(--gray-6);
 }
