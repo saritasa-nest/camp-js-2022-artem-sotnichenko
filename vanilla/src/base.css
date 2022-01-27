@@ -2,18 +2,52 @@
 @import "open-props/normalize";
 
 :root {
-  --brand: MediumPurple;
+  --color-primary: MediumPurple;
+  --color-error: var(--red-5);
+  --color-text: var(--gray-1);
+  --color-border: var(--gray-4);
+  --color-on-primary: var(--gray-0);
+
+  --size-1: 0.25rem;
+  --size-2: 0.5rem;
+  --size-3: 0.75rem;
+  --size-4: 1rem;
+  --size-5: 1.25rem;
+  --size-6: 1.5rem;
+  --size-7: 1.75rem;
+  --size-8: 2rem;
+
+  --size-content-sm: var(--size-content-1);
+  --size-content-md: var(--size-content-2);
+  --size-content-lg: var(--size-content-3);
+
+  --border-radius-xs: var(--size-1);
+
+  --border: 1px solid var(--color-border);
+
+  --button-padding: var(--size-2) var(--size-3);
+  --button-border-radius: var(--border-radius-xs);
+  --button-color-bg: var(--color-primary);
+  --button-color-text: var(--color-on-primary);
+
+  --input-padding: var(--size-2) var(--size-3);
+  --input-border-radius: var(--border-radius-xs);
+  --input-color-bg: var(--gray-1);
+  --input-color-text: var(--color-text);
+  --input-border: var(--border);
 }
 
 input {
-  border-radius: var(--radius-2);
-  border-width: var(--border-size-1);
-  border-color: var(--gray-6);
+  border: var(--input-border);
+  padding: var(--input-padding);
+  border-radius: var(--input-border-radius);
+  background-color: var(--input-color-bg);
+  color: var(--input-color-text);
 }
 
 button {
-  padding: var(--size-2) var(--size-3);
-  border-radius: var(--radius-2);
-  background-color: var(--brand);
-  color: var(--gray-0)
+  padding: var(--button-padding);
+  border-radius: var(--button-border-radius);
+  background-color: var(--button-color-bg);
+  color: var(--button-color-text);
 }
