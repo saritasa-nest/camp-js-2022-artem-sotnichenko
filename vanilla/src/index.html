@@ -11,11 +11,18 @@
     <main class='films'>
       <h1>films</h1>
       <div class='films__controls'>
-        <div class='films__sort sort'>
-          <label class='sort__label' for='sort'>sort by</label>
+        <div class='films__sort films__sort--field sort'>
+          <label class='sort__label' for='sort'>sort field</label>
           <select class='sort__select' name='sort' id='sort'>
-            <option value='titleAscending'>title ascending</option>
-            <option value='titleDescending'>title descending</option>
+            <option value='title'>title</option>
+            <option value='director'>director</option>
+          </select>
+        </div>
+        <div class='films__sort films__sort--type sort'>
+          <label class='sort__label' for='sort'>sort type</label>
+          <select class='sort__select' name='sort' id='sort'>
+            <option value='ascending'>ascending</option>
+            <option value='descending'>descending</option>
           </select>
         </div>
         <div class='films__pagination pagination'>
