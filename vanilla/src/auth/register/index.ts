@@ -1,6 +1,8 @@
 import { signUp } from '../../firebase/auth';
 import { clearFormErrorText, setFormErrorText } from '../auth';
 
+import { FORM_ERROR_EMPTY_FIELDS } from './../../utils/constants';
+
 const formEl = document.querySelector<HTMLFormElement>('.auth-form');
 const emailEl = document.querySelector<HTMLInputElement>('.auth-form__email');
 const passwordEl = document.querySelector<HTMLInputElement>('.auth-form__password');
@@ -13,7 +15,7 @@ formEl?.addEventListener('submit', async e => {
   const password = passwordEl?.value;
 
   if (!email || !password) {
-    return setFormErrorText(errorEl, 'All fields should be filled.');
+    return setFormErrorText(errorEl, FORM_ERROR_EMPTY_FIELDS);
   }
 
   clearFormErrorText(errorEl);
