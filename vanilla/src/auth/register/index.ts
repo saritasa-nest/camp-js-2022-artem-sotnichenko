@@ -1,5 +1,5 @@
 import { signUp } from '../../firebase/auth';
-import { clearFormErrorText, setFormErrorText } from '../auth';
+import { clearFormErrorText, getFormElements, setFormErrorText } from '../auth';
 
 import { FORM_ERROR_EMPTY_FIELDS } from './../../utils/constants';
 
