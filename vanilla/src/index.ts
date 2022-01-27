@@ -10,7 +10,7 @@ let firstId: string | undefined;
 let isLastPage = false;
 let isFirstPage = false;
 
-const sortField = 'title';
+let sortField = 'title';
 const sortType = 'ascending';
 
 document.addEventListener('DOMContentLoaded', async e => {
@@ -42,9 +42,18 @@ document.addEventListener('DOMContentLoaded', async e => {
     return;
   }
 
-  sortFieldEl.addEventListener('change', () => {
-    loadNextPage();
+  sortFieldEl.addEventListener('change', async() => {
+    sortField = sortFieldEl.value;
 
+    // fetch from beginning
+    lastId = undefined;
+    firstId = undefined;
+
+    await loadNextPage();
+
+    isFirstPage = true;
+    isLastPage = false;
+    updatePaginationButtons();
   });
 });
 
@@ -72,11 +81,15 @@ async function loadNextPage(): Promise<void> {
     return;
   }
 
+  console.log('test', sortField);
+
   const films = await getFilmsAfterId({
     limit: FILMS_COUNT_PER_PAGE,
     orderBy: `fields.${sortField}`,
     startAfter: lastId,
   });
+
+  console.log(films);
 
   if (films.length < FILMS_COUNT_PER_PAGE) {
     isLastPage = true;
@@ -127,6 +140,8 @@ function updatePaginationButtons(): void {
   if (!paginationPrevEl || !paginationNextEl) {
     return;
   }
+
+  console.log('145', isFirstPage);
 
   paginationNextEl.disabled = !!isLastPage;
   paginationPrevEl.disabled = !!isFirstPage;
