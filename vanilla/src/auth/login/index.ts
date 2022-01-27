@@ -1,12 +1,14 @@
 import { signIn } from '../../firebase/auth';
-import { clearFormErrorText, setFormErrorText } from '../auth';
+import { clearFormErrorText, getFormElements, setFormErrorText } from '../auth';
 
 import { FORM_ERROR_EMPTY_FIELDS } from './../../utils/constants';
 
-const formEl = document.querySelector<HTMLFormElement>('.auth-form');
-const emailEl = document.querySelector<HTMLInputElement>('.auth-form__email');
-const passwordEl = document.querySelector<HTMLInputElement>('.auth-form__password');
-const errorEl = document.querySelector<HTMLDivElement>('.auth-form__error');
+const {
+  formEl,
+  errorEl,
+  emailEl,
+  passwordEl,
+} = getFormElements();
 
 formEl?.addEventListener('submit', async e => {
   e.preventDefault();
