@@ -2,11 +2,13 @@
 @import "open-props/normalize";
 
 :root {
-  --color-primary: MediumPurple;
+  --color-primary: var(--violet-5);
+  --color-on-primary: var(--gray-0);
   --color-error: var(--red-5);
   --color-text: var(--gray-1);
+  --color-text-dim: var(--gray-4);
+  --color-link: var(--color-primary);
   --color-border: var(--gray-4);
-  --color-on-primary: var(--gray-0);
 
   --size-1: 0.25rem;
   --size-2: 0.5rem;
@@ -35,6 +37,10 @@
   --input-color-bg: var(--gray-1);
   --input-color-text: var(--color-text);
   --input-border: var(--border);
+}
+
+a {
+  color: var(--color-link);
 }
 
 input {
