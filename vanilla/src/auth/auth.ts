@@ -36,15 +36,10 @@ interface FormElements {
 
 /** Return elements of form. */
 export function getFormElements(): FormElements {
-  const formEl = document.querySelector<HTMLFormElement>('.auth-form');
-  const errorEl = document.querySelector<HTMLDivElement>('.auth-form__error');
-  const emailEl = document.querySelector<HTMLInputElement>('.auth-form__email');
-  const passwordEl = document.querySelector<HTMLInputElement>('.auth-form__password');
-
   return {
-    formEl,
-    errorEl,
-    emailEl,
-    passwordEl,
+    formEl: document.querySelector<HTMLFormElement>('.auth-form'),
+    errorEl: document.querySelector<HTMLDivElement>('.auth-form__error'),
+    emailEl: document.querySelector<HTMLInputElement>('.auth-form__email'),
+    passwordEl: document.querySelector<HTMLInputElement>('.auth-form__password'),
   };
 }
