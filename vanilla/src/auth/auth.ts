@@ -22,16 +22,16 @@ export function clearFormErrorText(errorEl: HTMLElement | null): void {
 interface FormElements {
 
   /** Form element. */
-  formEl: HTMLFormElement | null;
+  readonly formEl: HTMLFormElement | null;
 
   /** Error box element. */
-  errorEl: HTMLDivElement | null;
+  readonly errorEl: HTMLDivElement | null;
 
   /** Email input element. */
-  emailEl: HTMLInputElement | null;
+  readonly emailEl: HTMLInputElement | null;
 
   /** Password input element. */
-  passwordEl: HTMLInputElement | null;
+  readonly passwordEl: HTMLInputElement | null;
 }
 
 /** Return elements of form. */
