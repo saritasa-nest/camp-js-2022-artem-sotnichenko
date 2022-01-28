@@ -13,10 +13,14 @@ const {
 formEl?.addEventListener('submit', async e => {
   e.preventDefault();
 
-  const email = emailEl?.value;
-  const password = passwordEl?.value;
+  if (emailEl === null || passwordEl === null) {
+    return;
+  }
 
-  if (!email || !password) {
+  const email = emailEl.value;
+  const password = passwordEl.value;
+
+  if (email === '' || password === '') {
     return setFormErrorText(errorEl, FORM_ERROR_EMPTY_FIELDS);
   }
 

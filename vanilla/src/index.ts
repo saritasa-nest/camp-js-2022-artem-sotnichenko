@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async e => {
   const sortFieldEl = document.querySelector<HTMLSelectElement>('.films__sort--field .sort__select');
   const sortTypeEl = document.querySelector<HTMLSelectElement>('.films__sort--type .sort__select');
 
-  if (!sortFieldEl || !sortTypeEl) {
+  if (sortFieldEl === null || sortTypeEl === null) {
     return;
   }
 
@@ -137,7 +137,7 @@ function updatePaginationButtons(): void {
     paginationPrevEl,
   } = getPaginationElements();
 
-  if (!paginationPrevEl || !paginationNextEl) {
+  if (paginationPrevEl === null || paginationNextEl === null) {
     return;
   }
 
@@ -151,7 +151,7 @@ function getSortOptions() {
   const sortFieldEl = document.querySelector<HTMLSelectElement>('.films__sort--field .sort__select');
   const sortTypeEl = document.querySelector<HTMLSelectElement>('.films__sort--type .sort__select');
 
-  if (!sortFieldEl || !sortTypeEl) {
+  if (sortFieldEl === null || sortTypeEl === null) {
     return;
   }
 
@@ -182,7 +182,7 @@ function createFilmEl(film: Film): HTMLDivElement {
  */
 function displayFilms(films: Film[]): void {
   const filmsListEl = document.querySelector<HTMLElement>('.films__list');
-  if (!filmsListEl) {
+  if (filmsListEl === null) {
     return;
   }
 
