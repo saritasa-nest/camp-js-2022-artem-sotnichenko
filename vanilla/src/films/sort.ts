@@ -1,3 +1,6 @@
+import { sortFields, sortTypes } from '../entities/film/fetch';
+import { OrderField, SortField, SortType } from '../entities/film/types';
+
 import { loadNextPage, updatePaginationButtons } from './pagination';
 import { changeStore } from './store';
 
@@ -29,9 +32,24 @@ async function onSortChange(): Promise<void> {
     return;
   }
 
+  let sortField: SortField = sortFields.title;
+  if (
+    sortFieldEl.value === 'title' ||
+    sortFieldEl.value === 'producer' ||
+    sortFieldEl.value === 'director' ||
+    sortFieldEl.value === 'releaseDate'
+  ) {
+    sortField = sortFields[sortFieldEl.value];
+  }
+
+  let sortType: SortType = sortTypes.ascending;
+  if (sortTypeEl.value === 'descending') {
+    sortType = sortTypes[sortTypeEl.value];
+  }
+
   changeStore({
-    sortField: sortFieldEl.value,
-    sortType: sortTypeEl.value,
+    sortField,
+    sortType,
     lastId: null,
     firstId: null,
     isFirstPage: false,
@@ -58,5 +76,6 @@ export function setupSorting(): void {
     return;
   }
 
+  sortFieldEl.addEventListener('change', onSortChange);
   sortTypeEl.addEventListener('change', onSortChange);
 }

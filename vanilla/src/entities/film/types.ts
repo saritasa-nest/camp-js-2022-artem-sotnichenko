@@ -1,5 +1,19 @@
 import { FirebaseWrapper } from '../../firebase/types';
 
+/** Fields to sort in firebase. */
+export enum SortField {
+  Title = 'fields.title',
+  Producer = 'fields.producer',
+  Director = 'fields.director',
+  ReleaseDate = 'fields.release_date',
+}
+
+/** Sort types in firebase. */
+export enum SortType {
+  Ascending = 'asc',
+  Descending = 'desc',
+}
+
 /** Film data that stored in firestore. */
 export interface FilmDocument {
 

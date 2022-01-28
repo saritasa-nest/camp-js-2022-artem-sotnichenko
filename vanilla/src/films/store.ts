@@ -1,45 +1,43 @@
-// Explicitly not adding readonly because changing values in `changeFunction`,
-// and return freezed object in get function `getStore`
+import { OrderField, SortField, SortType } from '../entities/film/types';
+
 interface Store {
 
   /** Id of last film on current page. */
-  lastId: string | null;
+  readonly lastId: string | null;
 
   /** Id of first film on current page. */
-  firstId: string | null;
+  readonly firstId: string | null;
 
   /** Is currently on the last page. */
-  isLastPage: boolean;
+  readonly isLastPage: boolean;
 
   /** Is currently on the first page. */
-  isFirstPage: boolean;
+  readonly isFirstPage: boolean;
 
   /** Sort field. */
-  sortField: string;
+  readonly sortField: OrderField;
 
   /** Sort type (ascending, descending). */
-  sortType: string;
+  readonly sortType: string;
 }
 
-const store: Store = {
+let store: Store = {
   lastId: null,
   firstId: null,
   isLastPage: false,
   isFirstPage: false,
-  sortField: 'title',
-  sortType: 'ascending',
+  sortField: SortField.Title,
+  sortType: SortType.Ascending,
 };
 
 /** Returns actual store.
  * @param fields Fields to update in store.
  */
 export function changeStore(fields: Partial<Store>): void {
-  store.lastId = fields.lastId ?? (fields.lastId === null ? null : store.lastId);
-  store.firstId = fields.firstId ?? (fields.firstId === null ? null : store.firstId);
-  store.isLastPage = fields.isLastPage ?? store.isLastPage;
-  store.isFirstPage = fields.isFirstPage ?? store.isFirstPage;
-  store.sortField = fields.sortField ?? store.sortField;
-  store.sortType = fields.sortType ?? store.sortType;
+  store = {
+    ...store,
+    ...fields,
+  };
 }
 
 /** Returns actual store. */

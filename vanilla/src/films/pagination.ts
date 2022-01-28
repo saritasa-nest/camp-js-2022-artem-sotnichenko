@@ -1,4 +1,5 @@
 import { getFilmsAfterId, getFilmsBeforeId } from '../entities/film';
+import { SortType } from '../entities/film/types';
 import { FILMS_COUNT_PER_PAGE } from '../utils/constants';
 
 import { displayFilms } from './display-films';
@@ -43,8 +44,8 @@ export async function loadNextPage(): Promise<void> {
 
   const films = await getFilmsAfterId({
     limit: FILMS_COUNT_PER_PAGE,
-    orderBy: `fields.${store.sortField}`,
-    isDescending: store.sortType === 'descending',
+    orderBy: store.sortField,
+    isDescending: store.sortType === SortType.Descending,
     startAfter: store.lastId,
   });
 
@@ -76,8 +77,8 @@ export async function loadPrevPage(): Promise<void> {
 
   const films = await getFilmsBeforeId({
     limit: FILMS_COUNT_PER_PAGE,
-    orderBy: 'fields.title',
-    isDescending: store.sortType === 'descending',
+    orderBy: store.sortField,
+    isDescending: store.sortType === SortType.Descending,
     endBefore: store.firstId,
   });
 
