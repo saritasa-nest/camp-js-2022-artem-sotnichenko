@@ -4,10 +4,10 @@ import { changeStore } from './store';
 interface SortElements {
 
   /** Sort field, for example: title, producer. */
-  sortFieldEl: HTMLSelectElement | null;
+  readonly sortFieldEl: HTMLSelectElement | null;
 
   /** Sort type (ascending, descending). */
-  sortTypeEl: HTMLSelectElement | null;
+  readonly sortTypeEl: HTMLSelectElement | null;
 }
 
 /** Returns select elements that involved in sorting. */

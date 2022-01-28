@@ -18,10 +18,10 @@ export function setupPagination(): void {
 interface PaginationElements {
 
   /** Next page button. */
-  paginationNextEl: HTMLButtonElement | null;
+  readonly paginationNextEl: HTMLButtonElement | null;
 
   /** Previous page button. */
-  paginationPrevEl: HTMLButtonElement | null;
+  readonly paginationPrevEl: HTMLButtonElement | null;
 }
 
 /** Get pagination elements. */

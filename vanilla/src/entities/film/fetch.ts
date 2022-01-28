@@ -37,20 +37,20 @@ async function fetchFirstFilm(filmId: string | null, isDescending: boolean): Pro
 interface FetchFilmsOptions {
 
   /** Field name for order. */
-  orderBy: string;
+  readonly orderBy: string;
 
   /** Number of films to fetch. */
-  limit: number;
+  readonly limit: number;
 
   /** Number of films to fetch. */
-  isDescending: boolean;
+  readonly isDescending: boolean;
 }
 
 /** FetchFilmsAfterId options. */
 export interface FetchFilmsAfterIdOptions extends FetchFilmsOptions {
 
   /** Id of film to fetch after. */
-  startAfter: string | null;
+  readonly startAfter: string | null;
 }
 
 /**
@@ -79,7 +79,7 @@ export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Prom
 export interface FetchFilmsBeforeIdOptions extends FetchFilmsOptions {
 
   /** Id of film to fetch before. */
-  endBefore: string | null;
+  readonly endBefore: string | null;
 }
 
 /**

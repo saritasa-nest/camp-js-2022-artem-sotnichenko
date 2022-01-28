@@ -4,50 +4,50 @@ import { FirebaseWrapper } from '../../firebase/types';
 export interface FilmDocument {
 
   /** Film fields. */
-  fields: {
+  readonly fields: {
 
     /** Character ids. */
-    characters: string[];
+    readonly characters: string[];
 
     /** Specie ids. */
-    species: string[];
+    readonly species: string[];
 
     /** Starship ids. */
-    starships: string[];
+    readonly starships: string[];
 
     /** Vehicle ids. */
-    vehicles: string[];
+    readonly vehicles: string[];
 
     /** Create time (2014-12-10T14:23:31.880Z). */
-    created: string;
+    readonly created: string;
 
     /** Director name. */
-    director: string;
+    readonly director: string;
 
     /** Edit time. */
-    edited: string;
+    readonly edited: string;
 
     /** Episode id. */
-    episode_id: 4;
+    readonly episode_id: number;
 
     /** Opening crawl. */
-    opening_crawl: string;
+    readonly opening_crawl: string;
 
     /** Producer name. */
-    producer: string;
+    readonly producer: string;
 
     /** Release date (1977-05-25). */
-    release_date: string;
+    readonly release_date: string;
 
     /** Title. */
-    title: string;
+    readonly title: string;
   };
 
   /** Model. */
-  model: string;
+  readonly model: string;
 
   /** Primary key. */
-  pk: number;
+  readonly pk: number;
 }
 
 /** Film DTO. */
@@ -57,47 +57,47 @@ export interface FilmDto extends FilmDocument, FirebaseWrapper {}
 export interface Film {
 
   /** Film id. */
-  id: string;
+  readonly id: string;
 
   /** Character ids. */
-  characters: string[];
+  readonly characterIds: string[];
 
   /** Specie ids. */
-  species: string[];
+  readonly specieIds: string[];
 
   /** Starship ids. */
-  starships: string[];
+  readonly starshipIds: string[];
 
   /** Vehicle ids. */
-  vehicles: string[];
+  readonly vehicleIds: string[];
 
   /** Create time (2014-12-10T14:23:31.880Z). */
-  created: string;
+  readonly created: Date;
 
   /** Director name. */
-  director: string;
+  readonly director: string;
 
   /** Edit time. */
-  edited: string;
+  readonly edited: Date;
 
   /** Episode id. */
-  episodeId: 4;
+  readonly episodeId: number;
 
   /** Opening crawl. */
-  openingCrawl: string;
+  readonly openingCrawl: string;
 
   /** Producer name. */
-  producer: string;
+  readonly producer: string;
 
   /** Release date (1977-05-25). */
-  releaseDate: string;
+  readonly releaseDate: Date;
 
   /** Title. */
-  title: string;
+  readonly title: string;
 
   /** Model. */
-  model: string;
+  readonly model: string;
 
   /** Primary key. */
-  pk: number;
+  readonly pk: number;
 }
