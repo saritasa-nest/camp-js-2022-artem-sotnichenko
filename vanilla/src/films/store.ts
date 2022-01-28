@@ -1,4 +1,4 @@
-import { OrderField, SortField, SortType } from '../entities/film/types';
+import { SortField, SortType } from '../entities/film/types';
 
 interface Store {
 
@@ -15,7 +15,7 @@ interface Store {
   readonly isFirstPage: boolean;
 
   /** Sort field. */
-  readonly sortField: OrderField;
+  readonly sortField: SortField;
 
   /** Sort type (ascending, descending). */
   readonly sortType: string;

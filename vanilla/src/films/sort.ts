@@ -1,5 +1,5 @@
 import { sortFields, sortTypes } from '../entities/film/fetch';
-import { OrderField, SortField, SortType } from '../entities/film/types';
+import { SortField, SortType } from '../entities/film/types';
 
 import { loadNextPage, updatePaginationButtons } from './pagination';
 import { changeStore } from './store';

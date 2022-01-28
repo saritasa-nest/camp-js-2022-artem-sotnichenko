@@ -13,7 +13,7 @@ import {
 
 import { createCollection } from '../../firebase/utils';
 
-import { FilmDto, FilmDocument, OrderField, SortField, SortType } from './types';
+import { FilmDto, FilmDocument, SortField, SortType } from './types';
 
 /** Fetches first document.
  *
@@ -49,7 +49,7 @@ export const sortTypes = {
 interface FetchFilmsOptions {
 
   /** Field name for order. */
-  readonly orderBy: OrderField;
+  readonly orderBy: SortField;
 
   /** Number of films to fetch. */
   readonly limit: number;

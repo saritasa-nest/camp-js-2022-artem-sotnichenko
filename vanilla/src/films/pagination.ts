@@ -5,7 +5,7 @@ import { FILMS_COUNT_PER_PAGE } from '../utils/constants';
 import { displayFilms } from './display-films';
 import { changeStore, getStore } from './store';
 
-/** Sets up pagination, add listeners on buttons */
+/** Sets up pagination, add listeners on buttons. */
 export function setupPagination(): void {
   const {
     paginationNextEl,
