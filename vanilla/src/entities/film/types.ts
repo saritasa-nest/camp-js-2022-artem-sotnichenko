@@ -1,4 +1,4 @@
-import { FirebaseWrapper } from './../types';
+import { FirebaseWrapper } from '../../firebase/types';
 
 /** Film data that stored in firestore. */
 export interface FilmDocument {
