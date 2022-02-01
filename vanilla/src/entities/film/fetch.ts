@@ -19,7 +19,6 @@ import { FilmDto, FilmDocument, SortField, SortType } from './types';
 /**
  * Map film document to film dto.
  * @param filmDoc Film document.
- * @returns
  */
 function mapDocumentToDto(filmDoc: QueryDocumentSnapshot<FilmDocument>): FilmDto {
   return {
