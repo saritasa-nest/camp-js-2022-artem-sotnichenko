@@ -10,6 +10,11 @@
   --color-link: var(--color-primary);
   --color-border: var(--gray-4);
 
+  --font-size-subtext: var(--font-size-0);
+  --font-size-text: var(--font-size-1);
+  --font-size-subtitle: var(--font-size-2);
+  --font-size-title: var(--font-size-5);
+
   --size-1: 0.25rem;
   --size-2: 0.5rem;
   --size-3: 0.75rem;
@@ -38,6 +43,14 @@
   --input-color-text: var(--color-text);
   --input-border: var(--border);
   --input-color-bg-hover: var(--gray-2);
+}
+
+h1 {
+  font-size: var(--font-size-title);
+}
+
+h2, h3, h4, h5, h6  {
+  font-size: var(--font-size-subtitle);
 }
 
 a {
