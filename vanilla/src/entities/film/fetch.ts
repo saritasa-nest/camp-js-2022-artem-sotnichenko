@@ -8,12 +8,25 @@ import {
   limitToLast,
   orderBy,
   query,
+  QueryDocumentSnapshot,
   startAfter,
 } from 'firebase/firestore';
 
 import { createCollection } from '../../firebase/utils';
 
 import { FilmDto, FilmDocument, SortField, SortType } from './types';
+
+/**
+ * Map film document to film dto.
+ * @param filmDoc Film document.
+ * @returns
+ */
+function mapDocumentToDto(filmDoc: QueryDocumentSnapshot<FilmDocument>): FilmDto {
+  return {
+    ...filmDoc.data(),
+    id: filmDoc.id,
+  };
+}
 
 /** Fetches first document.
  *
@@ -25,9 +38,9 @@ import { FilmDto, FilmDocument, SortField, SortType } from './types';
 async function fetchFirstFilmCursor(filmId: string | null, isDescending: boolean): Promise<DocumentSnapshot<FilmDocument> | FilmDto | ''> {
   if (filmId === null) {
     if (isDescending) {
-      const q = query(createCollection<FilmDocument>('films'), limit(1));
-      const querySnapshot = await getDocs<FilmDocument>(q);
-      return querySnapshot.docs.map(d => ({ ...d.data(), id: d.id }))[0];
+      const documentQuery = query(createCollection<FilmDocument>('films'), limit(1));
+      const querySnapshot = await getDocs<FilmDocument>(documentQuery);
+      return querySnapshot.docs.map(mapDocumentToDto)[0];
     }
     return '';
   }
@@ -58,7 +71,7 @@ interface FetchFilmsOptions {
   readonly isDescending: boolean;
 }
 
-/** FetchFilmsAfterId options. */
+/** Options for function "fetchFilmsAfterId". */
 export interface FetchFilmsAfterIdOptions extends FetchFilmsOptions {
 
   /** Id of film to fetch after. */
@@ -72,7 +85,7 @@ export interface FetchFilmsAfterIdOptions extends FetchFilmsOptions {
 export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Promise<FilmDto[]> {
   const cursorDoc = await fetchFirstFilmCursor(options.startAfter, options.isDescending);
 
-  const q = query(
+  const filmQuery = query(
     createCollection<FilmDocument>('films'),
     orderBy(
       options.orderBy,
@@ -82,12 +95,12 @@ export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Prom
     startAfter(cursorDoc),
   );
 
-  const querySnapshot = await getDocs<FilmDocument>(q);
-  const films = querySnapshot.docs.map(d => ({ ...d.data(), id: d.id }));
+  const querySnapshot = await getDocs<FilmDocument>(filmQuery);
+  const films = querySnapshot.docs.map(mapDocumentToDto);
   return films;
 }
 
-/** FetchFilmsBeforeId options. */
+/** Options for function "fetchFilmsBeforeId". */
 export interface FetchFilmsBeforeIdOptions extends FetchFilmsOptions {
 
   /** Id of film to fetch before. */
@@ -101,7 +114,7 @@ export interface FetchFilmsBeforeIdOptions extends FetchFilmsOptions {
 export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Promise<FilmDto[]> {
   const cursorDoc = await fetchFirstFilmCursor(options.endBefore, options.isDescending);
 
-  const q = query(
+  const filmQuery = query(
     createCollection<FilmDocument>('films'),
     orderBy(
       options.orderBy,
@@ -111,6 +124,6 @@ export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Pr
     endBefore(cursorDoc),
   );
 
-  const querySnapshot = await getDocs<FilmDocument>(q);
-  return querySnapshot.docs.map(d => ({ ...d.data(), id: d.id }));
+  const querySnapshot = await getDocs<FilmDocument>(filmQuery);
+  return querySnapshot.docs.map(mapDocumentToDto);
 }
