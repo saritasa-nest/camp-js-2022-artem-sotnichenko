@@ -1,4 +1,5 @@
 import { SortField, SortType } from '../entities/film/types';
+import { ERROR_SORT_ELEMENTS_ARE_NULL } from '../utils/constants';
 
 import { loadNextPage, updatePaginationButtons } from './pagination';
 import { changeStore } from './store';
@@ -6,17 +7,24 @@ import { changeStore } from './store';
 interface SortElements {
 
   /** Sort field, for example: title, producer. */
-  readonly sortFieldEl: HTMLSelectElement | null;
+  readonly sortFieldEl: HTMLSelectElement;
 
   /** Sort type (ascending, descending). */
-  readonly sortTypeEl: HTMLSelectElement | null;
+  readonly sortTypeEl: HTMLSelectElement;
 }
 
 /** Returns select elements that involved in sorting. */
 function getSortElements(): SortElements {
+  const sortFieldEl = document.querySelector<HTMLSelectElement>('.films__sort--field .sort__select');
+  const sortTypeEl = document.querySelector<HTMLSelectElement>('.films__sort--type .sort__select');
+
+  if (sortFieldEl === null || sortTypeEl === null) {
+    throw new Error(ERROR_SORT_ELEMENTS_ARE_NULL);
+  }
+
   return {
-    sortFieldEl: document.querySelector<HTMLSelectElement>('.films__sort--field .sort__select'),
-    sortTypeEl: document.querySelector<HTMLSelectElement>('.films__sort--type .sort__select'),
+    sortFieldEl,
+    sortTypeEl,
   };
 }
 
@@ -26,10 +34,6 @@ async function onSortChange(): Promise<void> {
     sortFieldEl,
     sortTypeEl,
   } = getSortElements();
-
-  if (sortFieldEl === null || sortTypeEl === null) {
-    return;
-  }
 
   let sortField: SortField = SortField.Title;
   if (
@@ -70,10 +74,6 @@ export function setupSorting(): void {
     sortFieldEl,
     sortTypeEl,
   } = getSortElements();
-
-  if (sortFieldEl === null || sortTypeEl === null) {
-    return;
-  }
 
   sortFieldEl.addEventListener('change', onSortChange);
   sortTypeEl.addEventListener('change', onSortChange);

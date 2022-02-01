@@ -10,12 +10,8 @@ const {
   passwordEl,
 } = getFormElements();
 
-formEl?.addEventListener('submit', async e => {
+formEl.addEventListener('submit', async e => {
   e.preventDefault();
-
-  if (emailEl === null || passwordEl === null) {
-    return;
-  }
 
   const email = emailEl.value;
   const password = passwordEl.value;

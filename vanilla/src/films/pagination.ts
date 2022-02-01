@@ -1,6 +1,6 @@
 import { getFilmsAfterId, getFilmsBeforeId } from '../entities/film';
 import { SortType } from '../entities/film/types';
-import { FILMS_COUNT_PER_PAGE } from '../utils/constants';
+import { ERROR_PAGINATION_ELEMENTS_ARE_NULL, FILMS_COUNT_PER_PAGE } from '../utils/constants';
 
 import { displayFilms } from './display-films';
 import { changeStore, getStore } from './store';
@@ -12,24 +12,31 @@ export function setupPagination(): void {
     paginationPrevEl,
   } = getPaginationElements();
 
-  paginationNextEl?.addEventListener('click', loadNextPage);
-  paginationPrevEl?.addEventListener('click', loadPrevPage);
+  paginationNextEl.addEventListener('click', loadNextPage);
+  paginationPrevEl.addEventListener('click', loadPrevPage);
 }
 
 interface PaginationElements {
 
   /** Next page button. */
-  readonly paginationNextEl: HTMLButtonElement | null;
+  readonly paginationNextEl: HTMLButtonElement;
 
   /** Previous page button. */
-  readonly paginationPrevEl: HTMLButtonElement | null;
+  readonly paginationPrevEl: HTMLButtonElement;
 }
 
 /** Get pagination elements. */
 function getPaginationElements(): PaginationElements {
+  const paginationNextEl = document.querySelector<HTMLButtonElement>('.pagination__next');
+  const paginationPrevEl = document.querySelector<HTMLButtonElement>('.pagination__prev');
+
+  if (paginationNextEl === null || paginationPrevEl === null) {
+    throw new Error(ERROR_PAGINATION_ELEMENTS_ARE_NULL);
+  }
+
   return {
-    paginationNextEl: document.querySelector<HTMLButtonElement>('.pagination__next'),
-    paginationPrevEl: document.querySelector<HTMLButtonElement>('.pagination__prev'),
+    paginationNextEl,
+    paginationPrevEl,
   };
 }
 
@@ -116,10 +123,6 @@ export function updatePaginationButtons(): void {
     paginationNextEl,
     paginationPrevEl,
   } = getPaginationElements();
-
-  if (paginationPrevEl === null || paginationNextEl === null) {
-    return;
-  }
 
   const {
     isLastPage,
