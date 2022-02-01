@@ -35,19 +35,24 @@ function getPaginationElements(): PaginationElements {
 
 /** Load next page of films. */
 export async function loadNextPage(): Promise<void> {
-  const store = getStore();
+  const {
+    isLastPage,
+    sortField,
+    sortType,
+    lastId,
+  } = getStore();
 
   // disable 'next' button
-  if (store.isLastPage) {
+  if (isLastPage) {
     updatePaginationButtons();
     return;
   }
 
   const films = await getFilmsAfterId({
     limit: FILMS_COUNT_PER_PAGE,
-    orderBy: store.sortField,
-    isDescending: store.sortType === SortType.Descending,
-    startAfter: store.lastId,
+    orderBy: sortField,
+    isDescending: sortType === SortType.Descending,
+    startAfter: lastId,
   });
 
   if (films.length < FILMS_COUNT_PER_PAGE) {
@@ -69,19 +74,24 @@ export async function loadNextPage(): Promise<void> {
 
 /** Load previous page of films. */
 export async function loadPrevPage(): Promise<void> {
-  const store = getStore();
+  const {
+    isFirstPage,
+    sortField,
+    sortType,
+    firstId,
+  } = getStore();
 
   // disable 'prev' button
-  if (store.isFirstPage) {
+  if (isFirstPage) {
     updatePaginationButtons();
     return;
   }
 
   const films = await getFilmsBeforeId({
     limit: FILMS_COUNT_PER_PAGE,
-    orderBy: store.sortField,
-    isDescending: store.sortType === SortType.Descending,
-    endBefore: store.firstId,
+    orderBy: sortField,
+    isDescending: sortType === SortType.Descending,
+    endBefore: firstId,
   });
 
   if (films.length < FILMS_COUNT_PER_PAGE) {
@@ -102,8 +112,6 @@ export async function loadPrevPage(): Promise<void> {
 
 /** Update pagination buttons. */
 export function updatePaginationButtons(): void {
-  const store = getStore();
-
   const {
     paginationNextEl,
     paginationPrevEl,
@@ -113,6 +121,11 @@ export function updatePaginationButtons(): void {
     return;
   }
 
-  paginationNextEl.disabled = !!store.isLastPage;
-  paginationPrevEl.disabled = !!store.isFirstPage;
+  const {
+    isLastPage,
+    isFirstPage,
+  } = getStore();
+
+  paginationNextEl.disabled = isLastPage;
+  paginationPrevEl.disabled = isFirstPage;
 }
