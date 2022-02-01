@@ -1,9 +1,9 @@
-import { Film, FilmDto, FilmDocument } from './types';
+import { Film, FilmDto } from './types';
 
 /** Maps Film DTO to Film model.
  * @param dto Film DTO.
  */
-export function toModel(dto: FilmDto): Film {
+export function fromDto(dto: FilmDto): Film {
   return {
     id: dto.id,
     characterIds: dto.fields.characters,
@@ -26,7 +26,7 @@ export function toModel(dto: FilmDto): Film {
 /** Maps Film model to Film document.
  * @param film Film model.
  */
-export function toDoc(film: Film): FilmDocument {
+export function toDto(film: Film): FilmDto {
   return {
     fields: {
       characters: film.characterIds,
@@ -42,6 +42,7 @@ export function toDoc(film: Film): FilmDocument {
       release_date: film.releaseDate.toISOString(),
       title: film.title,
     },
+    id: film.id,
     model: film.model,
     pk: film.pk,
   };
