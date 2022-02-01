@@ -21,16 +21,16 @@ export interface FilmDocument {
   readonly fields: {
 
     /** Character ids. */
-    readonly characters: string[];
+    readonly characters: readonly string[];
 
     /** Specie ids. */
-    readonly species: string[];
+    readonly species: readonly string[];
 
     /** Starship ids. */
-    readonly starships: string[];
+    readonly starships: readonly string[];
 
     /** Vehicle ids. */
-    readonly vehicles: string[];
+    readonly vehicles: readonly string[];
 
     /** Create time (2014-12-10T14:23:31.880Z). */
     readonly created: string;
@@ -74,16 +74,16 @@ export interface Film {
   readonly id: string;
 
   /** Character ids. */
-  readonly characterIds: string[];
+  readonly characterIds: readonly string[];
 
   /** Specie ids. */
-  readonly specieIds: string[];
+  readonly specieIds: readonly string[];
 
   /** Starship ids. */
-  readonly starshipIds: string[];
+  readonly starshipIds: readonly string[];
 
   /** Vehicle ids. */
-  readonly vehicleIds: string[];
+  readonly vehicleIds: readonly string[];
 
   /** Create time (2014-12-10T14:23:31.880Z). */
   readonly created: Date;
