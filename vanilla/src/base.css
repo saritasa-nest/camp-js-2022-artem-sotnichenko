@@ -5,10 +5,15 @@
   --color-primary: var(--violet-5);
   --color-on-primary: var(--gray-0);
   --color-error: var(--red-5);
-  --color-text: var(--gray-1);
-  --color-text-dim: var(--gray-4);
+  --color-text: var(--gray-9);
+  --color-text-dim: var(--gray-6);
   --color-link: var(--color-primary);
   --color-border: var(--gray-4);
+
+  --font-size-subtext: var(--font-size-0);
+  --font-size-text: var(--font-size-1);
+  --font-size-subtitle: var(--font-size-2);
+  --font-size-title: var(--font-size-5);
 
   --size-1: 0.25rem;
   --size-2: 0.5rem;
@@ -37,10 +42,24 @@
   --input-color-bg: var(--gray-1);
   --input-color-text: var(--color-text);
   --input-border: var(--border);
+  --input-color-bg-hover: var(--gray-2);
+}
+
+h1 {
+  font-size: var(--font-size-title);
+}
+
+h2, h3, h4, h5, h6  {
+  font-size: var(--font-size-subtitle);
 }
 
 a {
   color: var(--color-link);
+}
+
+html {
+  font-size: 20px;
+  color: var(--color-text);
 }
 
 input {
@@ -56,4 +75,35 @@ button {
   border-radius: var(--button-border-radius);
   background-color: var(--button-color-bg);
   color: var(--button-color-text);
+}
+
+button.is-secondary {
+  background-color: var(--input-color-bg);
+  color: var(--input-color-text);
+  border: var(--input-border);
+}
+
+select {
+  box-sizing: content-box;
+  border: var(--input-border);
+  padding: var(--input-padding);
+  border-radius: var(--input-border-radius);
+  background-color: var(--input-color-bg);
+  color: var(--input-color-text);
+}
+
+
+input:hover,
+select:hover,
+button.is-secondary:hover {
+  background-color: var(--input-color-bg-hover);
+}
+
+input:disabled,
+select:disabled,
+button.is-secondary:disabled {
+  background-color: var(--input-color-bg);
+  border-color:var(--input-color-bg);
+  color: var(--color-text-dim);
+  cursor: default;
 }

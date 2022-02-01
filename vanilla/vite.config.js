@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import env from 'vite-plugin-env-compatible'
+import envCompatible from 'vite-plugin-env-compatible'
 
 const root = resolve(__dirname, 'src');
 const outDir = resolve(__dirname, 'dist');
@@ -9,8 +9,8 @@ const outDir = resolve(__dirname, 'dist');
 export default defineConfig({
   root,
   plugins: [
-    env({
-      prefix: ''
+    envCompatible({
+      prefix: 'CAMP'
     }),
   ],
   build: {
