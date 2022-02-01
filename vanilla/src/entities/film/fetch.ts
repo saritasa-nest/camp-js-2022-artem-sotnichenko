@@ -47,18 +47,6 @@ async function fetchFirstFilmCursor(filmId: string | null, isDescending: boolean
   return getDoc(doc(createCollection<FilmDocument>('films'), filmId));
 }
 
-export const sortFields = {
-  title: SortField.Title,
-  producer: SortField.Producer,
-  director: SortField.Director,
-  releaseDate: SortField.ReleaseDate,
-} as const;
-
-export const sortTypes = {
-  ascending: SortType.Ascending,
-  descending: SortType.Descending,
-} as const;
-
 interface FetchFilmsOptions {
 
   /** Field name for order. */
@@ -89,7 +77,7 @@ export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Prom
     createCollection<FilmDocument>('films'),
     orderBy(
       options.orderBy,
-      options.isDescending ? sortTypes.descending : sortTypes.ascending,
+      options.isDescending ? SortType.Descending : SortType.Ascending,
     ),
     limit(options.limit),
     startAfter(cursorDoc),
@@ -118,7 +106,7 @@ export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Pr
     createCollection<FilmDocument>('films'),
     orderBy(
       options.orderBy,
-      options.isDescending ? sortTypes.descending : sortTypes.ascending,
+      options.isDescending ? SortType.Descending : SortType.Ascending,
     ),
     limitToLast(options.limit),
     endBefore(cursorDoc),

@@ -1,4 +1,3 @@
-import { sortFields, sortTypes } from '../entities/film/fetch';
 import { SortField, SortType } from '../entities/film/types';
 
 import { loadNextPage, updatePaginationButtons } from './pagination';
@@ -32,19 +31,19 @@ async function onSortChange(): Promise<void> {
     return;
   }
 
-  let sortField: SortField = sortFields.title;
+  let sortField: SortField = SortField.Title;
   if (
-    sortFieldEl.value === 'title' ||
-    sortFieldEl.value === 'producer' ||
-    sortFieldEl.value === 'director' ||
-    sortFieldEl.value === 'releaseDate'
+    sortFieldEl.value === SortField.Title ||
+    sortFieldEl.value === SortField.Producer ||
+    sortFieldEl.value === SortField.Director ||
+    sortFieldEl.value === SortField.ReleaseDate
   ) {
-    sortField = sortFields[sortFieldEl.value];
+    sortField = sortFieldEl.value;
   }
 
-  let sortType: SortType = sortTypes.ascending;
-  if (sortTypeEl.value === 'descending') {
-    sortType = sortTypes[sortTypeEl.value];
+  let sortType: SortType = SortType.Ascending;
+  if (sortTypeEl.value === SortType.Descending) {
+    sortType = sortTypeEl.value;
   }
 
   changeStore({
