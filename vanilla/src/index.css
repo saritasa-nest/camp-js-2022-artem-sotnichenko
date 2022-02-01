@@ -29,6 +29,15 @@
   font-weight: 700;
 }
 
+.meta-info {
+  display: flex;
+  gap: var(--size-2);
+}
+
+.meta-info__label {
+  color: var(--color-text-dim);
+}
+
 .sort {
   display: flex;
   flex-direction: column;
