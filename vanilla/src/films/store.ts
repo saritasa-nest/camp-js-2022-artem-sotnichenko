@@ -30,7 +30,8 @@ let store: Store = {
   sortType: SortType.Ascending,
 };
 
-/** Returns actual store.
+/**
+ * Returns actual store.
  * @param fields Fields to update in store.
  */
 export function changeStore(fields: Partial<Store>): void {
