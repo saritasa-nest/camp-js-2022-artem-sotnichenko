@@ -37,6 +37,7 @@ function getPaginationElements(): PaginationElements {
 export async function loadNextPage(): Promise<void> {
   const store = getStore();
 
+  // disable 'next' button
   if (store.isLastPage) {
     updatePaginationButtons();
     return;
@@ -70,6 +71,7 @@ export async function loadNextPage(): Promise<void> {
 export async function loadPrevPage(): Promise<void> {
   const store = getStore();
 
+  // disable 'prev' button
   if (store.isFirstPage) {
     updatePaginationButtons();
     return;

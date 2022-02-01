@@ -22,7 +22,7 @@ import { FilmDto, FilmDocument, SortField, SortType } from './types';
  * @param filmId Film id, undefined to fetch from beginning.
  * @param isDescending Order of fetch.
  */
-async function fetchFirstFilm(filmId: string | null, isDescending: boolean): Promise<DocumentSnapshot<FilmDocument> | FilmDto | ''> {
+async function fetchFirstFilmCursor(filmId: string | null, isDescending: boolean): Promise<DocumentSnapshot<FilmDocument> | FilmDto | ''> {
   if (filmId === null) {
     if (isDescending) {
       const q = query(createCollection<FilmDocument>('films'), limit(1));
@@ -70,7 +70,7 @@ export interface FetchFilmsAfterIdOptions extends FetchFilmsOptions {
  * @param options Options.
  */
 export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Promise<FilmDto[]> {
-  const cursorDoc = await fetchFirstFilm(options.startAfter, options.isDescending);
+  const cursorDoc = await fetchFirstFilmCursor(options.startAfter, options.isDescending);
 
   const q = query(
     createCollection<FilmDocument>('films'),
@@ -99,7 +99,7 @@ export interface FetchFilmsBeforeIdOptions extends FetchFilmsOptions {
  * @param options Options.
  */
 export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Promise<FilmDto[]> {
-  const cursorDoc = await fetchFirstFilm(options.endBefore, options.isDescending);
+  const cursorDoc = await fetchFirstFilmCursor(options.endBefore, options.isDescending);
 
   const q = query(
     createCollection<FilmDocument>('films'),

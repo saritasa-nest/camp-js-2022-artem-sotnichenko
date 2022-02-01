@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', async() => {
   });
   updatePaginationButtons();
 
+  // setup store before first load
   changeStore({
     isFirstPage: false,
     isLastPage: false,
