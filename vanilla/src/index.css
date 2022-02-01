@@ -45,10 +45,6 @@
   gap: var(--size-1);
 }
 
-.sort__select {
-  /* height: var(--size-7); */
-}
-
 .pagination,
 .pagination__pages {
   display: flex;
