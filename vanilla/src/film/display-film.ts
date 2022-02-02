@@ -9,15 +9,15 @@ function createFilmEl(film: Film): HTMLDivElement {
   const node = document.createElement('div');
   node.classList.add('film');
   node.innerHTML = `
-<h2 class="film__title">${film.title}</h2>
+<h1 class="film__title">${film.title}</h1>
 <div class="film__producer film__meta-info meta-info">
-  <div class="meta-info__label">produced by</div><div class="meta-info__text">${film.producer}</div>
+  <div class="meta-info__label">Produced by</div><div class="meta-info__text">${film.producer}</div>
 </div>
 <div class="film__director film__meta-info meta-info">
-  <div class="meta-info__label">directed by</div><div class="meta-info__text">${film.director}</div>
+  <div class="meta-info__label">Directed by</div><div class="meta-info__text">${film.director}</div>
 </div>
 <div class="film__releaseDate film__meta-info meta-info">
-  <div class="meta-info__label">released at</div><div class="meta-info__text">${formatDate(film.releaseDate)}</div>
+  <div class="meta-info__label">Released at</div><div class="meta-info__text">${formatDate(film.releaseDate)}</div>
 </div>
 `;
   return node;
@@ -28,12 +28,13 @@ function createFilmEl(film: Film): HTMLDivElement {
  * @param film Film.
  */
 export function displayFilm(film: Film): void {
-  const filmsListEl = document.querySelector<HTMLElement>('.film-wrap');
-  if (filmsListEl === null) {
+  const filmPageEl = document.querySelector<HTMLElement>('.film-page');
+
+  if (filmPageEl === null) {
     return;
   }
 
-  filmsListEl.innerHTML = '';
+  filmPageEl.innerHTML = '';
 
-  filmsListEl.appendChild(createFilmEl(film));
+  filmPageEl.appendChild(createFilmEl(film));
 }

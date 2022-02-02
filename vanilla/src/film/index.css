@@ -1,0 +1,20 @@
+.film-page {
+  width: var(--size-content-lg);
+  margin: var(--size-8) auto;
+}
+
+.film {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-3);
+}
+
+.meta-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-info__label {
+  font-size: var(--font-size-subtitle);
+  font-weight: 700;
+}
