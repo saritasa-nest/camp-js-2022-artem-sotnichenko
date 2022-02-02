@@ -25,17 +25,15 @@ function createFilmEl(film: Film): HTMLDivElement {
 
 /**
  * Display film on the page.
- * @param films Films.
+ * @param film Film.
  */
-export function displayFilms(films: Film[]): void {
-  const filmsListEl = document.querySelector<HTMLElement>('.films__list');
+export function displayFilm(film: Film): void {
+  const filmsListEl = document.querySelector<HTMLElement>('.film-wrap');
   if (filmsListEl === null) {
     return;
   }
 
   filmsListEl.innerHTML = '';
 
-  films.forEach(film => {
-    filmsListEl.appendChild(createFilmEl(film));
-  });
+  filmsListEl.appendChild(createFilmEl(film));
 }

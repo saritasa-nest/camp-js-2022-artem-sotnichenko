@@ -8,11 +8,11 @@ import {
   limitToLast,
   orderBy,
   query,
-  QueryDocumentSnapshot,
   startAfter,
 } from 'firebase/firestore';
 
 import { createCollection } from '../../firebase/utils';
+import { ERROR_DOCUMENT_NOT_EXISTS } from '../../utils/constants';
 
 import { FilmDto, FilmDocument, SortField, SortType } from './types';
 
@@ -20,11 +20,26 @@ import { FilmDto, FilmDocument, SortField, SortType } from './types';
  * Map film document to film dto.
  * @param filmDoc Film document.
  */
-function mapDocumentToDto(filmDoc: QueryDocumentSnapshot<FilmDocument>): FilmDto {
+function mapDocumentToDto(filmDoc: DocumentSnapshot<FilmDocument>): FilmDto {
+  const filmData = filmDoc.data();
+  if (!filmData) {
+    throw new Error(ERROR_DOCUMENT_NOT_EXISTS);
+  }
+
   return {
-    ...filmDoc.data(),
+    ...filmData,
     id: filmDoc.id,
   };
+}
+
+/**
+ * Fetch film by id.
+ * @param id Film id.
+ */
+export async function fetchFilmById(id: string): Promise<FilmDto> {
+  const filmDoc = await getDoc(doc(createCollection<FilmDocument>('films'), id));
+  filmDoc.data();
+  return mapDocumentToDto(filmDoc);
 }
 
 /** Fetches first document.
