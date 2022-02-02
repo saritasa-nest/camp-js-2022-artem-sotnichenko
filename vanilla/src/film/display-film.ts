@@ -11,6 +11,9 @@ function createFilmEl(film: Film): HTMLDivElement {
   node.innerHTML = `
 <h1 class="film__title">${film.title}</h1>
 <div class="film__producer film__meta-info meta-info">
+  <div class="meta-info__label">Opening crawl</div><div class="meta-info__text">${film.openingCrawl}</div>
+</div>
+<div class="film__producer film__meta-info meta-info">
   <div class="meta-info__label">Produced by</div><div class="meta-info__text">${film.producer}</div>
 </div>
 <div class="film__director film__meta-info meta-info">
@@ -18,6 +21,18 @@ function createFilmEl(film: Film): HTMLDivElement {
 </div>
 <div class="film__releaseDate film__meta-info meta-info">
   <div class="meta-info__label">Released at</div><div class="meta-info__text">${formatDate(film.releaseDate)}</div>
+</div>
+<div class="film__releaseDate film__meta-info meta-info">
+  <div class="meta-info__label">Characters</div><div class="meta-info__text">${film.characterIds.join(', ')}</div>
+</div>
+<div class="film__releaseDate film__meta-info meta-info">
+  <div class="meta-info__label">Species</div><div class="meta-info__text">${film.specieIds.join(', ')}</div>
+</div>
+<div class="film__releaseDate film__meta-info meta-info">
+  <div class="meta-info__label">Starships</div><div class="meta-info__text">${film.starshipIds.join(', ')}</div>
+</div>
+<div class="film__releaseDate film__meta-info meta-info">
+  <div class="meta-info__label">Vehicles</div><div class="meta-info__text">${film.vehicleIds.join(', ')}</div>
 </div>
 `;
   return node;
