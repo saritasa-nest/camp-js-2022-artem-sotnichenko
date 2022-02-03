@@ -1,4 +1,3 @@
-import { fetchCharactersByIds } from '../entities/character/fetch';
 import { getConnectedFilm } from '../entities/connected-film';
 import { getFilmById } from '../entities/film';
 import { subsrcibeToAuthChange } from '../firebase/auth';

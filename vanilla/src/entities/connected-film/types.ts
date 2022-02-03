@@ -1,18 +1,25 @@
 import { Character } from '../character/types';
 import { Film } from '../film/types';
+import { Planet } from '../planet/types';
+import { Specie } from '../specie/types';
+import { Starship } from '../starship/types';
+import { Vehicle } from '../vehicle/types';
 
 /** Film model. */
-export interface СonnectedFilm extends Omit<Film, 'characterIds'> {
+export interface СonnectedFilm extends Omit<Film, 'characterIds' | 'specieIds' | 'starshipIds' | 'vehicleIds'> {
 
-  /** Character ids. */
+  /** Characters. */
   readonly characters: readonly Character[];
 
-  // /** Specie ids. */
-  // readonly specieIds: readonly string[];
+  /** Species. */
+  readonly species: readonly Specie[];
 
-  // /** Starship ids. */
-  // readonly starshipIds: readonly string[];
+  /** Starship ids. */
+  readonly starships: readonly Starship[];
 
-  // /** Vehicle ids. */
-  // readonly vehicleIds: readonly string[];
+  /** Vehicle ids. */
+  readonly vehicles: readonly Vehicle[];
+
+  /** Planet ids. */
+  readonly planets: readonly Planet[];
 }

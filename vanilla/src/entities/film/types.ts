@@ -32,6 +32,9 @@ export interface FilmDocument {
     /** Vehicle ids. */
     readonly vehicles: readonly string[];
 
+    /** Planet ids. */
+    readonly planets: readonly string[];
+
     /** Create time (2014-12-10T14:23:31.880Z). */
     readonly created: string;
 
@@ -84,6 +87,9 @@ export interface Film {
 
   /** Vehicle ids. */
   readonly vehicleIds: readonly string[];
+
+  /** Planet ids. */
+  readonly planetIds: readonly string[];
 
   /** Create time (2014-12-10T14:23:31.880Z). */
   readonly created: Date;
