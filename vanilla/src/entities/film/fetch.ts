@@ -20,7 +20,7 @@ import { FilmDto, FilmDocument, SortField, SortType } from './types';
  * Map film document to film dto.
  * @param filmDoc Film document.
  */
-function mapDocumentToDto(filmDoc: DocumentSnapshot<FilmDocument>): FilmDto {
+export function mapDocumentToDto(filmDoc: DocumentSnapshot<FilmDocument>): FilmDto {
   const filmData = filmDoc.data();
   if (!filmData) {
     throw new Error(ERROR_DOCUMENT_NOT_EXISTS);

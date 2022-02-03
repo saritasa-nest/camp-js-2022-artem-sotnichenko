@@ -1,3 +1,5 @@
+import { fetchCharactersByIds } from '../entities/character/fetch';
+import { getConnectedFilm } from '../entities/connected-film';
 import { getFilmById } from '../entities/film';
 import { subsrcibeToAuthChange } from '../firebase/auth';
 
@@ -17,4 +19,8 @@ subsrcibeToAuthChange(async user => {
 
   const film = await getFilmById(filmId);
   displayFilm(film);
+
+  const connectedFilm = await getConnectedFilm(filmId);
+
+  console.log(connectedFilm);
 });
