@@ -67,7 +67,7 @@ interface Entity {
  */
 function createEntityListEl<E extends Entity>(entities: readonly E[], name: string, textKey: keyof E): HTMLDivElement {
   const entitiesEl = document.createElement('div');
-  entitiesEl.classList.add(`${name}-list`);
+  entitiesEl.classList.add(`${name}-list`, 'meta-info__list');
 
   entities.forEach(entity => {
     const entityEl = document.createElement('div');

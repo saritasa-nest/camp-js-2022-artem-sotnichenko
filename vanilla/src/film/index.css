@@ -1,5 +1,7 @@
 .film-page {
-  width: var(--size-content-xl);
+  max-width: var(--size-content-xl);
+  width: 100%;
+  padding: 0 var(--size-4);
   margin: var(--size-8) auto;
 }
 
@@ -17,4 +19,11 @@
 .meta-info__label {
   font-size: var(--font-size-subtitle);
   font-weight: 700;
+}
+
+.meta-info__list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0 var(--size-4);
 }
