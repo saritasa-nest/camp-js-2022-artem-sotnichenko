@@ -16,7 +16,7 @@
   flex-direction: column;
 }
 
-.meta-info__label {
+.meta-info__subtitle {
   font-size: var(--font-size-subtitle);
   font-weight: 700;
 }

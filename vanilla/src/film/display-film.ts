@@ -11,31 +11,31 @@ function createFilmEl(film: ConnectedFilm): HTMLDivElement {
   node.innerHTML = `
 <h1 class="film__title">${film.title}</h1>
 <div class="film__producer film__meta-info meta-info">
-  <div class="meta-info__label">Opening crawl</div><div class="meta-info__text">${film.openingCrawl}</div>
+  <h2 class="meta-info__subtitle">Opening crawl</h2><div class="meta-info__text">${film.openingCrawl}</div>
 </div>
 <div class="film__producer film__meta-info meta-info">
-  <div class="meta-info__label">Produced by</div><div class="meta-info__text">${film.producer}</div>
+  <h2 class="meta-info__subtitle">Produced by</h2><div class="meta-info__text">${film.producer}</div>
 </div>
 <div class="film__director film__meta-info meta-info">
-  <div class="meta-info__label">Directed by</div><div class="meta-info__text">${film.director}</div>
+  <h2 class="meta-info__subtitle">Directed by</h2><div class="meta-info__text">${film.director}</div>
 </div>
 <div class="film__releaseDate film__meta-info meta-info">
-  <div class="meta-info__label">Released at</div><div class="meta-info__text">${formatDate(film.releaseDate)}</div>
+  <h2 class="meta-info__subtitle">Released at</h2><div class="meta-info__text">${formatDate(film.releaseDate)}</div>
 </div>
 <div class="film__characters film__meta-info meta-info">
-  <div class="meta-info__label">Characters</div>
+  <h2 class="meta-info__subtitle">Characters</h2>
 </div>
 <div class="film__species film__meta-info meta-info">
-  <div class="meta-info__label">Species</div>
+  <h2 class="meta-info__subtitle">Species</h2>
 </div>
 <div class="film__starships film__meta-info meta-info">
-  <div class="meta-info__label">Starships</div>
+  <h2 class="meta-info__subtitle">Starships</h2>
 </div>
 <div class="film__vehicles film__meta-info meta-info">
-  <div class="meta-info__label">Vehicles</div>
+  <h2 class="meta-info__subtitle">Vehicles</h2>
 </div>
 <div class="film__planets film__meta-info meta-info">
-  <div class="meta-info__label">Planets</div>
+  <h2 class="meta-info__subtitle">Planets</h2>
 </div>
 `;
 
