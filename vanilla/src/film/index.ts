@@ -1,5 +1,4 @@
 import { getConnectedFilm } from '../entities/connected-film';
-import { getFilmById } from '../entities/film';
 import { subsrcibeToAuthChange } from '../firebase/auth';
 
 import { displayFilm } from './display-film';
