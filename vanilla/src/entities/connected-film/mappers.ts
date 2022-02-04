@@ -50,7 +50,8 @@ export function fromDto(dto: FilmDto, {
   };
 }
 
-/** Maps Connected film model to Film DTO.
+/**
+ * Maps Connected film model to Film DTO.
  * @param film Film model.
  */
 export function toDto(film: ConnectedFilm): FilmDto {

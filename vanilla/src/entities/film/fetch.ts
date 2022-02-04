@@ -24,7 +24,8 @@ export async function fetchFilmById(id: string): Promise<FilmDto> {
   return mapDocumentToDto(filmDoc);
 }
 
-/** Fetches first document.
+/**
+ * Fetches first document.
  *
  * Different queries need different cursor to work. For example ascending order require empty string,
  * but descending order require document (for the first fetch).

@@ -1,6 +1,7 @@
 import { Film, FilmDto } from './types';
 
-/** Maps Film DTO to Film model.
+/**
+ * Maps Film DTO to Film model.
  * @param dto Film DTO.
  */
 export function fromDto(dto: FilmDto): Film {
@@ -24,7 +25,8 @@ export function fromDto(dto: FilmDto): Film {
   };
 }
 
-/** Maps Film model to Film DTO.
+/**
+ * Maps Film model to Film DTO.
  * @param film Film model.
  */
 export function toDto(film: Film): FilmDto {
