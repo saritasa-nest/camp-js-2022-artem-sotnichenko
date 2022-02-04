@@ -7,6 +7,7 @@ export namespace PlanetMappers {
    */
   export function fromDto(dto: PlanetDto): Planet {
     return {
+      id: dto.id,
       climate: dto.fields.climate,
       diameter: dto.fields.diameter,
       gravity: dto.fields.gravity,

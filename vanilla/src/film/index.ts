@@ -16,10 +16,10 @@ subsrcibeToAuthChange(async user => {
     return;
   }
 
-  const film = await getFilmById(filmId);
-  displayFilm(film);
+  // const film = await getFilmById(filmId);
 
   const connectedFilm = await getConnectedFilm(filmId);
+  displayFilm(connectedFilm);
 
   console.log(connectedFilm);
 });

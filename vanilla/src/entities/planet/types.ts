@@ -53,6 +53,9 @@ export interface PlanetDto extends PlanetDocument, FirebaseWrapper {}
 /** Planet model. */
 export interface Planet {
 
+  /** Film id. */
+  readonly id: string;
+
   /** Climate descriptive word. */
   readonly climate: string;
 

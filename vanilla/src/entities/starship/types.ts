@@ -44,7 +44,7 @@ export interface Starship {
   readonly hyperdriveRating: number;
 
   /** Starhip class. */
-  readonly starshipClass: string;
+  readonly class: string;
 
   /** Starship id. */
   readonly id: string;

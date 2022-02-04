@@ -9,7 +9,7 @@ export namespace StarshipMappers {
     return {
       MGLT: dto.fields.MGLT,
       hyperdriveRating: parseFloat(dto.fields.hyperdrive_rating),
-      starshipClass: dto.fields.starship_class,
+      class: dto.fields.starship_class,
       id: dto.id,
       model: dto.model,
       pk: dto.pk,
@@ -24,7 +24,7 @@ export namespace StarshipMappers {
       fields: {
         MGLT: starship.MGLT,
         hyperdrive_rating: String(starship.hyperdriveRating),
-        starship_class: starship.starshipClass,
+        starship_class: starship.class,
       },
       id: starship.id,
       model: starship.model,

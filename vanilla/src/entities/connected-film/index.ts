@@ -6,13 +6,13 @@ import { fetchStarshipsByIds } from '../starship/fetch';
 import { fetchVehiclesByIds } from '../vehicle/fetch';
 
 import { fromDto } from './mappers';
-import { СonnectedFilm } from './types';
+import { ConnectedFilm } from './types';
 
 /**
  * Get film with all connections.
  * @param id Film id.
  */
-export async function getConnectedFilm(id: string): Promise<СonnectedFilm> {
+export async function getConnectedFilm(id: string): Promise<ConnectedFilm> {
   const filmDto = await fetchFilmById(id);
 
   const characterDtos = await fetchCharactersByIds(filmDto.fields.characters);

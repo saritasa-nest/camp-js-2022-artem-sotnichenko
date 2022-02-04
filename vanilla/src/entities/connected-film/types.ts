@@ -6,7 +6,7 @@ import { Starship } from '../starship/types';
 import { Vehicle } from '../vehicle/types';
 
 /** Film model. */
-export interface СonnectedFilm extends Omit<Film, 'characterIds' | 'specieIds' | 'starshipIds' | 'vehicleIds'> {
+export interface ConnectedFilm extends Omit<Film, 'characterIds' | 'specieIds' | 'starshipIds' | 'vehicleIds' | 'planetIds'> {
 
   /** Characters. */
   readonly characters: readonly Character[];

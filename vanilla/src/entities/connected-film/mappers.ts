@@ -10,7 +10,7 @@ import { StarshipDto } from '../starship/types';
 import { VehicleMappers } from '../vehicle/mappers';
 import { VehicleDto } from '../vehicle/types';
 
-import { СonnectedFilm } from './types';
+import { ConnectedFilm } from './types';
 
 /**
  * Maps FilmDto to ConnectedFilm model.
@@ -29,7 +29,7 @@ export function fromDto(dto: FilmDto, {
   starshipDtos: StarshipDto[];
   vehicleDtos: VehicleDto[];
   planetDtos: PlanetDto[];
-}): СonnectedFilm {
+}): ConnectedFilm {
   return {
     id: dto.id,
     characters: characterDtos.map(CharacterMappers.fromDto),
@@ -53,7 +53,7 @@ export function fromDto(dto: FilmDto, {
 /** Maps Film model to Film document.
  * @param film Film model.
  */
-export function toDto(film: СonnectedFilm): FilmDto {
+export function toDto(film: ConnectedFilm): FilmDto {
   return {
     fields: {
       characters: film.characters.map(character => character.id),
