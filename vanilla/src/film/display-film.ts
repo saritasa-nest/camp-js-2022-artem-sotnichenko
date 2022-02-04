@@ -44,108 +44,40 @@ function createFilmEl(film: ConnectedFilm): HTMLDivElement {
 </div>
 `;
 
-  node.querySelector('.film__characters')?.append(createCharactersEl(film.characters));
-  node.querySelector('.film__species')?.append(createSpeciesEl(film.species));
-  node.querySelector('.film__starships')?.append(createStarshipsEl(film.starships));
-  node.querySelector('.film__vehicles')?.append(createVehiclesEl(film.vehicles));
-  node.querySelector('.film__planets')?.append(createPlanetsEl(film.planets));
+  node.querySelector('.film__characters')?.append(createEntityListEl(film.characters, 'characters', 'name'));
+  node.querySelector('.film__species')?.append(createEntityListEl(film.species, 'species', 'name'));
+  node.querySelector('.film__starships')?.append(createEntityListEl(film.starships, 'starships', 'class'));
+  node.querySelector('.film__vehicles')?.append(createEntityListEl(film.vehicles, 'vehicles', 'class'));
+  node.querySelector('.film__planets')?.append(createEntityListEl(film.planets, 'planets', 'name'));
 
   return node;
 }
 
-/**
- * Create characters element.
- * @param characters Characters array.
- */
-function createCharactersEl(characters: readonly Character[]): HTMLDivElement {
-  const charactersEl = document.createElement('div');
-  charactersEl.classList.add('characters');
+interface Entity {
 
-  characters.forEach(character => {
-    const characterEl = document.createElement('div');
-    characterEl.classList.add('character');
-    characterEl.innerHTML = `<a href="/character/?id=${character.id}">${character.name}</a>`;
-
-    charactersEl.append(characterEl);
-  });
-
-  return charactersEl;
+  /** Entity id. */
+  id: string;
 }
 
 /**
- * Create species element.
- * @param species Species array.
+ * Create entitiy list element.
+ * @param entities Entity array.
+ * @param name Name of entity, used for class and url.
+ * @param textKey Key for value to use as link text.
  */
-function createSpeciesEl(species: readonly Specie[]): HTMLDivElement {
-  const speciesEl = document.createElement('div');
-  speciesEl.classList.add('species');
+function createEntityListEl<E extends Entity>(entities: readonly E[], name: string, textKey: keyof E): HTMLDivElement {
+  const entitiesEl = document.createElement('div');
+  entitiesEl.classList.add(`${name}-list`);
 
-  species.forEach(specie => {
-    const specieEl = document.createElement('div');
-    specieEl.classList.add('specie');
-    specieEl.innerHTML = `<a href="/specie/?id=${specie.id}">${specie.name}</a>`;
+  entities.forEach(entity => {
+    const entityEl = document.createElement('div');
+    entityEl.classList.add(name);
+    entityEl.innerHTML = `<a href="/${name}/?id=${entity.id}">${entity[textKey]}</a>`;
 
-    speciesEl.append(specieEl);
+    entitiesEl.append(entityEl);
   });
 
-  return speciesEl;
-}
-
-/**
- * Create starships element.
- * @param starships Starships array.
- */
-function createStarshipsEl(starships: readonly Starship[]): HTMLDivElement {
-  const starshipsEl = document.createElement('div');
-  starshipsEl.classList.add('starships');
-
-  starships.forEach(starship => {
-    const starshipEl = document.createElement('div');
-    starshipEl.classList.add('starship');
-    starshipEl.innerHTML = `<a href="/starship/?id=${starship.id}">${starship.class}</a>`;
-
-    starshipsEl.append(starshipEl);
-  });
-
-  return starshipsEl;
-}
-
-/**
- * Create vehicles element.
- * @param vehicles Vehicles array.
- */
-function createVehiclesEl(vehicles: readonly Vehicle[]): HTMLDivElement {
-  const vehiclesEl = document.createElement('div');
-  vehiclesEl.classList.add('vehicles');
-
-  vehicles.forEach(vehicle => {
-    const vehicleEl = document.createElement('div');
-    vehicleEl.classList.add('vehicle');
-    vehicleEl.innerHTML = `<a href="/vehicle/?id=${vehicle.id}">${vehicle.class}</a>`;
-
-    vehiclesEl.append(vehicleEl);
-  });
-
-  return vehiclesEl;
-}
-
-/**
- * Create planets element.
- * @param planets Planets array.
- */
-function createPlanetsEl(planets: readonly Planet[]): HTMLDivElement {
-  const planetsEl = document.createElement('div');
-  planetsEl.classList.add('planets');
-
-  planets.forEach(planet => {
-    const planetEl = document.createElement('div');
-    planetEl.classList.add('planet');
-    planetEl.innerHTML = `<a href="/planet/?id=${planet.id}">${planet.name}</a>`;
-
-    planetsEl.append(planetEl);
-  });
-
-  return planetsEl;
+  return entitiesEl;
 }
 
 /**
