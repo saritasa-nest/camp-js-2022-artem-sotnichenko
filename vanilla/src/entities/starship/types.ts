@@ -7,10 +7,10 @@ export interface StarshipDocument {
   readonly fields: {
 
     /**
-     * Speed or size in megalights.
+     * The Maximum number of Megalights this starship can travel in a standard hour.
      *
      * Megalight, standard unit of distance in space.
-     * */
+     */
     readonly MGLT: string;
 
     /** Hyperdrive rating, float. */
@@ -34,11 +34,11 @@ export interface StarshipDto extends StarshipDocument, FirebaseWrapper {}
 export interface Starship {
 
   /**
-   * Speed or size in megalights.
+   * Speed in megalights.
    *
    * Megalight, standard unit of distance in space.
    * */
-  readonly MGLT: string;
+  readonly speed: string;
 
   /** Hyperdrive rating, float. */
   readonly hyperdriveRating: number;

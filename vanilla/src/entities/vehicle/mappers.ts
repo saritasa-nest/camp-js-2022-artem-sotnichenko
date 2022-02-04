@@ -2,7 +2,8 @@ import { Vehicle, VehicleDto } from './types';
 
 export namespace VehicleMappers {
 
-  /** Maps Vehicle DTO to Vehicle model.
+  /**
+   * Maps Vehicle DTO to Vehicle model.
    * @param dto Vehicle DTO.
    */
   export function fromDto(dto: VehicleDto): Vehicle {
@@ -14,7 +15,8 @@ export namespace VehicleMappers {
     };
   }
 
-  /** Maps Vehicle model to Vehicle DTO.
+  /**
+   * Maps Vehicle model to Vehicle DTO.
    * @param vehicle Vehicle model.
    */
   export function toDto(vehicle: Vehicle): VehicleDto {

@@ -2,7 +2,8 @@ import { Character, CharacterDto } from './types';
 
 export namespace CharacterMappers {
 
-  /** Maps Character DTO to Character model.
+  /**
+   * Maps Character DTO to Character model.
    * @param dto Character DTO.
    */
   export function fromDto(dto: CharacterDto): Character {
@@ -24,7 +25,8 @@ export namespace CharacterMappers {
     };
   }
 
-  /** Maps Character model to Character DTO.
+  /**
+   * Maps Character model to Character DTO.
    * @param character Character model.
    */
   export function toDto(character: Character): CharacterDto {

@@ -2,7 +2,8 @@ import { Planet, PlanetDto } from './types';
 
 export namespace PlanetMappers {
 
-  /** Maps Planet DTO to Planet model.
+  /**
+   * Maps Planet DTO to Planet model.
    * @param dto Planet DTO.
    */
   export function fromDto(dto: PlanetDto): Planet {
@@ -24,7 +25,8 @@ export namespace PlanetMappers {
     };
   }
 
-  /** Maps Planet model to Planet DTO.
+  /**
+   * Maps Planet model to Planet DTO.
    * @param planet Planet model.
    */
   export function toDto(planet: Planet): PlanetDto {

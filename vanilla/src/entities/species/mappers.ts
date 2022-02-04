@@ -1,11 +1,12 @@
-import { Specie, SpecieDto } from './types';
+import { Species, SpeciesDto } from './types';
 
 export namespace SpecieMappers {
 
-  /** Maps Specie DTO to Specie model.
-   * @param dto Specie DTO.
+  /**
+   * Maps Species DTO to Species model.
+   * @param dto Species DTO.
    */
-  export function fromDto(dto: SpecieDto): Specie {
+  export function fromDto(dto: SpeciesDto): Species {
     return {
       id: dto.id,
       averageHeight: parseFloat(dto.fields.average_height),
@@ -24,10 +25,11 @@ export namespace SpecieMappers {
     };
   }
 
-  /** Maps Specie model to Specie DTO.
-   * @param specie Specie model.
+  /**
+   * Maps Species model to Species DTO.
+   * @param specie Species model.
    */
-  export function toDto(specie: Specie): SpecieDto {
+  export function toDto(specie: Species): SpeciesDto {
     return {
       fields: {
         average_height: String(specie.averageHeight),

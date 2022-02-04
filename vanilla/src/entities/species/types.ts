@@ -1,9 +1,9 @@
 import { FirebaseWrapper } from '../../firebase/types';
 
-/** Specie data that stored in firestore. */
-export interface SpecieDocument {
+/** Species data that stored in firestore. */
+export interface SpeciesDocument {
 
-  /** Specie fields. */
+  /** Species fields. */
   readonly fields: {
 
     /** Average height in cm. */
@@ -47,11 +47,11 @@ export interface SpecieDocument {
   readonly pk: number;
 }
 
-/** Specie DTO. */
-export interface SpecieDto extends SpecieDocument, FirebaseWrapper {}
+/** Species DTO. */
+export interface SpeciesDto extends SpeciesDocument, FirebaseWrapper {}
 
-/** Specie model. */
-export interface Specie {
+/** Species model. */
+export interface Species {
 
   /** Average height in cm. */
   readonly averageHeight: number;
@@ -80,7 +80,7 @@ export interface Specie {
   /** Name. */
   readonly name: string;
 
-  /** Specie id. */
+  /** Species id. */
   readonly id: string;
 
   /** Creation date "2014-12-20T17:30:50.416Z". */
