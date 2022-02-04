@@ -1,10 +1,5 @@
 import { formatDate } from '../utils/format-date';
-import { Character } from '../entities/character/types';
 import { ConnectedFilm } from '../entities/connected-film/types';
-import { Specie } from '../entities/specie/types';
-import { Starship } from '../entities/starship/types';
-import { Vehicle } from '../entities/vehicle/types';
-import { Planet } from '../entities/planet/types';
 
 /**
  * Create film element.
