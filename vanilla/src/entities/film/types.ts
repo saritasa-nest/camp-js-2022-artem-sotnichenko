@@ -60,7 +60,7 @@ export interface FilmDocument {
     readonly title: string;
   };
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */
@@ -115,7 +115,7 @@ export interface Film {
   /** Title. */
   readonly title: string;
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */

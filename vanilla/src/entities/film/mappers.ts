@@ -24,7 +24,7 @@ export function fromDto(dto: FilmDto): Film {
   };
 }
 
-/** Maps Film model to Film document.
+/** Maps Film model to Film DTO.
  * @param film Film model.
  */
 export function toDto(film: Film): FilmDto {

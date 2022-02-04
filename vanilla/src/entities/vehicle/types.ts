@@ -10,7 +10,7 @@ export interface VehicleDocument {
     readonly vehicle_class: string;
   };
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */
@@ -29,7 +29,7 @@ export interface Vehicle {
   /** Starship id. */
   readonly id: string;
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */

@@ -24,7 +24,7 @@ export namespace CharacterMappers {
     };
   }
 
-  /** Maps Character model to Character document.
+  /** Maps Character model to Character DTO.
    * @param character Character model.
    */
   export function toDto(character: Character): CharacterDto {

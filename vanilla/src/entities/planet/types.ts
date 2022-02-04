@@ -40,7 +40,7 @@ export interface PlanetDocument {
     readonly terrain: string;
   };
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */
@@ -62,7 +62,7 @@ export interface Planet {
   /** Diameter in units. */
   readonly diameter: string;
 
-  /** Gravity string. */
+  /** Gravity in string format. */
   readonly gravity: string;
 
   /** Name. */
@@ -89,7 +89,7 @@ export interface Planet {
   /** Edit date "2014-12-20T17:30:50.416Z". */
   readonly edited: Date;
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */

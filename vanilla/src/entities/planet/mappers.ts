@@ -24,7 +24,7 @@ export namespace PlanetMappers {
     };
   }
 
-  /** Maps Planet model to Planet document.
+  /** Maps Planet model to Planet DTO.
    * @param planet Planet model.
    */
   export function toDto(planet: Planet): PlanetDto {

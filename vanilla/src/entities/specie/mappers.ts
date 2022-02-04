@@ -24,7 +24,7 @@ export namespace SpecieMappers {
     };
   }
 
-  /** Maps Specie model to Specie document.
+  /** Maps Specie model to Specie DTO.
    * @param specie Specie model.
    */
   export function toDto(specie: Specie): SpecieDto {

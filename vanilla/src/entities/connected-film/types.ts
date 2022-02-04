@@ -5,7 +5,7 @@ import { Specie } from '../specie/types';
 import { Starship } from '../starship/types';
 import { Vehicle } from '../vehicle/types';
 
-/** Film model. */
+/** Connected film model. */
 export interface ConnectedFilm extends Omit<Film, 'characterIds' | 'specieIds' | 'starshipIds' | 'vehicleIds' | 'planetIds'> {
 
   /** Characters. */

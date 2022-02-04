@@ -16,7 +16,7 @@ export namespace StarshipMappers {
     };
   }
 
-  /** Maps Starship model to Starship document.
+  /** Maps Starship model to Starship DTO.
    * @param starship Starship model.
    */
   export function toDto(starship: Starship): StarshipDto {

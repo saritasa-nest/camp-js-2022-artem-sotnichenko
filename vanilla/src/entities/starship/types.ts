@@ -20,7 +20,7 @@ export interface StarshipDocument {
     readonly starship_class: string;
   };
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */
@@ -49,7 +49,7 @@ export interface Starship {
   /** Starship id. */
   readonly id: string;
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */

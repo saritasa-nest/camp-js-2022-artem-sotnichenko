@@ -14,7 +14,7 @@ export namespace VehicleMappers {
     };
   }
 
-  /** Maps Vehicle model to Vehicle document.
+  /** Maps Vehicle model to Vehicle DTO.
    * @param vehicle Vehicle model.
    */
   export function toDto(vehicle: Vehicle): VehicleDto {

@@ -40,7 +40,7 @@ export interface SpecieDocument {
     readonly name: string;
   };
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */
@@ -89,7 +89,7 @@ export interface Specie {
   /** Edit date "2014-12-20T17:30:50.416Z". */
   readonly edited: Date;
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */

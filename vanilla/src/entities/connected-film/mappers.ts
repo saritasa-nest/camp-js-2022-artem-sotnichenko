@@ -15,7 +15,7 @@ import { ConnectedFilm } from './types';
 /**
  * Maps FilmDto to ConnectedFilm model.
  * @param dto Film DTO.
- * @param characterDtos Character DTOs.
+ * @param entitiesDtos Entities DTOs that need to be merged.
  */
 export function fromDto(dto: FilmDto, {
   characterDtos,
@@ -50,7 +50,7 @@ export function fromDto(dto: FilmDto, {
   };
 }
 
-/** Maps Film model to Film document.
+/** Maps Connected film model to Film DTO.
  * @param film Film model.
  */
 export function toDto(film: ConnectedFilm): FilmDto {
