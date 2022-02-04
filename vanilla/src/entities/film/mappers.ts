@@ -7,7 +7,7 @@ export function fromDto(dto: FilmDto): Film {
   return {
     id: dto.id,
     characterIds: dto.fields.characters,
-    specieIds: dto.fields.species,
+    speciesIds: dto.fields.species,
     starshipIds: dto.fields.starships,
     vehicleIds: dto.fields.vehicles,
     planetIds: dto.fields.planets,
@@ -31,7 +31,7 @@ export function toDto(film: Film): FilmDto {
   return {
     fields: {
       characters: film.characterIds,
-      species: film.specieIds,
+      species: film.speciesIds,
       starships: film.starshipIds,
       vehicles: film.vehicleIds,
       planets: film.planetIds,

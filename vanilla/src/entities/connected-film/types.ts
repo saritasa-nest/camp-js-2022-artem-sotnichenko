@@ -1,18 +1,18 @@
 import { Character } from '../character/types';
 import { Film } from '../film/types';
 import { Planet } from '../planet/types';
-import { Specie } from '../specie/types';
+import { Species } from '../species/types';
 import { Starship } from '../starship/types';
 import { Vehicle } from '../vehicle/types';
 
 /** Connected film model. */
-export interface ConnectedFilm extends Omit<Film, 'characterIds' | 'specieIds' | 'starshipIds' | 'vehicleIds' | 'planetIds'> {
+export interface ConnectedFilm extends Omit<Film, 'characterIds' | 'speciesIds' | 'starshipIds' | 'vehicleIds' | 'planetIds'> {
 
   /** Characters. */
   readonly characters: readonly Character[];
 
   /** Species. */
-  readonly species: readonly Specie[];
+  readonly species: readonly Species[];
 
   /** Starship ids. */
   readonly starships: readonly Starship[];

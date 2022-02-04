@@ -3,8 +3,8 @@ import { CharacterDto } from '../character/types';
 import { FilmDto } from '../film/types';
 import { PlanetMappers } from '../planet/mappers';
 import { PlanetDto } from '../planet/types';
-import { SpecieMappers } from '../specie/mappers';
-import { SpecieDto } from '../specie/types';
+import { SpeciesMappers } from '../species/mappers';
+import { SpeciesDto } from '../species/types';
 import { StarshipMappers } from '../starship/mappers';
 import { StarshipDto } from '../starship/types';
 import { VehicleMappers } from '../vehicle/mappers';
@@ -19,13 +19,13 @@ import { ConnectedFilm } from './types';
  */
 export function fromDto(dto: FilmDto, {
   characterDtos,
-  specieDtos,
+  speciesDtos,
   starshipDtos,
   vehicleDtos,
   planetDtos,
 }: {
   characterDtos: CharacterDto[];
-  specieDtos: SpecieDto[];
+  speciesDtos: SpeciesDto[];
   starshipDtos: StarshipDto[];
   vehicleDtos: VehicleDto[];
   planetDtos: PlanetDto[];
@@ -33,7 +33,7 @@ export function fromDto(dto: FilmDto, {
   return {
     id: dto.id,
     characters: characterDtos.map(CharacterMappers.fromDto),
-    species: specieDtos.map(SpecieMappers.fromDto),
+    species: speciesDtos.map(SpeciesMappers.fromDto),
     starships: starshipDtos.map(StarshipMappers.fromDto),
     vehicles: vehicleDtos.map(VehicleMappers.fromDto),
     planets: planetDtos.map(PlanetMappers.fromDto),
@@ -57,7 +57,7 @@ export function toDto(film: ConnectedFilm): FilmDto {
   return {
     fields: {
       characters: film.characters.map(character => character.id),
-      species: film.species.map(specie => specie.id),
+      species: film.species.map(species => species.id),
       starships: film.starships.map(starship => starship.id),
       vehicles: film.vehicles.map(vehicle => vehicle.id),
       planets: film.planets.map(planet => planet.id),

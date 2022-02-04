@@ -23,7 +23,7 @@ export interface FilmDocument {
     /** Character ids. */
     readonly characters: readonly string[];
 
-    /** Specie ids. */
+    /** Species ids. */
     readonly species: readonly string[];
 
     /** Starship ids. */
@@ -79,8 +79,8 @@ export interface Film {
   /** Character ids. */
   readonly characterIds: readonly string[];
 
-  /** Specie ids. */
-  readonly specieIds: readonly string[];
+  /** Species ids. */
+  readonly speciesIds: readonly string[];
 
   /** Starship ids. */
   readonly starshipIds: readonly string[];

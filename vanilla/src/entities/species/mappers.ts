@@ -1,6 +1,6 @@
 import { Species, SpeciesDto } from './types';
 
-export namespace SpecieMappers {
+export namespace SpeciesMappers {
 
   /**
    * Maps Species DTO to Species model.
@@ -27,26 +27,26 @@ export namespace SpecieMappers {
 
   /**
    * Maps Species model to Species DTO.
-   * @param specie Species model.
+   * @param species Species model.
    */
-  export function toDto(specie: Species): SpeciesDto {
+  export function toDto(species: Species): SpeciesDto {
     return {
       fields: {
-        average_height: String(specie.averageHeight),
-        average_lifespan: specie.averageLifespan,
-        classification: specie.classification,
-        designation: specie.designation,
-        eye_colors: specie.eyeColors.join(','),
-        hair_colors: specie.hairColors.join(','),
-        homeworld: specie.homeworld,
-        language: specie.language,
-        name: specie.name,
-        created: specie.created.toISOString(),
-        edited: specie.edited.toISOString(),
+        average_height: String(species.averageHeight),
+        average_lifespan: species.averageLifespan,
+        classification: species.classification,
+        designation: species.designation,
+        eye_colors: species.eyeColors.join(','),
+        hair_colors: species.hairColors.join(','),
+        homeworld: species.homeworld,
+        language: species.language,
+        name: species.name,
+        created: species.created.toISOString(),
+        edited: species.edited.toISOString(),
       },
-      id: specie.id,
-      model: specie.model,
-      pk: specie.pk,
+      id: species.id,
+      model: species.model,
+      pk: species.pk,
     };
   }
 }
