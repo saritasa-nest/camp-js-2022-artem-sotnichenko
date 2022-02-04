@@ -80,8 +80,7 @@ export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Prom
   );
 
   const querySnapshot = await getDocs<FilmDocument>(filmQuery);
-  const films = querySnapshot.docs.map(mapDocumentToDto);
-  return films;
+  return querySnapshot.docs.map(mapDocumentToDto);
 }
 
 /** Options for function "fetchFilmsBeforeId". */
