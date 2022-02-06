@@ -16,11 +16,19 @@ import { ConnectedFilm } from './types';
 export async function getConnectedFilm(id: string): Promise<ConnectedFilm> {
   const filmDto = await fetchFilmById(id);
 
-  const characterDtos = await fetchDocsByIds<CharacterDocument>('characters', filmDto.fields.characters);
-  const speciesDtos = await fetchDocsByIds<SpeciesDocument>('species', filmDto.fields.species);
-  const starshipDtos = await fetchDocsByIds<StarshipDocument>('starships', filmDto.fields.starships);
-  const vehicleDtos = await fetchDocsByIds<VehicleDocument>('vehicles', filmDto.fields.vehicles);
-  const planetDtos = await fetchDocsByIds<PlanetDocument>('planets', filmDto.fields.planets);
+  const [
+    characterDtos,
+    speciesDtos,
+    starshipDtos,
+    vehicleDtos,
+    planetDtos,
+  ] = await Promise.all([
+    fetchDocsByIds<CharacterDocument>('characters', filmDto.fields.characters),
+    fetchDocsByIds<SpeciesDocument>('species', filmDto.fields.species),
+    fetchDocsByIds<StarshipDocument>('starships', filmDto.fields.starships),
+    fetchDocsByIds<VehicleDocument>('vehicles', filmDto.fields.vehicles),
+    fetchDocsByIds<PlanetDocument>('planets', filmDto.fields.planets),
+  ]);
 
   return fromDto(filmDto, { characterDtos, speciesDtos, starshipDtos, vehicleDtos, planetDtos });
 }
