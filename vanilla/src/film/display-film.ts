@@ -5,11 +5,11 @@ import { ConnectedFilm } from '../entities/connected-film/types';
  * Create film element.
  * @param film Film data.
  */
-function createFilmEl(film: ConnectedFilm): HTMLDivElement {
-  const node = document.createElement('div');
-  node.classList.add('film');
-  node.innerHTML = `
-<h1 class="film__title">${film.title}</h1>
+function createFilmInfoEl(film: ConnectedFilm): HTMLDivElement {
+  const infoEl = document.createElement('div');
+
+  infoEl.classList.add('film__info');
+  infoEl.innerHTML = `
 <div class="film__producer film__meta-info meta-info">
   <h2 class="meta-info__subtitle">Opening crawl</h2><div class="meta-info__text">${film.openingCrawl}</div>
 </div>
@@ -39,13 +39,13 @@ function createFilmEl(film: ConnectedFilm): HTMLDivElement {
 </div>
 `;
 
-  node.querySelector('.film__characters')?.append(createEntityListEl(film.characters, 'characters', 'name'));
-  node.querySelector('.film__species')?.append(createEntityListEl(film.species, 'species', 'name'));
-  node.querySelector('.film__starships')?.append(createEntityListEl(film.starships, 'starships', 'class'));
-  node.querySelector('.film__vehicles')?.append(createEntityListEl(film.vehicles, 'vehicles', 'class'));
-  node.querySelector('.film__planets')?.append(createEntityListEl(film.planets, 'planets', 'name'));
+  infoEl.querySelector('.film__characters')?.append(createEntityListEl(film.characters, 'characters', 'name'));
+  infoEl.querySelector('.film__species')?.append(createEntityListEl(film.species, 'species', 'name'));
+  infoEl.querySelector('.film__starships')?.append(createEntityListEl(film.starships, 'starships', 'class'));
+  infoEl.querySelector('.film__vehicles')?.append(createEntityListEl(film.vehicles, 'vehicles', 'class'));
+  infoEl.querySelector('.film__planets')?.append(createEntityListEl(film.planets, 'planets', 'name'));
 
-  return node;
+  return infoEl;
 }
 
 interface Entity {
@@ -80,13 +80,13 @@ function createEntityListEl<E extends Entity>(entities: readonly E[], name: stri
  * @param film Film.
  */
 export function displayFilm(film: ConnectedFilm): void {
-  const filmPageEl = document.querySelector<HTMLElement>('.film-page');
+  const filmEl = document.querySelector<HTMLElement>('.film');
+  const titleEl = document.querySelector<HTMLElement>('.film__title');
 
-  if (filmPageEl === null) {
+  if (filmEl === null || titleEl === null) {
     return;
   }
 
-  filmPageEl.innerHTML = '';
-
-  filmPageEl.appendChild(createFilmEl(film));
+  titleEl.textContent = film.title;
+  filmEl.appendChild(createFilmInfoEl(film));
 }
