@@ -1,15 +1,17 @@
 import { Film, FilmDto } from './types';
 
-/** Maps Film DTO to Film model.
+/**
+ * Maps Film DTO to Film model.
  * @param dto Film DTO.
  */
 export function fromDto(dto: FilmDto): Film {
   return {
     id: dto.id,
     characterIds: dto.fields.characters,
-    specieIds: dto.fields.species,
+    speciesIds: dto.fields.species,
     starshipIds: dto.fields.starships,
     vehicleIds: dto.fields.vehicles,
+    planetIds: dto.fields.planets,
     created: new Date(dto.fields.created),
     director: dto.fields.director,
     edited: new Date(dto.fields.edited),
@@ -23,16 +25,18 @@ export function fromDto(dto: FilmDto): Film {
   };
 }
 
-/** Maps Film model to Film document.
+/**
+ * Maps Film model to Film DTO.
  * @param film Film model.
  */
 export function toDto(film: Film): FilmDto {
   return {
     fields: {
       characters: film.characterIds,
-      species: film.specieIds,
+      species: film.speciesIds,
       starships: film.starshipIds,
       vehicles: film.vehicleIds,
+      planets: film.planetIds,
       created: film.created.toISOString(),
       director: film.director,
       edited: film.edited.toISOString(),

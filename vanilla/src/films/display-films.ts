@@ -1,12 +1,5 @@
 import { Film } from '../entities/film/types';
-
-/**
- * Format date to "Month Day, Year" format.
- * @param date Date object to format.
- */
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' });
-}
+import { formatDate } from '../utils/format-date';
 
 /**
  * Create film element.
@@ -16,7 +9,9 @@ function createFilmEl(film: Film): HTMLDivElement {
   const node = document.createElement('div');
   node.classList.add('film');
   node.innerHTML = `
-<h2 class="film__title">${film.title}</h2>
+<h2 class="film__title">
+  <a href="/film/?id=${film.id}">${film.title}</a>
+</h2>
 <div class="film__producer film__meta-info meta-info">
   <div class="meta-info__label">produced by</div><div class="meta-info__text">${film.producer}</div>
 </div>

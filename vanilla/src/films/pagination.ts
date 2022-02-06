@@ -75,8 +75,8 @@ export async function loadNextPage(): Promise<void> {
     firstId: films[0].id,
   });
 
-  await displayFilms(films);
-  await updatePaginationButtons();
+  displayFilms(films);
+  updatePaginationButtons();
 }
 
 /** Load previous page of films. */
@@ -113,8 +113,8 @@ export async function loadPrevPage(): Promise<void> {
     firstId: films[0].id,
   });
 
-  await displayFilms(films);
-  await updatePaginationButtons();
+  displayFilms(films);
+  updatePaginationButtons();
 }
 
 /** Update pagination buttons. */

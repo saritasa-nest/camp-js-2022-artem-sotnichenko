@@ -23,7 +23,7 @@ formEl.addEventListener('submit', async e => {
   clearFormErrorText(errorEl);
   try {
     await signUp(email, password);
-    window.location.href = '/auth/login/';
+    window.location.href = '/';
   } catch (err: unknown) {
     setFormErrorText(errorEl, (err as Error).message);
   }

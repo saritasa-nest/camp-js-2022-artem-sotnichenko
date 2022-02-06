@@ -23,7 +23,7 @@ export interface FilmDocument {
     /** Character ids. */
     readonly characters: readonly string[];
 
-    /** Specie ids. */
+    /** Species ids. */
     readonly species: readonly string[];
 
     /** Starship ids. */
@@ -31,6 +31,9 @@ export interface FilmDocument {
 
     /** Vehicle ids. */
     readonly vehicles: readonly string[];
+
+    /** Planet ids. */
+    readonly planets: readonly string[];
 
     /** Create time (2014-12-10T14:23:31.880Z). */
     readonly created: string;
@@ -57,7 +60,7 @@ export interface FilmDocument {
     readonly title: string;
   };
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */
@@ -76,14 +79,17 @@ export interface Film {
   /** Character ids. */
   readonly characterIds: readonly string[];
 
-  /** Specie ids. */
-  readonly specieIds: readonly string[];
+  /** Species ids. */
+  readonly speciesIds: readonly string[];
 
   /** Starship ids. */
   readonly starshipIds: readonly string[];
 
   /** Vehicle ids. */
   readonly vehicleIds: readonly string[];
+
+  /** Planet ids. */
+  readonly planetIds: readonly string[];
 
   /** Create time (2014-12-10T14:23:31.880Z). */
   readonly created: Date;
@@ -109,7 +115,7 @@ export interface Film {
   /** Title. */
   readonly title: string;
 
-  /** Model. */
+  /** Model, collection name. */
   readonly model: string;
 
   /** Primary key. */

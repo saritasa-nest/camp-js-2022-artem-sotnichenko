@@ -27,6 +27,7 @@
   --size-content-sm: var(--size-content-1);
   --size-content-md: var(--size-content-2);
   --size-content-lg: var(--size-content-3);
+  --size-content-xl: 900px;
 
   --border-radius-xs: var(--size-1);
 

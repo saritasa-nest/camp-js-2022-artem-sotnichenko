@@ -1,6 +1,15 @@
-import { fetchFilmsAfterId, FetchFilmsAfterIdOptions, fetchFilmsBeforeId, FetchFilmsBeforeIdOptions } from './fetch';
+import { fetchFilmById, fetchFilmsAfterId, FetchFilmsAfterIdOptions, fetchFilmsBeforeId, FetchFilmsBeforeIdOptions } from './fetch';
 import { fromDto } from './mappers';
 import { Film } from './types';
+
+/**
+ * Get film model by id.
+ * @param id Film id.
+ */
+export async function getFilmById(id: string): Promise<Film> {
+  const film = await fetchFilmById(id);
+  return fromDto(film);
+}
 
 /**
  * Get film models before film by id.

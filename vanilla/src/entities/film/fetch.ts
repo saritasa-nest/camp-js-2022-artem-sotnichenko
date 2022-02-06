@@ -8,26 +8,24 @@ import {
   limitToLast,
   orderBy,
   query,
-  QueryDocumentSnapshot,
   startAfter,
 } from 'firebase/firestore';
 
-import { createCollection } from '../../firebase/utils';
+import { createCollection, mapDocumentToDto } from '../../firebase/utils';
 
 import { FilmDto, FilmDocument, SortField, SortType } from './types';
 
 /**
- * Map film document to film dto.
- * @param filmDoc Film document.
+ * Fetch film by id.
+ * @param id Film id.
  */
-function mapDocumentToDto(filmDoc: QueryDocumentSnapshot<FilmDocument>): FilmDto {
-  return {
-    ...filmDoc.data(),
-    id: filmDoc.id,
-  };
+export async function fetchFilmById(id: string): Promise<FilmDto> {
+  const filmDoc = await getDoc(doc(createCollection<FilmDocument>('films'), id));
+  return mapDocumentToDto(filmDoc);
 }
 
-/** Fetches first document.
+/**
+ * Fetches first document.
  *
  * Different queries need different cursor to work. For example ascending order require empty string,
  * but descending order require document (for the first fetch).
@@ -83,8 +81,7 @@ export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Prom
   );
 
   const querySnapshot = await getDocs<FilmDocument>(filmQuery);
-  const films = querySnapshot.docs.map(mapDocumentToDto);
-  return films;
+  return querySnapshot.docs.map(mapDocumentToDto);
 }
 
 /** Options for function "fetchFilmsBeforeId". */
