@@ -29,27 +29,27 @@ interface SelectLists {
  * @param selectLists Lists from wich selects are filled.
  */
 export function fillForm(connectedFilm: ConnectedFilm, selectLists: SelectLists): void {
-  const titleEl = document.querySelector<HTMLInputElement>('.input-title');
-  const сrawlEl = document.querySelector<HTMLInputElement>('.input-opening-crawl');
-  const producedEl = document.querySelector<HTMLInputElement>('.input-produced');
-  const directedEl = document.querySelector<HTMLInputElement>('.input-directed');
-  const releasedEl = document.querySelector<HTMLInputElement>('.input-released');
+  const titleElement = document.querySelector<HTMLInputElement>('.input-title');
+  const сrawlElement = document.querySelector<HTMLInputElement>('.input-opening-crawl');
+  const producedElement = document.querySelector<HTMLInputElement>('.input-produced');
+  const directedElement = document.querySelector<HTMLInputElement>('.input-directed');
+  const releasedElement = document.querySelector<HTMLInputElement>('.input-released');
 
   if (
-    titleEl === null ||
-    сrawlEl === null ||
-    producedEl === null ||
-    directedEl === null ||
-    releasedEl === null
+    titleElement === null ||
+    сrawlElement === null ||
+    producedElement === null ||
+    directedElement === null ||
+    releasedElement === null
   ) {
     return;
   }
 
-  titleEl.value = connectedFilm.title;
-  сrawlEl.value = connectedFilm.openingCrawl;
-  producedEl.value = connectedFilm.producer;
-  directedEl.value = connectedFilm.director;
-  releasedEl.value = connectedFilm.releaseDate.toISOString().slice(0, 10);
+  titleElement.value = connectedFilm.title;
+  сrawlElement.value = connectedFilm.openingCrawl;
+  producedElement.value = connectedFilm.producer;
+  directedElement.value = connectedFilm.director;
+  releasedElement.value = connectedFilm.releaseDate.toISOString().slice(0, 10);
 
   const entries = Object.entries(selectLists) as [keyof SelectLists, SelectLists[keyof SelectLists]][];
   for (const [collectionName, list] of entries) {

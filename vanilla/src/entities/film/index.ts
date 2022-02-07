@@ -1,5 +1,12 @@
-import { fetchFilmById, fetchFilmsAfterId, FetchFilmsAfterIdOptions, fetchFilmsBeforeId, FetchFilmsBeforeIdOptions } from './fetch';
-import { fromDto } from './mappers';
+import {
+  fetchFilmById,
+  fetchFilmsAfterId,
+  FetchFilmsAfterIdOptions,
+  fetchFilmsBeforeId,
+  FetchFilmsBeforeIdOptions,
+  createFilm as createFilmInBd,
+} from './fetch';
+import { fromDto, toDto } from './mappers';
 import { Film } from './types';
 
 /**
@@ -27,4 +34,13 @@ export async function getFilmsAfterId(options: FetchFilmsAfterIdOptions): Promis
 export async function getFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Promise<Film[]> {
   const films = await fetchFilmsBeforeId(options);
   return films.map(fromDto);
+}
+
+/**
+ * Create film.
+ * @param film Film model.
+ * @returns Id of created film.
+ */
+export async function createFilm(film: Film): Promise<string> {
+  return createFilmInBd(toDto(film));
 }
