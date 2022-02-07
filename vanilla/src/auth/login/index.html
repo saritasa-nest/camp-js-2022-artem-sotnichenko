@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="stylesheet" href="../auth.css" />
+    <title>log in</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../../base.css" />
-  <link rel="stylesheet" href="../auth.css" />
-  <title>log in</title>
-</head>
+  <body>
+    <form class="auth-form">
+      <h1>log in</h1>
+      <div class="auth-form__error"></div>
+      <div class="auth-form__field">
+        <label for="email">email: </label>
+        <input class="auth-form__email" id="email" type="email" required />
+      </div>
+      <div class="auth-form__field">
+        <label for="password">password: </label>
+        <input
+          class="auth-form__password"
+          id="password"
+          type="password"
+          minlength="6"
+          required
+        />
+      </div>
+      <button class="auth-form__button" type="submit">log in</button>
+      <div class="auth-form__alt">
+        If you don't have an account, <a href="../register/">sign up</a>
+      </div>
+    </form>
 
-<body>
-  <form class="auth-form">
-    <h1>log in</h1>
-    <div class="auth-form__error"></div>
-    <div class="auth-form__field">
-      <label for="email">email: </label>
-      <input class="auth-form__email" id="email" type="email" required />
-    </div>
-    <div class="auth-form__field">
-      <label for="password">password: </label>
-      <input class="auth-form__password" id="password" type="password" minlength="6" required />
-    </div>
-    <button class="auth-form__button" type="submit">log in</button>
-    <div class="auth-form__alt">
-      If you don't have an account, <a href="../register/">sign up</a>
-    </div>
-  </form>
-
-  <script type="module" src="./index.ts"></script>
-</body>
-
+    <script type="module" src="./index.ts"></script>
+  </body>
 </html>

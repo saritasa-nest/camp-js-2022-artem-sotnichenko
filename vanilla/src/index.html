@@ -8,32 +8,42 @@
     <title>films</title>
   </head>
   <body>
-    <main class='films'>
+    <main class="films">
       <h1>films</h1>
-      <div class='films__controls'>
-        <div class='films__sort films__sort--field sort'>
-          <label class='sort__label' for='sort-field'>sort field</label>
-          <select class='sort__select' name='sort-field' id='sort-field'>
-            <option value='fields.title'>title</option>
-            <option value='fields.producer'>producer</option>
-            <option value='fields.director'>director</option>
-            <option value='fields.release_date'>release date</option>
+      <div class="films__controls">
+        <div class="films__sort films__sort--field sort">
+          <label class="sort__label" for="sort-field">sort field</label>
+          <select class="sort__select" name="sort-field" id="sort-field">
+            <option value="fields.title">title</option>
+            <option value="fields.producer">producer</option>
+            <option value="fields.director">director</option>
+            <option value="fields.release_date">release date</option>
           </select>
         </div>
-        <div class='films__sort films__sort--type sort'>
-          <label class='sort__label' for='sort-type'>sort type</label>
-          <select class='sort__select' name='sort-type' id='sort-type'>
-            <option value='ascending'>ascending</option>
-            <option value='descending'>descending</option>
+        <div class="films__sort films__sort--type sort">
+          <label class="sort__label" for="sort-type">sort type</label>
+          <select class="sort__select" name="sort-type" id="sort-type">
+            <option value="ascending">ascending</option>
+            <option value="descending">descending</option>
           </select>
         </div>
-        <div class='films__pagination pagination'>
-          <button class='is-secondary pagination__prev pagination__button' type="button">prev</button>
-          <div class='pagination__pages'></div>
-          <button class='is-secondary pagination__next pagination__button' type="button">next</button>
+        <div class="films__pagination pagination">
+          <button
+            class="is-secondary pagination__prev pagination__button"
+            type="button"
+          >
+            prev
+          </button>
+          <div class="pagination__pages"></div>
+          <button
+            class="is-secondary pagination__next pagination__button"
+            type="button"
+          >
+            next
+          </button>
         </div>
       </div>
-      <div class='films__list'></div>
+      <div class="films__list"></div>
     </main>
     <script type="module" src="./index.ts"></script>
   </body>
