@@ -11,7 +11,7 @@ interface ModalOptions {
 }
 
 /**
- *
+ * Show modal.
  * @param opts Modal options.
  * @returns Close modal callback.
  */
@@ -38,13 +38,14 @@ export function showModal({
 
   modalEl.addEventListener('click', () => closeModal(modalEl));
 
-  modalEl.querySelector('.modal__decline')?.addEventListener('click', e => {
+  modalEl.querySelector('.modal__decline')?.addEventListener('click', () => {
     if (onDecline) {
       onDecline();
     }
     closeModal(modalEl);
   });
-  modalEl.querySelector('.modal__confirm')?.addEventListener('click', e => {
+
+  modalEl.querySelector('.modal__confirm')?.addEventListener('click', () => {
     if (onConfirm) {
       onConfirm();
     }

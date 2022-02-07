@@ -125,7 +125,7 @@ button.is-secondary:hover {
 
 input:disabled,
 select:disabled,
-button.is-secondary:disabled {
+button:disabled {
   background-color: var(--input-color-bg);
   border-color:var(--input-color-bg);
   color: var(--color-text-dim);

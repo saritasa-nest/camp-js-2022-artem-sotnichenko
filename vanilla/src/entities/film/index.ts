@@ -1,5 +1,3 @@
-import { deleteDoc } from 'firebase/firestore';
-
 import { fetchFilmById, fetchFilmsAfterId, FetchFilmsAfterIdOptions, fetchFilmsBeforeId, FetchFilmsBeforeIdOptions } from './fetch';
 import { fromDto } from './mappers';
 import { Film } from './types';
