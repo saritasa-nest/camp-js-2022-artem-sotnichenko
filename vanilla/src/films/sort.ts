@@ -68,12 +68,35 @@ async function onSortChange(): Promise<void> {
   updatePaginationButtons();
 }
 
+/**
+ * Setup sort field.
+ * @param sortFieldEl Sort field element.
+ */
+function setupSortField(sortFieldEl: HTMLSelectElement): void {
+  sortFieldEl.innerHTML = Object.entries(SortField)
+    .map(([name, value]) => `<option value="${value}">${name}</option>`)
+    .reduce((acc, cur) => `${acc}\n${cur}`);
+}
+
+/**
+ * Setup sort type.
+ * @param sortTypeEl Sort type element.
+ */
+function setupSortType(sortTypeEl: HTMLSelectElement): void {
+  sortTypeEl.innerHTML = Object.entries(SortType)
+    .map(([name, value]) => `<option value="${value}">${name}</option>`)
+    .reduce((acc, cur) => `${acc}\n${cur}`);
+}
+
 /** Sets up sorting, add listeners on sort elements. */
 export function setupSorting(): void {
   const {
     sortFieldEl,
     sortTypeEl,
   } = getSortElements();
+
+  setupSortField(sortFieldEl);
+  setupSortType(sortTypeEl);
 
   sortFieldEl.addEventListener('change', onSortChange);
   sortTypeEl.addEventListener('change', onSortChange);
