@@ -70,7 +70,8 @@ html {
   color: var(--color-text);
 }
 
-input {
+input,
+textarea {
   border: var(--input-border);
   padding: var(--input-padding);
   border-radius: var(--input-border-radius);
@@ -118,12 +119,14 @@ select {
 
 
 input:hover,
+textarea:hover,
 select:hover,
 button.is-secondary:hover {
   background-color: var(--input-color-bg-hover);
 }
 
 input:disabled,
+textarea:disabled,
 select:disabled,
 button:disabled {
   background-color: var(--input-color-bg);
