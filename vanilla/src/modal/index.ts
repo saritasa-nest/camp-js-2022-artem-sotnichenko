@@ -39,11 +39,15 @@ export function showModal({
   modalEl.addEventListener('click', () => closeModal(modalEl));
 
   modalEl.querySelector('.modal__decline')?.addEventListener('click', e => {
-    onDecline();
+    if (onDecline) {
+      onDecline();
+    }
     closeModal(modalEl);
   });
   modalEl.querySelector('.modal__confirm')?.addEventListener('click', e => {
-    onConfirm();
+    if (onConfirm) {
+      onConfirm();
+    }
     closeModal(modalEl);
   });
 
@@ -57,6 +61,5 @@ export function showModal({
  * @param modalEl Modal element.
  */
 function closeModal(modalEl: HTMLElement): void {
-  console.log('close');
   modalEl.remove();
 }

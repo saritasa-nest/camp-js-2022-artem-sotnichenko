@@ -1,4 +1,5 @@
 import {
+  deleteDoc,
   doc,
   DocumentSnapshot,
   endBefore,
@@ -110,4 +111,12 @@ export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Pr
 
   const querySnapshot = await getDocs<FilmDocument>(filmQuery);
   return querySnapshot.docs.map(mapDocumentToDto);
+}
+
+/**
+ * Delete film by id.
+ * @param id Film id.
+ */
+export function deleteFilm(id: string): Promise<void> {
+  return deleteDoc(doc(createCollection<FilmDocument>('films'), id));
 }

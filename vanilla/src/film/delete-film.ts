@@ -1,3 +1,4 @@
+import { deleteFilm as deleteFilmFromDb } from '../entities/film/fetch';
 import { showModal } from '../modal';
 
 /**
@@ -7,8 +8,9 @@ import { showModal } from '../modal';
 export function deleteFilm(filmId: string): void {
   showModal({
     title: 'Are you sure?',
-    onConfirm() {
-      console.log('yes');
+    async onConfirm() {
+      await deleteFilmFromDb(filmId);
+      window.location.href = '/';
     },
   });
 }
