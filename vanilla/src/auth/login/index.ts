@@ -4,27 +4,27 @@ import { clearFormErrorText, getFormElements, setFormErrorText } from '../auth';
 import { FORM_ERROR_EMPTY_FIELDS } from './../../utils/constants';
 
 const {
-  formEl,
-  errorEl,
-  emailEl,
-  passwordEl,
+  formElement,
+  errorElement,
+  emailElement,
+  passwordElement,
 } = getFormElements();
 
-formEl.addEventListener('submit', async e => {
+formElement.addEventListener('submit', async e => {
   e.preventDefault();
 
-  const email = emailEl.value;
-  const password = passwordEl.value;
+  const email = emailElement.value;
+  const password = passwordElement.value;
 
   if (email === '' || password === '') {
-    return setFormErrorText(errorEl, FORM_ERROR_EMPTY_FIELDS);
+    return setFormErrorText(errorElement, FORM_ERROR_EMPTY_FIELDS);
   }
 
-  clearFormErrorText(errorEl);
+  clearFormErrorText(errorElement);
   try {
     await signIn(email, password);
     window.location.href = '/';
   } catch (err: unknown) {
-    setFormErrorText(errorEl, (err as Error).message);
+    setFormErrorText(errorElement, (err as Error).message);
   }
 });

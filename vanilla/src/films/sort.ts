@@ -7,47 +7,47 @@ import { changeStore } from './store';
 interface SortElements {
 
   /** Sort field, for example: title, producer. */
-  readonly sortFieldEl: HTMLSelectElement;
+  readonly sortFieldElement: HTMLSelectElement;
 
   /** Sort type (ascending, descending). */
-  readonly sortTypeEl: HTMLSelectElement;
+  readonly sortTypeElement: HTMLSelectElement;
 }
 
 /** Returns select elements that involved in sorting. */
 function getSortElements(): SortElements {
-  const sortFieldEl = document.querySelector<HTMLSelectElement>('.films__sort--field .sort__select');
-  const sortTypeEl = document.querySelector<HTMLSelectElement>('.films__sort--type .sort__select');
+  const sortFieldElement = document.querySelector<HTMLSelectElement>('.films__sort--field .sort__select');
+  const sortTypeElement = document.querySelector<HTMLSelectElement>('.films__sort--type .sort__select');
 
-  if (sortFieldEl === null || sortTypeEl === null) {
+  if (sortFieldElement === null || sortTypeElement === null) {
     throw new Error(ERROR_SORT_ELEMENTS_ARE_NULL);
   }
 
   return {
-    sortFieldEl,
-    sortTypeEl,
+    sortFieldElement,
+    sortTypeElement,
   };
 }
 
 /** Handler when sort options change. */
 async function onSortChange(): Promise<void> {
   const {
-    sortFieldEl,
-    sortTypeEl,
+    sortFieldElement,
+    sortTypeElement,
   } = getSortElements();
 
   let sortField: SortField = SortField.Title;
   if (
-    sortFieldEl.value === SortField.Title ||
-    sortFieldEl.value === SortField.Producer ||
-    sortFieldEl.value === SortField.Director ||
-    sortFieldEl.value === SortField.ReleaseDate
+    sortFieldElement.value === SortField.Title ||
+    sortFieldElement.value === SortField.Producer ||
+    sortFieldElement.value === SortField.Director ||
+    sortFieldElement.value === SortField.ReleaseDate
   ) {
-    sortField = sortFieldEl.value;
+    sortField = sortFieldElement.value;
   }
 
   let sortType: SortType = SortType.Ascending;
-  if (sortTypeEl.value === SortType.Descending) {
-    sortType = sortTypeEl.value;
+  if (sortTypeElement.value === SortType.Descending) {
+    sortType = sortTypeElement.value;
   }
 
   changeStore({
@@ -70,20 +70,20 @@ async function onSortChange(): Promise<void> {
 
 /**
  * Setup sort field.
- * @param sortFieldEl Sort field element.
+ * @param sortFieldElement Sort field element.
  */
-function setupSortField(sortFieldEl: HTMLSelectElement): void {
-  sortFieldEl.innerHTML = Object.entries(SortField)
+function setupSortField(sortFieldElement: HTMLSelectElement): void {
+  sortFieldElement.innerHTML = Object.entries(SortField)
     .map(([name, value]) => `<option value="${value}">${name}</option>`)
     .reduce((acc, cur) => `${acc}\n${cur}`);
 }
 
 /**
  * Setup sort type.
- * @param sortTypeEl Sort type element.
+ * @param sortTypeElement Sort type element.
  */
-function setupSortType(sortTypeEl: HTMLSelectElement): void {
-  sortTypeEl.innerHTML = Object.entries(SortType)
+function setupSortType(sortTypeElement: HTMLSelectElement): void {
+  sortTypeElement.innerHTML = Object.entries(SortType)
     .map(([name, value]) => `<option value="${value}">${name}</option>`)
     .reduce((acc, cur) => `${acc}\n${cur}`);
 }
@@ -91,13 +91,13 @@ function setupSortType(sortTypeEl: HTMLSelectElement): void {
 /** Sets up sorting, add listeners on sort elements. */
 export function setupSorting(): void {
   const {
-    sortFieldEl,
-    sortTypeEl,
+    sortFieldElement,
+    sortTypeElement,
   } = getSortElements();
 
-  setupSortField(sortFieldEl);
-  setupSortType(sortTypeEl);
+  setupSortField(sortFieldElement);
+  setupSortType(sortTypeElement);
 
-  sortFieldEl.addEventListener('change', onSortChange);
-  sortTypeEl.addEventListener('change', onSortChange);
+  sortFieldElement.addEventListener('change', onSortChange);
+  sortTypeElement.addEventListener('change', onSortChange);
 }

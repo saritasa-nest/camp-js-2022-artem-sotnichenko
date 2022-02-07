@@ -20,9 +20,9 @@ export function showModal({
   onConfirm,
   onDecline,
 }: ModalOptions): () => void {
-  const modalEl = document.createElement('div');
-  modalEl.classList.add('modal');
-  modalEl.innerHTML = `
+  const modalElement = document.createElement('div');
+  modalElement.classList.add('modal');
+  modalElement.innerHTML = `
 <div class='modal__content'>
   <h2 class='modal__title'>${title}</h2>
   <div class='modal__buttons'>
@@ -32,35 +32,35 @@ export function showModal({
 </div>
 `;
 
-  modalEl.querySelector('.modal__content')?.addEventListener('click', e => {
+  modalElement.querySelector('.modal__content')?.addEventListener('click', e => {
     e.stopPropagation();
   });
 
-  modalEl.addEventListener('click', () => closeModal(modalEl));
+  modalElement.addEventListener('click', () => closeModal(modalElement));
 
-  modalEl.querySelector('.modal__decline')?.addEventListener('click', () => {
+  modalElement.querySelector('.modal__decline')?.addEventListener('click', () => {
     if (onDecline) {
       onDecline();
     }
-    closeModal(modalEl);
+    closeModal(modalElement);
   });
 
-  modalEl.querySelector('.modal__confirm')?.addEventListener('click', () => {
+  modalElement.querySelector('.modal__confirm')?.addEventListener('click', () => {
     if (onConfirm) {
       onConfirm();
     }
-    closeModal(modalEl);
+    closeModal(modalElement);
   });
 
-  document.body.append(modalEl);
+  document.body.append(modalElement);
 
-  return () => closeModal(modalEl);
+  return () => closeModal(modalElement);
 }
 
 /**
  * Closes modal.
- * @param modalEl Modal element.
+ * @param modalElement Modal element.
  */
-function closeModal(modalEl: HTMLElement): void {
-  modalEl.remove();
+function closeModal(modalElement: HTMLElement): void {
+  modalElement.remove();
 }

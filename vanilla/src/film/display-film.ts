@@ -5,11 +5,11 @@ import { ConnectedFilm } from '../entities/connected-film/types';
  * Create film element.
  * @param film Film data.
  */
-function createFilmInfoEl(film: ConnectedFilm): HTMLDivElement {
-  const infoEl = document.createElement('div');
+function createFilmInfoElement(film: ConnectedFilm): HTMLDivElement {
+  const infoElement = document.createElement('div');
 
-  infoEl.classList.add('film__info');
-  infoEl.innerHTML = `
+  infoElement.classList.add('film__info');
+  infoElement.innerHTML = `
 <div class="film__producer film__meta-info meta-info">
   <h2 class="meta-info__subtitle">Opening crawl</h2><div class="meta-info__text">${film.openingCrawl}</div>
 </div>
@@ -39,13 +39,13 @@ function createFilmInfoEl(film: ConnectedFilm): HTMLDivElement {
 </div>
 `;
 
-  infoEl.querySelector('.film__characters')?.append(createEntityListEl(film.characters, 'characters', 'name'));
-  infoEl.querySelector('.film__species')?.append(createEntityListEl(film.species, 'species', 'name'));
-  infoEl.querySelector('.film__starships')?.append(createEntityListEl(film.starships, 'starships', 'class'));
-  infoEl.querySelector('.film__vehicles')?.append(createEntityListEl(film.vehicles, 'vehicles', 'class'));
-  infoEl.querySelector('.film__planets')?.append(createEntityListEl(film.planets, 'planets', 'name'));
+  infoElement.querySelector('.film__characters')?.append(createEntityListElement(film.characters, 'characters', 'name'));
+  infoElement.querySelector('.film__species')?.append(createEntityListElement(film.species, 'species', 'name'));
+  infoElement.querySelector('.film__starships')?.append(createEntityListElement(film.starships, 'starships', 'class'));
+  infoElement.querySelector('.film__vehicles')?.append(createEntityListElement(film.vehicles, 'vehicles', 'class'));
+  infoElement.querySelector('.film__planets')?.append(createEntityListElement(film.planets, 'planets', 'name'));
 
-  return infoEl;
+  return infoElement;
 }
 
 interface Entity {
@@ -60,19 +60,19 @@ interface Entity {
  * @param name Name of entity, used for class and url.
  * @param textKey Key for value to use as link text.
  */
-function createEntityListEl<E extends Entity>(entities: readonly E[], name: string, textKey: keyof E): HTMLDivElement {
-  const entitiesEl = document.createElement('div');
-  entitiesEl.classList.add(`${name}-list`, 'meta-info__list');
+function createEntityListElement<E extends Entity>(entities: readonly E[], name: string, textKey: keyof E): HTMLDivElement {
+  const entitiesElement = document.createElement('div');
+  entitiesElement.classList.add(`${name}-list`, 'meta-info__list');
 
   entities.forEach(entity => {
-    const entityEl = document.createElement('div');
-    entityEl.classList.add(name);
-    entityEl.innerHTML = `<a href="/${name}/?id=${entity.id}">${entity[textKey]}</a>`;
+    const entityElement = document.createElement('div');
+    entityElement.classList.add(name);
+    entityElement.innerHTML = `<a href="/${name}/?id=${entity.id}">${entity[textKey]}</a>`;
 
-    entitiesEl.append(entityEl);
+    entitiesElement.append(entityElement);
   });
 
-  return entitiesEl;
+  return entitiesElement;
 }
 
 /**
@@ -80,13 +80,13 @@ function createEntityListEl<E extends Entity>(entities: readonly E[], name: stri
  * @param film Film.
  */
 export function displayFilm(film: ConnectedFilm): void {
-  const filmEl = document.querySelector<HTMLElement>('.film');
-  const titleEl = document.querySelector<HTMLElement>('.film__title');
+  const filmElement = document.querySelector<HTMLElement>('.film');
+  const titleElement = document.querySelector<HTMLElement>('.film__title');
 
-  if (filmEl === null || titleEl === null) {
+  if (filmElement === null || titleElement === null) {
     return;
   }
 
-  titleEl.textContent = film.title;
-  filmEl.appendChild(createFilmInfoEl(film));
+  titleElement.textContent = film.title;
+  filmElement.appendChild(createFilmInfoElement(film));
 }
