@@ -12,7 +12,7 @@ import {
   startAfter,
 } from 'firebase/firestore';
 
-import { createCollection, mapDocumentToDto } from '../../firebase/utils';
+import { getCollection, mapDocumentToDto } from '../../firebase/utils';
 
 import { FilmDto, FilmDocument, SortField, SortType } from './types';
 
@@ -21,7 +21,7 @@ import { FilmDto, FilmDocument, SortField, SortType } from './types';
  * @param id Film id.
  */
 export async function fetchFilmById(id: string): Promise<FilmDto> {
-  const filmDoc = await getDoc(doc(createCollection<FilmDocument>('films'), id));
+  const filmDoc = await getDoc(doc(getCollection<FilmDocument>('films'), id));
   return mapDocumentToDto(filmDoc);
 }
 
@@ -36,13 +36,13 @@ export async function fetchFilmById(id: string): Promise<FilmDto> {
 async function fetchFirstFilmCursor(filmId: string | null, isDescending: boolean): Promise<DocumentSnapshot<FilmDocument> | FilmDto | ''> {
   if (filmId === null) {
     if (isDescending) {
-      const documentQuery = query(createCollection<FilmDocument>('films'), limit(1));
+      const documentQuery = query(getCollection<FilmDocument>('films'), limit(1));
       const querySnapshot = await getDocs<FilmDocument>(documentQuery);
       return querySnapshot.docs.map(mapDocumentToDto)[0];
     }
     return '';
   }
-  return getDoc(doc(createCollection<FilmDocument>('films'), filmId));
+  return getDoc(doc(getCollection<FilmDocument>('films'), filmId));
 }
 
 interface FetchFilmsOptions {
@@ -72,7 +72,7 @@ export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Prom
   const cursorDoc = await fetchFirstFilmCursor(options.startAfter, options.isDescending);
 
   const filmQuery = query(
-    createCollection<FilmDocument>('films'),
+    getCollection<FilmDocument>('films'),
     orderBy(
       options.orderBy,
       options.isDescending ? SortType.Descending : SortType.Ascending,
@@ -100,7 +100,7 @@ export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Pr
   const cursorDoc = await fetchFirstFilmCursor(options.endBefore, options.isDescending);
 
   const filmQuery = query(
-    createCollection<FilmDocument>('films'),
+    getCollection<FilmDocument>('films'),
     orderBy(
       options.orderBy,
       options.isDescending ? SortType.Descending : SortType.Ascending,
@@ -118,5 +118,5 @@ export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Pr
  * @param id Film id.
  */
 export function deleteFilm(id: string): Promise<void> {
-  return deleteDoc(doc(createCollection<FilmDocument>('films'), id));
+  return deleteDoc(doc(getCollection<FilmDocument>('films'), id));
 }
