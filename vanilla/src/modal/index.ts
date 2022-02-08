@@ -1,13 +1,13 @@
 interface ModalOptions {
 
   /** Modal title. */
-  title: string;
+  readonly title: string;
 
   /** Confirm callback. */
-  onConfirm?: () => void;
+  readonly onConfirm?: () => void;
 
   /** Decline callback. */
-  onDecline?: () => void;
+  readonly onDecline?: () => void;
 }
 
 /**
@@ -26,8 +26,8 @@ export function showModal({
 <div class='modal__content'>
   <h2 class='modal__title'>${title}</h2>
   <div class='modal__buttons'>
-    <button class='modal__confirm is-small'>Confirm</button>
-    <button class='modal__decline is-small is-secondary'>Decline</button>
+    <button type='button' class='modal__confirm is-small'>Confirm</button>
+    <button type='button' class='modal__decline is-small is-secondary'>Decline</button>
   </div>
 </div>
 `;
