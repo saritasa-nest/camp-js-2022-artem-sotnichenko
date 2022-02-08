@@ -13,20 +13,19 @@
     <form class="auth-form">
       <h1>log in</h1>
       <div class="auth-form__error"></div>
-      <div class="auth-form__field">
-        <label for="email">email: </label>
-        <input class="auth-form__email" id="email" type="email" required />
-      </div>
-      <div class="auth-form__field">
-        <label for="password">password: </label>
+      <label class="auth-form__field">
+        email:
+        <input class="auth-form__email" type="email" required />
+      </label>
+      <label class="auth-form__field">
+        password:
         <input
           class="auth-form__password"
-          id="password"
           type="password"
           minlength="6"
           required
         />
-      </div>
+      </label>
       <button class="auth-form__button" type="submit">log in</button>
       <div class="auth-form__alt">
         If you don't have an account, <a href="../register/">sign up</a>
