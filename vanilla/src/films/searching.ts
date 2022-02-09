@@ -16,7 +16,7 @@ export const setUpSearchInput = (): void => {
   let timer: NodeJS.Timeout;
   if (input !== null) {
     input.addEventListener('input', event => {
-      const substring = (<HTMLTextAreaElement>event.target).value;
+      const substring = (event.target as HTMLTextAreaElement).value;
       clearTimeout(timer);
       timer = setTimeout(() => timeoutHandler(substring), 1500);
     });

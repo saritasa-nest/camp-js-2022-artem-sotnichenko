@@ -101,7 +101,7 @@ export interface FetchFilmsBeforeIdOptions extends FetchFilmsOptions {
   /** Id of film to fetch before. */
   readonly endBefore: string | null;
 
-  /** Substring ti find in string. */
+  /** Substring to find in string. */
   readonly substringSearch: string;
 }
 
