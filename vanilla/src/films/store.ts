@@ -20,7 +20,7 @@ interface Store {
   /** Sort type (ascending, descending). */
   readonly sortType: string;
 
-  /** Sort type (ascending, descending). */
+  /** String to search in film title, getting from search field. */
   readonly substringSearch: string;
 }
 

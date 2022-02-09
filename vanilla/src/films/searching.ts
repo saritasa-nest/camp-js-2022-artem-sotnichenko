@@ -7,7 +7,8 @@ import { SortType } from '../entities/film/types';
 import { updatePaginationBySearchInput } from './pagination';
 import { changeStore, getStore } from './store';
 
-const input = document.querySelector<HTMLInputElement>('.search_input');
+const input = <HTMLInputElement> document.querySelector('.search_input');
+const sortSelect = <HTMLSelectElement> document.querySelector('.sort__select');
 
 /**
  * Set up searching field.
@@ -17,17 +18,21 @@ export const setUpSearchInput = (): void => {
   if (input !== null) {
     input.addEventListener('input', event => {
       const substring = (event.target as HTMLTextAreaElement).value;
+
+      // If user type smth in search field you should disable it.
+      sortSelect.disabled = substring.length !== 0;
+
       clearTimeout(timer);
-      timer = setTimeout(() => timeoutHandler(substring), 1500);
+      timer = setTimeout(() => updateFilmsBySearchInput(substring), 1500);
     });
   }
 };
 
 /**
- * Timer handler.
+ * Update films in table by searching substring in titles.
  * @param substringSearch Substring to search in.
  */
-async function timeoutHandler(substringSearch: string): Promise<void> {
+async function updateFilmsBySearchInput(substringSearch: string): Promise<void> {
   // Get data from store to get restart pagination and get films.
   const {
     sortField,
@@ -41,10 +46,9 @@ async function timeoutHandler(substringSearch: string): Promise<void> {
     substringSearch,
   });
 
-  // Update substring in store.
+  // To fetch films with updated substring search in store.
   changeStore({
     substringSearch,
   });
   updatePaginationBySearchInput(films);
-
 }

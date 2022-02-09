@@ -65,7 +65,7 @@ export interface FetchFilmsAfterIdOptions extends FetchFilmsOptions {
   /** Id of film to fetch after. */
   readonly startAfter: string | null;
 
-  /** Substring ti find in string. */
+  /** Substring to find in string. */
   readonly substringSearch: string;
 }
 
@@ -75,18 +75,14 @@ export interface FetchFilmsAfterIdOptions extends FetchFilmsOptions {
  */
 export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Promise<FilmDto[]> {
   // Query constraint to use it to get cursor goc and films.
-  const searchFieldQueryConstraint = [
-    where('fields.title', '>=', options.substringSearch),
-    where('fields.title', '<=', `${options.substringSearch}\uf8ff`),
-  ];
+  const { searchFieldQueryConstraint, orderByConstraint } = getConstraint(options);
+  console.log(searchFieldQueryConstraint, orderByConstraint);
+
   const cursorDoc = await fetchFirstFilmCursor(options.startAfter, options.isDescending, searchFieldQueryConstraint);
   const filmQuery = query(
     createCollection<FilmDocument>('films'),
     ...searchFieldQueryConstraint,
-    orderBy(
-      options.orderBy,
-      options.isDescending ? SortType.Descending : SortType.Ascending,
-    ),
+    ...orderByConstraint,
     limit(options.limit),
     startAfter(cursorDoc),
   );
@@ -111,23 +107,62 @@ export interface FetchFilmsBeforeIdOptions extends FetchFilmsOptions {
  */
 export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Promise<FilmDto[]> {
   // Query constraint to use it to get cursor goc and films.
-  const searchFieldQueryConstraint = [
-    where('fields.title', '>=', options.substringSearch),
-    where('fields.title', '<=', `${options.substringSearch}\uf8ff`),
-  ];
-
+  const { searchFieldQueryConstraint, orderByConstraint } = getConstraint(options);
+  console.log(searchFieldQueryConstraint, orderByConstraint);
   const cursorDoc = await fetchFirstFilmCursor(options.endBefore, options.isDescending, searchFieldQueryConstraint);
   const filmQuery = query(
     createCollection<FilmDocument>('films'),
-    ...searchFieldQueryConstraint
-    , orderBy(
-      options.orderBy,
-      options.isDescending ? SortType.Descending : SortType.Ascending,
-    ),
+    ...searchFieldQueryConstraint,
+    ...orderByConstraint,
     limitToLast(options.limit),
     endBefore(cursorDoc),
   );
 
   const querySnapshot = await getDocs<FilmDocument>(filmQuery);
   return querySnapshot.docs.map(mapDocumentToDto);
+}
+
+interface QueryConstraints {
+
+  /** Id of film to fetch before. */
+  readonly searchFieldQueryConstraint: QueryConstraint[];
+
+  /** Substring to find in string. */
+  readonly orderByConstraint: QueryConstraint[];
+}
+
+/**
+ * Return fields to make query.
+ * @param options Options.
+ */
+function getConstraint(options: FetchFilmsBeforeIdOptions | FetchFilmsAfterIdOptions): QueryConstraints {
+  const fieldsTitle = 'fields.title';
+  const uniCode = '\uf8ff';
+
+  let searchFieldQueryConstraint: QueryConstraint[];
+  let orderByConstraint: QueryConstraint[];
+  if (options.substringSearch.length === 0) {
+    searchFieldQueryConstraint = [];
+    orderByConstraint = [
+      orderBy(
+        options.orderBy,
+        options.isDescending ? SortType.Descending : SortType.Ascending,
+      ),
+    ];
+  } else {
+    searchFieldQueryConstraint = [
+      where(fieldsTitle, '>=', options.substringSearch),
+      where(fieldsTitle, '<=', `${options.substringSearch}${uniCode}`),
+    ];
+    orderByConstraint = [
+      orderBy(
+        fieldsTitle,
+        options.isDescending ? SortType.Descending : SortType.Ascending,
+      ),
+    ];
+  }
+  return {
+    searchFieldQueryConstraint,
+    orderByConstraint,
+  };
 }
