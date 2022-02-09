@@ -76,7 +76,6 @@ export interface FetchFilmsAfterIdOptions extends FetchFilmsOptions {
 export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Promise<FilmDto[]> {
   // Query constraint to use it to get cursor goc and films.
   const { searchFieldQueryConstraint, orderByConstraint } = getConstraint(options);
-  console.log(searchFieldQueryConstraint, orderByConstraint);
 
   const cursorDoc = await fetchFirstFilmCursor(options.startAfter, options.isDescending, searchFieldQueryConstraint);
   const filmQuery = query(
@@ -108,7 +107,6 @@ export interface FetchFilmsBeforeIdOptions extends FetchFilmsOptions {
 export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Promise<FilmDto[]> {
   // Query constraint to use it to get cursor goc and films.
   const { searchFieldQueryConstraint, orderByConstraint } = getConstraint(options);
-  console.log(searchFieldQueryConstraint, orderByConstraint);
   const cursorDoc = await fetchFirstFilmCursor(options.endBefore, options.isDescending, searchFieldQueryConstraint);
   const filmQuery = query(
     createCollection<FilmDocument>('films'),
