@@ -24,7 +24,7 @@ import { FilmDto, FilmDocument, SortField, SortType } from './types';
  * @returns Id of created film.
  */
 export async function createFilm(filmDto: FilmDto): Promise<string> {
-  const emptyDoc = doc(createCollection<FilmDocument>('films'));
+  const emptyDoc = doc(getCollection<FilmDocument>('films'));
   await setDoc(emptyDoc, filmDto);
   return emptyDoc.id;
 }
@@ -35,7 +35,7 @@ export async function createFilm(filmDto: FilmDto): Promise<string> {
  * @param filmDto Film DTO.
  */
 export async function updateFilm(id: string, filmDto: FilmDto): Promise<void> {
-  const filmDoc = doc(createCollection<FilmDocument>('films'), id);
+  const filmDoc = doc(getCollection<FilmDocument>('films'), id);
   await updateDoc(filmDoc, filmDto);
 }
 
