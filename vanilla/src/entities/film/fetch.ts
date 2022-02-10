@@ -11,6 +11,7 @@ import {
   query,
   setDoc,
   startAfter,
+  updateDoc,
 } from 'firebase/firestore';
 
 import { getCollection, mapDocumentToDto } from '../../firebase/utils';
@@ -26,6 +27,16 @@ export async function createFilm(filmDto: FilmDto): Promise<string> {
   const emptyDoc = doc(createCollection<FilmDocument>('films'));
   await setDoc(emptyDoc, filmDto);
   return emptyDoc.id;
+}
+
+/**
+ * Update Film from DTO.
+ * @param id Film id.
+ * @param filmDto Film DTO.
+ */
+export async function updateFilm(id: string, filmDto: FilmDto): Promise<void> {
+  const filmDoc = doc(createCollection<FilmDocument>('films'), id);
+  await updateDoc(filmDoc, filmDto);
 }
 
 /**

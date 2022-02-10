@@ -1,26 +1,37 @@
 import { getAllCharacters } from '../entities/character/fetch';
-import { CharacterDto } from '../entities/character/types';
 import { getConnectedFilm } from '../entities/connected-film';
 import { createFilm } from '../entities/film';
+import { updateFilm } from '../entities/film/fetch';
+import { toDto } from '../entities/film/mappers';
 import { getAllPlanets } from '../entities/planet/fetch';
 import { getAllSpecies } from '../entities/species/fetch';
 import { getAllStarships } from '../entities/starship/fetch';
 import { getAllVehicles } from '../entities/vehicle/fetch';
 import { subsrcibeToAuthChange } from '../firebase/auth';
 
-import { deleteFilm } from './delete-film';
-
-import { displayFilm } from './display-film';
 import { fillForm } from './fill-form';
 import { getForm } from './save-form';
+
+/** Get id param. */
+function getFilmId(): string | null {
+  const params = new URLSearchParams(location.search);
+  return params.get('id');
+}
+
+/**
+ * Redirects to films pape.
+ * @param id Id of the film.
+ */
+function redirectToFilm(id: string): void {
+  location.href = `http://localhost:3000/film/?id=${id}`;
+}
 
 subsrcibeToAuthChange(async user => {
   if (user === null) {
     location.href = '/auth/login/';
   }
 
-  const params = new URLSearchParams(location.search);
-  const filmId = params.get('id');
+  const filmId = getFilmId();
 
   document.querySelector('.film-form')?.addEventListener('submit', async e => {
     e.preventDefault();
@@ -30,17 +41,20 @@ subsrcibeToAuthChange(async user => {
       return;
     }
 
-    const newFilmId = await createFilm(form);
-    location.href = `http://localhost:3000/film/?id=${newFilmId}`;
+    if (filmId === null) {
+      const redirectFilmId = await createFilm(form);
+      redirectToFilm(redirectFilmId);
+    } else {
+      await updateFilm(filmId, toDto(form));
+      redirectToFilm(filmId);
+    }
   });
 
   if (filmId === null) {
     return;
   }
 
-  document.querySelector('.film-form__cancel')?.addEventListener('click', () => {
-    location.href = `http://localhost:3000/film/?id=${filmId}`;
-  });
+  document.querySelector('.film-form__cancel')?.addEventListener('click', () => redirectToFilm(filmId));
 
   const [
     connectedFilm,
@@ -51,13 +65,11 @@ subsrcibeToAuthChange(async user => {
     vehicles,
   ] = await Promise.all([
     getConnectedFilm(filmId),
-
-      getAllCharacters(),
-
-    // getAllPlanets(),
-    // getAllSpecies(),
-    // getAllStarships(),
-    // getAllVehicles(),
+    getAllCharacters(),
+    getAllPlanets(),
+    getAllSpecies(),
+    getAllStarships(),
+    getAllVehicles(),
   ]);
 
   fillForm(connectedFilm, {
@@ -67,7 +79,4 @@ subsrcibeToAuthChange(async user => {
     starships,
     vehicles,
   });
-
-  // document.querySelector('.film__delete')?.addEventListener('click', () => deleteFilm(filmId));
-
 });

@@ -41,6 +41,6 @@ export async function getFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Prom
  * @param film Film model.
  * @returns Id of created film.
  */
-export async function createFilm(film: Film): Promise<string> {
+export function createFilm(film: Film): Promise<string> {
   return createFilmInBd(toDto(film));
 }
