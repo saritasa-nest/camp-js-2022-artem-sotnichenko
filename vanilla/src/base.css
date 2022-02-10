@@ -79,6 +79,15 @@ textarea {
   color: var(--input-color-text);
 }
 
+a.button {
+  margin: 0;
+}
+
+a.button:hover {
+  text-decoration: none;
+}
+
+.button,
 button {
   padding: var(--button-padding);
   border-radius: var(--button-border-radius);
@@ -87,22 +96,26 @@ button {
   border: 1px solid var(--color-primary);
 }
 
+.button.is-small,
 button.is-small {
   padding: var(--size-1) var(--size-3);
 }
 
+.button.is-secondary,
 button.is-secondary {
   background-color: var(--input-color-bg);
   color: var(--input-color-text);
   border-color: var(--color-border);
 }
 
+.button.is-danger,
 button.is-danger {
   background-color: var(--color-error-dim);
   border-color: var(--color-error);
   color: var(--color-error);
 }
 
+.button.is-danger:hover,
 button.is-danger:hover {
   background-color: var(--color-error);
   color: var(--color-on-primary);
@@ -121,6 +134,7 @@ select {
 input:hover,
 textarea:hover,
 select:hover,
+.button.is-secondary:hover,
 button.is-secondary:hover {
   background-color: var(--input-color-bg-hover);
 }
@@ -128,6 +142,7 @@ button.is-secondary:hover {
 input:disabled,
 textarea:disabled,
 select:disabled,
+.button:disabled,
 button:disabled {
   background-color: var(--input-color-bg);
   border-color:var(--input-color-bg);

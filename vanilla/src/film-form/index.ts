@@ -23,7 +23,7 @@ function getFilmId(): string | null {
  * @param id Id of the film.
  */
 function redirectToFilm(id: string): void {
-  location.href = `http://localhost:3000/film/?id=${id}`;
+  location.href = `/film/?id=${id}`;
 }
 
 subsrcibeToAuthChange(async user => {
@@ -50,11 +50,14 @@ subsrcibeToAuthChange(async user => {
     }
   });
 
+  const cancelElement = document.querySelector('.film-form__cancel');
+
   if (filmId === null) {
+    cancelElement?.remove();
     return;
   }
 
-  document.querySelector('.film-form__cancel')?.addEventListener('click', () => redirectToFilm(filmId));
+  cancelElement?.setAttribute('href', `/film/?id=${filmId}`);
 
   const [
     connectedFilm,
