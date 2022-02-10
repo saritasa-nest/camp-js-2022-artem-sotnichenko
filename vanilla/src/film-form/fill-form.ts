@@ -5,22 +5,24 @@ import { Species } from '../entities/species/types';
 import { Starship } from '../entities/starship/types';
 import { Vehicle } from '../entities/vehicle/types';
 
+import { getFormElements } from './get-form-elements';
+
 interface SelectLists {
 
   /** List of characters. */
-  characters: Character[];
+  readonly characters: Character[];
 
   /** List of species. */
-  species: Species[];
+  readonly species: Species[];
 
   /** List of starships. */
-  starships: Starship[];
+  readonly starships: Starship[];
 
   /** List of vehicles. */
-  vehicles: Vehicle[];
+  readonly vehicles: Vehicle[];
 
   /** List of planets. */
-  planets: Planet[];
+  readonly planets: Planet[];
 }
 
 /**
@@ -29,49 +31,43 @@ interface SelectLists {
  * @param selectLists Lists from wich selects are filled.
  */
 export function fillForm(connectedFilm: ConnectedFilm, selectLists: SelectLists): void {
-  const titleElement = document.querySelector<HTMLInputElement>('.input-title');
-  const сrawlElement = document.querySelector<HTMLInputElement>('.input-opening-crawl');
-  const producedElement = document.querySelector<HTMLInputElement>('.input-produced');
-  const directedElement = document.querySelector<HTMLInputElement>('.input-directed');
-  const releasedElement = document.querySelector<HTMLInputElement>('.input-released');
-
-  if (
-    titleElement === null ||
-    сrawlElement === null ||
-    producedElement === null ||
-    directedElement === null ||
-    releasedElement === null
-  ) {
-    return;
-  }
+  const {
+    titleElement,
+    сrawlElement,
+    producerElement,
+    directorElement,
+    releaseDateElement,
+  } = getFormElements();
 
   titleElement.value = connectedFilm.title;
   сrawlElement.value = connectedFilm.openingCrawl;
-  producedElement.value = connectedFilm.producer;
-  directedElement.value = connectedFilm.director;
-  releasedElement.value = connectedFilm.releaseDate.toISOString().slice(0, 10);
+  producerElement.value = connectedFilm.producer;
+  directorElement.value = connectedFilm.director;
+  releaseDateElement.value = connectedFilm.releaseDate.toISOString().slice(0, 10);
 
   const entries = Object.entries(selectLists) as [keyof SelectLists, SelectLists[keyof SelectLists]][];
+
   for (const [collectionName, list] of entries) {
-    const selectEl = document.getElementById(collectionName);
-    if (selectEl === null) {
+    const selectElement = document.getElementById(collectionName);
+    if (selectElement === null) {
       return;
     }
 
-    selectEl.innerHTML = (list as SelectLists[keyof SelectLists])
-      .map(el => {
+    selectElement.innerHTML = list
+      .map(entity => {
         let optionName;
-        if ('name' in el) {
+        if ('name' in entity) {
           // eslint-disable-next-line prefer-destructuring
-          optionName = el.name;
-        } else if ('class' in el) {
-          optionName = el.class;
+          optionName = entity.name;
+        } else if ('class' in entity) {
+          optionName = entity.class;
         }
 
-        const isSelected = connectedFilm[collectionName].some(entity => entity.id === el.id);
+        const selectedAttribute = connectedFilm[collectionName]
+          .some(connectedEntity => connectedEntity.id === entity.id) ? 'selected' : '';
 
-        return `<option ${isSelected ? 'selected' : ''} value="${el.id}">${optionName}</option>`;
+        return `<option ${selectedAttribute} value="${entity.id}">${optionName}</option>`;
       })
-      .reduce((acc, optionString) => `${acc}\n${optionString}`, '');
+      .reduce((htmlString, optionString) => `${htmlString}\n${optionString}`, '');
   }
 }

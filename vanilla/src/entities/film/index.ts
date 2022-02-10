@@ -4,7 +4,7 @@ import {
   FetchFilmsAfterIdOptions,
   fetchFilmsBeforeId,
   FetchFilmsBeforeIdOptions,
-  createFilm as createFilmInBd,
+  createFilm as createFilmFromDto,
 } from './fetch';
 import { fromDto, toDto } from './mappers';
 import { Film } from './types';
@@ -42,5 +42,5 @@ export async function getFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Prom
  * @returns Id of created film.
  */
 export function createFilm(film: Film): Promise<string> {
-  return createFilmInBd(toDto(film));
+  return createFilmFromDto(toDto(film));
 }
