@@ -8,35 +8,35 @@ import { changeStore, getStore } from './store';
 /** Sets up pagination, add listeners on buttons. */
 export function setupPagination(): void {
   const {
-    paginationNextEl,
-    paginationPrevEl,
+    paginationNextElement,
+    paginationPrevElement,
   } = getPaginationElements();
 
-  paginationNextEl.addEventListener('click', loadNextPage);
-  paginationPrevEl.addEventListener('click', loadPrevPage);
+  paginationNextElement.addEventListener('click', loadNextPage);
+  paginationPrevElement.addEventListener('click', loadPrevPage);
 }
 
 interface PaginationElements {
 
   /** Next page button. */
-  readonly paginationNextEl: HTMLButtonElement;
+  readonly paginationNextElement: HTMLButtonElement;
 
   /** Previous page button. */
-  readonly paginationPrevEl: HTMLButtonElement;
+  readonly paginationPrevElement: HTMLButtonElement;
 }
 
 /** Get pagination elements. */
 function getPaginationElements(): PaginationElements {
-  const paginationNextEl = document.querySelector<HTMLButtonElement>('.pagination__next');
-  const paginationPrevEl = document.querySelector<HTMLButtonElement>('.pagination__prev');
+  const paginationNextElement = document.querySelector<HTMLButtonElement>('.pagination__next');
+  const paginationPrevElement = document.querySelector<HTMLButtonElement>('.pagination__prev');
 
-  if (paginationNextEl === null || paginationPrevEl === null) {
+  if (paginationNextElement === null || paginationPrevElement === null) {
     throw new Error(ERROR_PAGINATION_ELEMENTS_ARE_NULL);
   }
 
   return {
-    paginationNextEl,
-    paginationPrevEl,
+    paginationNextElement,
+    paginationPrevElement,
   };
 }
 
@@ -124,8 +124,8 @@ export async function loadPrevPage(): Promise<void> {
 /** Update pagination buttons. */
 export function updatePaginationButtons(): void {
   const {
-    paginationNextEl,
-    paginationPrevEl,
+    paginationNextElement,
+    paginationPrevElement,
   } = getPaginationElements();
 
   const {
@@ -133,8 +133,8 @@ export function updatePaginationButtons(): void {
     isFirstPage,
   } = getStore();
 
-  paginationNextEl.disabled = isLastPage;
-  paginationPrevEl.disabled = isFirstPage;
+  paginationNextElement.disabled = isLastPage;
+  paginationPrevElement.disabled = isFirstPage;
 }
 
 /**

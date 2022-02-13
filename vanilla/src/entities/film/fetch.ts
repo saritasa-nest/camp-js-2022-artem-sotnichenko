@@ -1,4 +1,5 @@
 import {
+  deleteDoc,
   doc,
   DocumentSnapshot,
   endBefore,
@@ -12,7 +13,7 @@ import {
   startAfter, where,
 } from 'firebase/firestore';
 
-import { createCollection, mapDocumentToDto } from '../../firebase/utils';
+import { getCollection, mapDocumentToDto } from '../../firebase/utils';
 
 import { FilmDto, FilmDocument, SortField, SortType } from './types';
 
@@ -21,7 +22,7 @@ import { FilmDto, FilmDocument, SortField, SortType } from './types';
  * @param id Film id.
  */
 export async function fetchFilmById(id: string): Promise<FilmDto> {
-  const filmDoc = await getDoc(doc(createCollection<FilmDocument>('films'), id));
+  const filmDoc = await getDoc(doc(getCollection<FilmDocument>('films'), id));
   return mapDocumentToDto(filmDoc);
 }
 
@@ -38,13 +39,15 @@ async function fetchFirstFilmCursor(filmId: string | null, isDescending: boolean
   searchFieldQueryConstraint: QueryConstraint[]): Promise<DocumentSnapshot<FilmDocument> | FilmDto | ''> {
   if (filmId === null) {
     if (isDescending) {
+
       const documentQuery = query(createCollection<FilmDocument>('films'), ...searchFieldQueryConstraint, limit(1));
+
       const querySnapshot = await getDocs<FilmDocument>(documentQuery);
       return querySnapshot.docs.map(mapDocumentToDto)[0];
     }
     return '';
   }
-  return getDoc(doc(createCollection<FilmDocument>('films'), filmId));
+  return getDoc(doc(getCollection<FilmDocument>('films'), filmId));
 }
 
 interface FetchFilmsOptions {
@@ -79,9 +82,11 @@ export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Prom
 
   const cursorDoc = await fetchFirstFilmCursor(options.startAfter, options.isDescending, searchFieldQueryConstraint);
   const filmQuery = query(
+
     createCollection<FilmDocument>('films'),
     ...searchFieldQueryConstraint,
     ...orderByConstraint,
+
     limit(options.limit),
     startAfter(cursorDoc),
   );
@@ -109,9 +114,11 @@ export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Pr
   const { searchFieldQueryConstraint, orderByConstraint } = getConstraint(options);
   const cursorDoc = await fetchFirstFilmCursor(options.endBefore, options.isDescending, searchFieldQueryConstraint);
   const filmQuery = query(
+
     createCollection<FilmDocument>('films'),
     ...searchFieldQueryConstraint,
     ...orderByConstraint,
+
     limitToLast(options.limit),
     endBefore(cursorDoc),
   );
@@ -119,6 +126,7 @@ export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Pr
   const querySnapshot = await getDocs<FilmDocument>(filmQuery);
   return querySnapshot.docs.map(mapDocumentToDto);
 }
+
 
 interface QueryConstraints {
 
@@ -163,4 +171,12 @@ function getConstraint(options: FetchFilmsBeforeIdOptions | FetchFilmsAfterIdOpt
     searchFieldQueryConstraint,
     orderByConstraint,
   };
+
+/**
+ * Delete film by id.
+ * @param id Film id.
+ */
+export function deleteFilm(id: string): Promise<void> {
+  return deleteDoc(doc(getCollection<FilmDocument>('films'), id));
+
 }

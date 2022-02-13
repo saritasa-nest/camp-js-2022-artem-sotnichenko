@@ -6,11 +6,13 @@ import { FirebaseWrapper } from './types';
 
 import { db } from './init';
 
+export type CollectionName = 'films' | 'characters' | 'planets' | 'species' | 'starships' | 'vehicles';
+
 /**
  *  Create collection with types.
  * @param collectionName Collection name.
  */
-export function createCollection<T = DocumentData>(collectionName: string): CollectionReference<T> {
+export function getCollection<T = DocumentData>(collectionName: CollectionName): CollectionReference<T> {
   return collection(db, collectionName) as CollectionReference<T>;
 }
 

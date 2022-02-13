@@ -1,11 +1,27 @@
-.film-page {
+.film {
   max-width: var(--size-content-xl);
   width: 100%;
   padding: 0 var(--size-4);
   margin: var(--size-8) auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-3);
 }
 
-.film {
+.film__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--size-2);
+}
+
+.film__buttons {
+  display: flex;
+  flex-direction: row;
+  gap: var(--size-4);
+}
+
+.film__info {
   display: flex;
   flex-direction: column;
   gap: var(--size-3);

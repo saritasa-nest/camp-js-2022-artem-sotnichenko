@@ -5,10 +5,13 @@
   --color-primary: var(--violet-5);
   --color-on-primary: var(--gray-0);
   --color-error: var(--red-5);
+  --color-error-dim: var(--red-0);
   --color-text: var(--gray-9);
   --color-text-dim: var(--gray-6);
   --color-link: var(--color-primary);
   --color-border: var(--gray-4);
+  --color-semitransparent: rgba(0,0,0,.5);
+  --color-background: var(--gray-0);
 
   --font-size-subtext: var(--font-size-0);
   --font-size-text: var(--font-size-1);
@@ -30,8 +33,12 @@
   --size-content-xl: 900px;
 
   --border-radius-xs: var(--size-1);
+  --border-radius-sm: var(--size-2);
+  --border-radius-md: var(--size-3);
 
   --border: 1px solid var(--color-border);
+
+  --modal-width: 300px;
 
   --button-padding: var(--size-2) var(--size-3);
   --button-border-radius: var(--border-radius-xs);
@@ -76,12 +83,28 @@ button {
   border-radius: var(--button-border-radius);
   background-color: var(--button-color-bg);
   color: var(--button-color-text);
+  border: 1px solid var(--color-primary);
+}
+
+button.is-small {
+  padding: var(--size-1) var(--size-3);
 }
 
 button.is-secondary {
   background-color: var(--input-color-bg);
   color: var(--input-color-text);
-  border: var(--input-border);
+  border-color: var(--color-border);
+}
+
+button.is-danger {
+  background-color: var(--color-error-dim);
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+button.is-danger:hover {
+  background-color: var(--color-error);
+  color: var(--color-on-primary);
 }
 
 select {
@@ -102,7 +125,7 @@ button.is-secondary:hover {
 
 input:disabled,
 select:disabled,
-button.is-secondary:disabled {
+button:disabled {
   background-color: var(--input-color-bg);
   border-color:var(--input-color-bg);
   color: var(--color-text-dim);

@@ -5,7 +5,7 @@ import { formatDate } from '../utils/format-date';
  * Create film element.
  * @param film Film data.
  */
-function createFilmEl(film: Film): HTMLDivElement {
+function createFilmElement(film: Film): HTMLDivElement {
   const node = document.createElement('div');
   node.classList.add('film');
   node.innerHTML = `
@@ -30,14 +30,14 @@ function createFilmEl(film: Film): HTMLDivElement {
  * @param films Films.
  */
 export function displayFilms(films: Film[]): void {
-  const filmsListEl = document.querySelector<HTMLElement>('.films__list');
-  if (filmsListEl === null) {
+  const filmsListElement = document.querySelector<HTMLElement>('.films__list');
+  if (filmsListElement === null) {
     return;
   }
 
-  filmsListEl.innerHTML = '';
+  filmsListElement.innerHTML = '';
 
   films.forEach(film => {
-    filmsListEl.appendChild(createFilmEl(film));
+    filmsListElement.appendChild(createFilmElement(film));
   });
 }
