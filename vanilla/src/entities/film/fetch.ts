@@ -40,7 +40,7 @@ async function fetchFirstFilmCursor(filmId: string | null, isDescending: boolean
   if (filmId === null) {
     if (isDescending) {
 
-      const documentQuery = query(createCollection<FilmDocument>('films'), ...searchFieldQueryConstraint, limit(1));
+      const documentQuery = query(getCollection<FilmDocument>('films'), ...searchFieldQueryConstraint, limit(1));
 
       const querySnapshot = await getDocs<FilmDocument>(documentQuery);
       return querySnapshot.docs.map(mapDocumentToDto)[0];
@@ -83,7 +83,7 @@ export async function fetchFilmsAfterId(options: FetchFilmsAfterIdOptions): Prom
   const cursorDoc = await fetchFirstFilmCursor(options.startAfter, options.isDescending, searchFieldQueryConstraint);
   const filmQuery = query(
 
-    createCollection<FilmDocument>('films'),
+    getCollection<FilmDocument>('films'),
     ...searchFieldQueryConstraint,
     ...orderByConstraint,
 
@@ -115,7 +115,7 @@ export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Pr
   const cursorDoc = await fetchFirstFilmCursor(options.endBefore, options.isDescending, searchFieldQueryConstraint);
   const filmQuery = query(
 
-    createCollection<FilmDocument>('films'),
+    getCollection<FilmDocument>('films'),
     ...searchFieldQueryConstraint,
     ...orderByConstraint,
 
@@ -126,7 +126,6 @@ export async function fetchFilmsBeforeId(options: FetchFilmsBeforeIdOptions): Pr
   const querySnapshot = await getDocs<FilmDocument>(filmQuery);
   return querySnapshot.docs.map(mapDocumentToDto);
 }
-
 
 interface QueryConstraints {
 
@@ -171,6 +170,7 @@ function getConstraint(options: FetchFilmsBeforeIdOptions | FetchFilmsAfterIdOpt
     searchFieldQueryConstraint,
     orderByConstraint,
   };
+}
 
 /**
  * Delete film by id.
@@ -178,5 +178,4 @@ function getConstraint(options: FetchFilmsBeforeIdOptions | FetchFilmsAfterIdOpt
  */
 export function deleteFilm(id: string): Promise<void> {
   return deleteDoc(doc(getCollection<FilmDocument>('films'), id));
-
 }
