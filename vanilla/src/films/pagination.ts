@@ -1,5 +1,5 @@
 import { getFilmsAfterId, getFilmsBeforeId } from '../entities/film';
-import { SortType } from '../entities/film/types';
+import { Film, SortType } from '../entities/film/types';
 import { ERROR_PAGINATION_ELEMENTS_ARE_NULL, FILMS_COUNT_PER_PAGE } from '../utils/constants';
 
 import { displayFilms } from './display-films';
@@ -47,6 +47,7 @@ export async function loadNextPage(): Promise<void> {
     sortField,
     sortType,
     lastId,
+    substringSearch,
   } = getStore();
 
   // disable 'next' button
@@ -60,6 +61,7 @@ export async function loadNextPage(): Promise<void> {
     orderBy: sortField,
     isDescending: sortType === SortType.Descending,
     startAfter: lastId,
+    substringSearch,
   });
 
   if (films.length < FILMS_COUNT_PER_PAGE) {
@@ -86,6 +88,7 @@ export async function loadPrevPage(): Promise<void> {
     sortField,
     sortType,
     firstId,
+    substringSearch,
   } = getStore();
 
   // disable 'prev' button
@@ -99,6 +102,7 @@ export async function loadPrevPage(): Promise<void> {
     orderBy: sortField,
     isDescending: sortType === SortType.Descending,
     endBefore: firstId,
+    substringSearch,
   });
 
   if (films.length < FILMS_COUNT_PER_PAGE) {
@@ -131,4 +135,26 @@ export function updatePaginationButtons(): void {
 
   paginationNextElement.disabled = isLastPage;
   paginationPrevElement.disabled = isFirstPage;
+}
+
+/**
+ * Update pagination when user typing in searchfield.
+ * @param films Films.
+ */
+export function updatePaginationBySearchInput(films: Film[]): void {
+
+  displayFilms(films);
+  if (films.length < FILMS_COUNT_PER_PAGE) {
+    changeStore({
+      isLastPage: true,
+    });
+    return updatePaginationButtons();
+  }
+  changeStore({
+    isLastPage: false,
+    isFirstPage: true,
+    lastId: films[films.length - 1].id,
+    firstId: films[0].id,
+  });
+  updatePaginationButtons();
 }

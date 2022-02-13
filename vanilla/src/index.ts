@@ -1,6 +1,7 @@
 import { loadNextPage, setupPagination, updatePaginationButtons } from './films/pagination';
 import { setupSorting } from './films/sort';
 import { changeStore } from './films/store';
+import { setUpSearchInput } from './films/searching';
 
 document.addEventListener('DOMContentLoaded', async() => {
   // Disable buttons before films are fetched.
@@ -25,4 +26,5 @@ document.addEventListener('DOMContentLoaded', async() => {
 
   setupPagination();
   setupSorting();
+  setUpSearchInput();
 });
