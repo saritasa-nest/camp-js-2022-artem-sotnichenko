@@ -19,6 +19,9 @@ interface Store {
 
   /** Sort type (ascending, descending). */
   readonly sortType: string;
+
+  /** String to search in film title, getting from search field. */
+  readonly substringSearch: string;
 }
 
 let store: Store = {
@@ -28,6 +31,7 @@ let store: Store = {
   isFirstPage: false,
   sortField: SortField.Title,
   sortType: SortType.Ascending,
+  substringSearch: '',
 };
 
 /**
