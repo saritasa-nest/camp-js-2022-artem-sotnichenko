@@ -4,8 +4,9 @@
   height: 100vh;
   top: 0;
   left: 0;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: var(--color-semitransparent);
 }
 
@@ -29,4 +30,14 @@
   justify-content: center;
   display: flex;
   gap: var(--size-4);
+}
+
+@media screen and (max-width: 640px) {
+  .modal {
+    align-items: flex-end;
+  }
+
+  .modal__content {
+    margin-bottom: var(--size-8);
+  }
 }
