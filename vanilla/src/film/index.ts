@@ -21,5 +21,7 @@ subsrcibeToAuthChange(async user => {
   displayFilm(connectedFilm);
 
   document.querySelector('.film__delete')?.addEventListener('click', () => deleteFilm(filmId));
-  document.querySelector('.film__change')?.setAttribute('href', `/film-form/?id=${filmId}`);
+  document.querySelector('.film__change')?.addEventListener('click', () => {
+    location.href = `/film-form/?id=${filmId}`;
+  });
 });

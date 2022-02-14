@@ -57,7 +57,7 @@ subsrcibeToAuthChange(async user => {
     return;
   }
 
-  cancelElement?.setAttribute('href', `/film/?id=${filmId}`);
+  document.querySelector('.film-form__cancel')?.addEventListener('click', () => redirectToFilm(filmId));
 
   const [
     connectedFilm,
