@@ -32,8 +32,8 @@ export function showModal({
 </div>
 `;
 
-  modalElement.querySelector('.modal__content')?.addEventListener('click', e => {
-    e.stopPropagation();
+  modalElement.querySelector('.modal__content')?.addEventListener('click', event => {
+    event.stopPropagation();
   });
 
   modalElement.addEventListener('click', () => closeModal(modalElement));

@@ -74,7 +74,7 @@ export interface FilmDto extends FilmDocument, FirebaseWrapper {}
 export interface Film {
 
   /** Film id. */
-  readonly id: string;
+  readonly id?: string;
 
   /** Character ids. */
   readonly characterIds: readonly string[];
@@ -92,16 +92,16 @@ export interface Film {
   readonly planetIds: readonly string[];
 
   /** Create time (2014-12-10T14:23:31.880Z). */
-  readonly created: Date;
+  readonly created?: Date;
 
   /** Director name. */
   readonly director: string;
 
   /** Edit time. */
-  readonly edited: Date;
+  readonly edited?: Date;
 
   /** Episode id. */
-  readonly episodeId: number;
+  readonly episodeId?: number;
 
   /** Opening crawl. */
   readonly openingCrawl: string;
@@ -116,8 +116,8 @@ export interface Film {
   readonly title: string;
 
   /** Model, collection name. */
-  readonly model: string;
+  readonly model?: string;
 
   /** Primary key. */
-  readonly pk: number;
+  readonly pk?: number;
 }

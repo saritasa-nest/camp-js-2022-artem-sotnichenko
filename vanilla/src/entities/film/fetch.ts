@@ -9,13 +9,37 @@ import {
   limitToLast,
   orderBy,
   query,
+  setDoc,
+  startAfter,
+  updateDoc,
   QueryConstraint,
-  startAfter, where,
+  where,
 } from 'firebase/firestore';
 
 import { getCollection, mapDocumentToDto } from '../../firebase/utils';
 
 import { FilmDto, FilmDocument, SortField, SortType } from './types';
+
+/**
+ * Create Film from DTO.
+ * @param filmDto Film DTO.
+ * @returns Id of created film.
+ */
+export async function createFilm(filmDto: FilmDto): Promise<string> {
+  const emptyDoc = doc(getCollection<FilmDocument>('films'));
+  await setDoc(emptyDoc, filmDto);
+  return emptyDoc.id;
+}
+
+/**
+ * Update Film from DTO.
+ * @param id Film id.
+ * @param filmDto Film DTO.
+ */
+export async function updateFilm(id: string, filmDto: FilmDto): Promise<void> {
+  const filmDoc = doc(getCollection<FilmDocument>('films'), id);
+  await updateDoc(filmDoc, filmDto);
+}
 
 /**
  * Fetch film by id.
