@@ -33,8 +33,8 @@ subsrcibeToAuthChange(async user => {
 
   const filmId = getFilmId();
 
-  document.querySelector('.film-form')?.addEventListener('submit', async e => {
-    e.preventDefault();
+  document.querySelector('.film-form')?.addEventListener('submit', async event => {
+    event.preventDefault();
 
     const form = getForm();
     if (form === null) {

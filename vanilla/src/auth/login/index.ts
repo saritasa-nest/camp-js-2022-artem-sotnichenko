@@ -10,8 +10,8 @@ const {
   passwordElement,
 } = getFormElements();
 
-formElement.addEventListener('submit', async e => {
-  e.preventDefault();
+formElement.addEventListener('submit', async event => {
+  event.preventDefault();
 
   const email = emailElement.value;
   const password = passwordElement.value;
