@@ -33,10 +33,7 @@
     flex-direction: column;
   }
 
-  .film__buttons {
-    flex-grow: 1;
-  }
-
+  .film__buttons,
   .film__button {
     flex-grow: 1;
   }
