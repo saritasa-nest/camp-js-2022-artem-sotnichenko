@@ -11,6 +11,16 @@
     <main class="films">
       <h1>films</h1>
       <div class="films__controls">
+        <!-- Dan's code block beginning -->
+        <div class="films__search search">
+          <label for="site-search"></label>
+          <input
+            type="search"
+            id="site-search"
+            class="search__input"
+            placeholder="Search film title..."
+          />
+        </div>
         <div class="films__sort films__sort--field sort">
           <label class="sort__label" for="sort-field">sort field</label>
           <select
@@ -24,8 +34,8 @@
           <select class="sort__select" name="sort-type" id="sort-type"></select>
         </div>
         <div class="films__pagination pagination">
-          <div class='ination__label'>pagination</div>
-          <div class='pagination__buttons'>
+          <div class="ination__label">pagination</div>
+          <div class="pagination__buttons">
             <button
               class="is-secondary pagination__prev pagination__button"
               type="button"
@@ -39,10 +49,6 @@
               next
             </button>
           </div>
-        </div>
-        <!-- Dan's code block beginning -->
-        <div class="films__searching searching">
-          <label for="site-search"></label><input type="search" id="site-search" class="search_input" placeholder="Print film title...">
         </div>
       </div>
       <div class="films__list"></div>

@@ -7,7 +7,7 @@ import { SortType } from '../entities/film/types';
 import { updatePaginationBySearchInput } from './pagination';
 import { changeStore, getStore } from './store';
 
-const input = <HTMLInputElement> document.querySelector('.search_input');
+const input = <HTMLInputElement> document.querySelector('.search__input');
 const sortSelect = <HTMLSelectElement> document.querySelector('.sort__select');
 
 const searchHandler = debounceSearch(updateFilmsBySearchInput, 1500);

@@ -82,3 +82,8 @@
   background-color: transparent;
   color: var(--gray-6);
 }
+
+.films__search,
+.search__input {
+  width: 100%;
+}
