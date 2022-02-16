@@ -6,9 +6,6 @@
   gap: var(--size-4);
   max-width: var(--size-content-xl);
   width: 100%;
-
-  --film-card-min-width: 240px;
-  --film-card-max-width: 480px;
 }
 
 .films__controls {
@@ -28,7 +25,10 @@
   gap: var(--size-2);
 }
 
-.film {
+.film-card {
+  --film-card-min-width: 240px;
+  --film-card-max-width: 480px;
+
   display: flex;
   flex-direction: column;
   border-radius: var(--radius-2);
@@ -39,7 +39,7 @@
   max-width: var(--film-card-max-width);
 }
 
-.film__title {
+.film-card__title {
   font-weight: 700;
 }
 
@@ -49,7 +49,7 @@
 }
 
 @media screen and (max-width: 640px) {
-  .film {
+  .film-card {
     gap: var(--size-2);
   }
 

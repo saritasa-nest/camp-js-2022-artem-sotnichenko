@@ -20,8 +20,8 @@ subsrcibeToAuthChange(async user => {
   const connectedFilm = await getConnectedFilm(filmId);
   displayFilm(connectedFilm);
 
-  document.querySelector('.film__delete')?.addEventListener('click', () => deleteFilm(filmId));
-  document.querySelector('.film__change')?.addEventListener('click', () => {
+  document.querySelector('.film__button--delete')?.addEventListener('click', () => deleteFilm(filmId));
+  document.querySelector('.film__button--change')?.addEventListener('click', () => {
     location.href = `/film-form/?id=${filmId}`;
   });
 });

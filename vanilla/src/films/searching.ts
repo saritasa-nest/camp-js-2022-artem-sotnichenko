@@ -7,8 +7,8 @@ import { SortType } from '../entities/film/types';
 import { updatePaginationBySearchInput } from './pagination';
 import { changeStore, getStore } from './store';
 
-const input = <HTMLInputElement> document.querySelector('.search__input');
-const sortSelect = <HTMLSelectElement> document.querySelector('.sort__select');
+const input = document.querySelector<HTMLInputElement>('.search__input');
+const sortSelect = document.querySelector<HTMLSelectElement>('.sort__select');
 
 const searchHandler = debounceSearch(updateFilmsBySearchInput, 1500);
 
@@ -16,7 +16,7 @@ const searchHandler = debounceSearch(updateFilmsBySearchInput, 1500);
  * Set up searching field.
  */
 export const setUpSearchInput = (): void => {
-    input.addEventListener('input', event => searchHandler(event));
+    input?.addEventListener('input', event => searchHandler(event));
   };
 
 /**
@@ -59,8 +59,9 @@ function debounceSearch(funct: (this: void, stringToSearch: string) => Promise<v
     timer = setTimeout(() => funct(substringSearch), delay);
 
     // If user type smth in search field you should disable it.
-    sortSelect.disabled = substringSearch.length !== 0;
-
+    if (sortSelect) {
+      sortSelect.disabled = substringSearch.length !== 0;
+    }
   };
 
 }
