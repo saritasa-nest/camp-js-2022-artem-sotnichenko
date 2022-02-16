@@ -8,6 +8,8 @@
   justify-content: center;
   align-items: center;
   background: var(--color-semitransparent);
+
+  --modal-width: 300px;
 }
 
 .modal__content {

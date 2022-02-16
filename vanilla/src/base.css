@@ -38,10 +38,6 @@
 
   --border: 1px solid var(--color-border);
 
-  --modal-width: 300px;
-  --film-card-min-width: 240px;
-  --film-card-max-width: 480px;
-
   --button-padding: var(--size-2) var(--size-3);
   --button-border-radius: var(--border-radius-xs);
   --button-color-bg: var(--color-primary);
