@@ -20,5 +20,10 @@
     "firebase": "^9.4.1",
     "open-props": "^1.1.6",
     "vite-plugin-env-compatible": "^1.1.1"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,html}": "eslint --cache --fix",
+    "src/**/*.*css": "stylelint --fix",
+    "src/**/*.html": "prettier --write"
   }
 }
