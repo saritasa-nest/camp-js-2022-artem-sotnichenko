@@ -2,8 +2,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/core/models/user';
-import { AuthService } from 'src/app/services/auth.service';
-import { DestroyableComponent, takeUntilDestroy } from 'src/app/utils/destroyable';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { DestroyableComponent, takeUntilDestroy } from 'src/app/core/utils/destroyable';
 
 /** App header. */
 @DestroyableComponent()

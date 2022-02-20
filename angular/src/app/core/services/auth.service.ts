@@ -8,7 +8,7 @@ import {
 } from '@angular/fire/auth';
 import { from, map, Observable } from 'rxjs';
 
-import { User } from '../core/models/user';
+import { User } from '../models/user';
 
 import { UserMapper } from './mappers/user.mapper';
 

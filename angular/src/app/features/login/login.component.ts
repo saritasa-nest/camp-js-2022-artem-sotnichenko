@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-import { DestroyableComponent, takeUntilDestroy } from 'src/app/utils/destroyable';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { DestroyableComponent, takeUntilDestroy } from 'src/app/core/utils/destroyable';
 
 /** Login component. */
 @DestroyableComponent()
