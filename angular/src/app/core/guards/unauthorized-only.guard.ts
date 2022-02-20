@@ -4,11 +4,11 @@ import { first, map, Observable } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
 
-/** Whether user authorized to join. */
+/** Allows only unauthorized users to enter route, otherwise redirects to root route. */
 @Injectable({
   providedIn: 'root',
 })
-export class UnauthorizedGuard implements CanActivate {
+export class UnauthorizedOnlyGuard implements CanActivate {
   public constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
@@ -17,7 +17,7 @@ export class UnauthorizedGuard implements CanActivate {
   /** @inheritdoc */
   public canActivate(): Observable<boolean | UrlTree> {
     return this.authService.isAuthorized$.pipe(
-      map(isAuthorized => (isAuthorized ? true : this.router.parseUrl('/auth'))),
+      map(isAuthorized => (isAuthorized ? this.router.parseUrl('/') : true)),
       first(),
     );
   }
