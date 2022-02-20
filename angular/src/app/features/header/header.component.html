@@ -3,7 +3,12 @@
   <div class="header__group">
     <ng-container *ngIf="user$ | async as user; else unauthorized">
       <div class="header__profile profile">
-        <img [src]="user.photoUrl" class="profile__avatar" />
+        <img
+          *ngIf="user.photoUrl"
+          [src]="user.photoUrl"
+          [alt]="user.name + ' avatar'"
+          class="profile__avatar"
+        />
         <div class="profile__username">{{ user.name }}</div>
       </div>
       <button
