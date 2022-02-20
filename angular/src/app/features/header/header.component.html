@@ -1,0 +1,27 @@
+<header class="header">
+  <div class="header__logo">sw films</div>
+  <div class="header__group">
+    <ng-container *ngIf="user$ | async as user; else unauthorized">
+      <div class="header__profile profile">
+        <img [src]="user.photoUrl" class="profile__avatar" />
+        <div class="profile__username">{{ user.name }}</div>
+      </div>
+      <button
+        mat-button
+        class="profile__button profile__button--signout"
+        (click)="onSignOut()"
+      >
+        Sign out
+      </button>
+    </ng-container>
+    <ng-template #unauthorized>
+      <a
+        mat-button
+        class="profile__button profile__button--auth"
+        routerLink="/auth"
+      >
+        Sign in
+      </a>
+    </ng-template>
+  </div>
+</header>

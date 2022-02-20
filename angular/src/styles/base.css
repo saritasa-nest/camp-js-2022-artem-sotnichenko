@@ -1,0 +1,12 @@
+@import "./tokens.css";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-family: "Roboto Condensed", system-ui, sans-serif;
+}
