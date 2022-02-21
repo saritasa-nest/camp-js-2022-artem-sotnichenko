@@ -8,7 +8,7 @@ import { MapperFromDto } from './mappers';
 const ANONYMOUS_NAME = 'Anonymous' as const;
 
 /**
- * Mapper for login entities.
+ * Mapper for user entities.
  */
 @Injectable({ providedIn: 'root' })
 export class UserMapper implements MapperFromDto<UserDto, User> {
