@@ -1,38 +1,36 @@
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { User } from 'src/app/core/models/user';
+import { Subject, takeUntil } from 'rxjs';
+import { SignInForm } from 'src/app/core/models/sign-in-form';
 import { AuthService } from 'src/app/core/services/auth.service';
 
-/** User profile. */
+/** Sign in page. */
 @Component({
-  selector: 'sw-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css'],
+  selector: 'sw-sign-in',
+  templateUrl: './sign-in.component.html',
+  styleUrls: ['./sign-in.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileComponent implements OnDestroy {
-  /** Current user. */
-  public readonly user$: Observable<User | null>;
-
+export class SignInComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   public constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-  ) {
-    this.user$ = this.authService.user$;
-  }
+  ) {}
 
   /** @inheritdoc */
   public ngOnDestroy(): void {
     this.destroy$.next();
   }
 
-  /** Signs out user. */
-  public onSignOut(): void {
+  /**
+   * Handles sign in.
+   * @param form Form.
+   */
+  public onFormChange(form: SignInForm): void {
     this.authService
-      .signOut()
+      .signInWithEmailAndPassword(form)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         complete: () => this.router.navigate(['/']),

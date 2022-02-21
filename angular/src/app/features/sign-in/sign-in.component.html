@@ -1,0 +1,11 @@
+<sw-blank-layout>
+  <sw-auth title="Sign in">
+    <sw-sign-in-form
+      (formChange)="onFormChange($event)"
+      buttonText="Sign in"
+    ></sw-sign-in-form>
+    <div hint>
+      Don't have an acount? <a routerLink="/auth/signup">Sign up</a>
+    </div>
+  </sw-auth>
+</sw-blank-layout>

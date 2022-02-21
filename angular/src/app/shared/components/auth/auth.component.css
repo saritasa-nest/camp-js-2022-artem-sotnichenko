@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  --auth-max-width: 280px;
+}
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  width: 200%;
+  max-width: var(--auth-max-width);
+}
+
+.auth__title {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  text-align: center;
+}
+
+.auth__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-12);
+}
+
+.auth__socials {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+}
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4);
+}
+
+.auth__hint {
+  text-align: center;
+}

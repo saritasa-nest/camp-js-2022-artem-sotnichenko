@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -10,12 +10,12 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./header.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
 
   /** Authoriazation state. */
   public readonly isAuthorized$: Observable<boolean>;
 
-  private readonly destroy$ = new Subject();
+  private readonly destroy$ = new Subject<void>();
 
   public constructor(
     private readonly authService: AuthService,
@@ -26,7 +26,7 @@ export class HeaderComponent {
 
   /** @inheritdoc */
   public ngOnDestroy(): void {
-    this.destroy$.complete();
+    this.destroy$.next();
   }
 
   /** Signs out user. */

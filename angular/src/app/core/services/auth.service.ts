@@ -5,8 +5,12 @@ import {
   signOut,
   authState,
   Auth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
 } from '@angular/fire/auth';
 import { defer, map, mapTo, Observable, shareReplay } from 'rxjs';
+
+import { SignInForm } from '../models/sign-in-form';
 
 import { User } from '../models/user';
 
@@ -42,6 +46,22 @@ export class AuthService {
   public signInWithGoogle(): Observable<void> {
     const provider = new GoogleAuthProvider();
     return defer(() => signInWithPopup(this.auth, provider)).pipe(mapTo(void 0));
+  }
+
+  /**
+   * Sign in with email and password.
+   * @param options Email and password object.
+   */
+  public signInWithEmailAndPassword({ email, password }: SignInForm): Observable<void> {
+    return defer(() => signInWithEmailAndPassword(this.auth, email, password)).pipe(mapTo(void 0));
+  }
+
+  /**
+   * Sign up with email and password.
+   * @param options Email and password object.
+   */
+  public signUpWithEmailAndPassword({ email, password }: SignInForm): Observable<void> {
+    return defer(() => createUserWithEmailAndPassword(this.auth, email, password)).pipe(mapTo(void 0));
   }
 
   /** Sign out. */
