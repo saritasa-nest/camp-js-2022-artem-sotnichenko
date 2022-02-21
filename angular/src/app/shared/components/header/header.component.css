@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--size-4) var(--size-8);
+}
+
+.header__user-block {
+  display: flex;
+  gap: var(--size-4);
+  align-items: center;
+}

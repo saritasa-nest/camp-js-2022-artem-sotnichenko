@@ -6,7 +6,7 @@ import {
   authState,
   Auth,
 } from '@angular/fire/auth';
-import { from, map, Observable } from 'rxjs';
+import { defer, map, mapTo, Observable, shareReplay } from 'rxjs';
 
 import { User } from '../models/user';
 
@@ -31,6 +31,7 @@ export class AuthService {
   ) {
     this.user$ = authState(this.auth).pipe(
       map(user => user !== null ? this.userMapper.fromDto(user) : null),
+      shareReplay(1),
     );
     this.isAuthorized$ = this.user$.pipe(
       map(user => user !== null),
@@ -40,11 +41,11 @@ export class AuthService {
   /** Sign in with google. */
   public signInWithGoogle(): Observable<void> {
     const provider = new GoogleAuthProvider();
-    return from(signInWithPopup(this.auth, provider)).pipe(map(() => void 0));
+    return defer(() => signInWithPopup(this.auth, provider)).pipe(mapTo(void 0));
   }
 
   /** Sign out. */
   public signOut(): Observable<void> {
-    return from(signOut(this.auth));
+    return defer(() => signOut(this.auth));
   }
 }

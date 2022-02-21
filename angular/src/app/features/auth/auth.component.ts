@@ -1,27 +1,35 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { DestroyableComponent, takeUntilDestroy } from 'src/app/core/utils/destroyable';
 
 /** Auth component. */
-@DestroyableComponent()
 @Component({
   selector: 'sw-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+
   public constructor(
-    public authService: AuthService,
-    public router: Router,
-  ) {}
+    private readonly authService: AuthService,
+    private readonly router: Router,
+  ) { }
+
+  /** @inheritdoc */
+  public ngOnDestroy(): void {
+    this.destroy$.complete();
+  }
 
   /** Handle sign in with google. */
   public onSignInWithGoogle(): void {
     this.authService
       .signInWithGoogle()
-      .pipe(takeUntilDestroy(this))
-      .subscribe(() => this.router.navigate(['films']));
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        complete: () => this.router.navigate(['films']),
+      });
   }
 }

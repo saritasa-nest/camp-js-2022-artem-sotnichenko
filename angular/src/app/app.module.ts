@@ -10,13 +10,10 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { BlankLayoutComponent } from './features/layouts/blank-layout/blank-layout.component';
-import { MainLayoutComponent } from './features/layouts/main-layout/main-layout.component';
-import { HeaderComponent } from './features/header/header.component';
 
 /** App module. */
 @NgModule({
-  declarations: [AppComponent, BlankLayoutComponent, MainLayoutComponent, HeaderComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

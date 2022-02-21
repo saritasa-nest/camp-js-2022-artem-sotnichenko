@@ -1,22 +1,20 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { DestroyableComponent, takeUntilDestroy } from 'src/app/core/utils/destroyable';
 
-/** App header. */
-@DestroyableComponent()
 @Component({
-  selector: 'sw-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
+  selector: 'sw-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
-
+export class ProfileComponent {
   /** Current user. */
   public readonly user$: Observable<User | null>;
+
+  private readonly destroy$ = new Subject();
 
   public constructor(
     private readonly authService: AuthService,
@@ -25,11 +23,18 @@ export class HeaderComponent {
     this.user$ = this.authService.user$;
   }
 
+  /** @inheritdoc */
+  public ngOnDestroy(): void {
+    this.destroy$.complete();
+  }
+
   /** Signs out user. */
   public onSignOut(): void {
     this.authService
       .signOut()
-      .pipe(takeUntilDestroy(this))
-      .subscribe(() => this.router.navigate(['/']));
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        complete: () => this.router.navigate(['/']),
+      });
   }
 }
