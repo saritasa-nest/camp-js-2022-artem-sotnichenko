@@ -7,6 +7,4 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./films.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilmsComponent {
-  public constructor() {}
-}
+export class FilmsComponent {}
