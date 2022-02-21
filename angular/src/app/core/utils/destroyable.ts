@@ -1,3 +1,5 @@
+// Heroically stolen from saritasa angular boilerplate.
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MonoTypeOperatorFunction, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
