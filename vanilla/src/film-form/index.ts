@@ -50,14 +50,14 @@ subsrcibeToAuthChange(async user => {
     }
   });
 
-  const cancelElement = document.querySelector('.film-form__cancel');
+  const cancelElement = document.querySelector('.film-form__button--cancel');
 
   if (filmId === null) {
     cancelElement?.remove();
     return;
   }
 
-  document.querySelector('.film-form__cancel')?.addEventListener('click', () => redirectToFilm(filmId));
+  document.querySelector('.film-form__button--cancel')?.addEventListener('click', () => redirectToFilm(filmId));
 
   const [
     connectedFilm,

@@ -38,8 +38,6 @@
 
   --border: 1px solid var(--color-border);
 
-  --modal-width: 300px;
-
   --button-padding: var(--size-2) var(--size-3);
   --button-border-radius: var(--border-radius-xs);
   --button-color-bg: var(--color-primary);
@@ -81,6 +79,7 @@ textarea {
 
 a.button {
   margin: 0;
+  text-align: center;
 }
 
 a.button:hover {
@@ -129,7 +128,6 @@ select {
   background-color: var(--input-color-bg);
   color: var(--input-color-text);
 }
-
 
 input:hover,
 textarea:hover,

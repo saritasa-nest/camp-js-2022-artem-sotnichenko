@@ -27,8 +27,8 @@ interface PaginationElements {
 
 /** Get pagination elements. */
 function getPaginationElements(): PaginationElements {
-  const paginationNextElement = document.querySelector<HTMLButtonElement>('.pagination__next');
-  const paginationPrevElement = document.querySelector<HTMLButtonElement>('.pagination__prev');
+  const paginationNextElement = document.querySelector<HTMLButtonElement>('.pagination__button--next');
+  const paginationPrevElement = document.querySelector<HTMLButtonElement>('.pagination__button--prev');
 
   if (paginationNextElement === null || paginationPrevElement === null) {
     throw new Error(ERROR_PAGINATION_ELEMENTS_ARE_NULL);
