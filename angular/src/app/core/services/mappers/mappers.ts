@@ -1,27 +1,27 @@
 /**
  * Mapper of DTO to domain model.
  */
-export interface IMapperFromDto<TDto, TDomain> {
+export interface MapperFromDto<Dto, Domain> {
 
   /**
    * Maps from DTO to Domain model.
    */
-  fromDto(data: TDto): TDomain;
+  fromDto(data: Dto): Domain;
 }
 
 /**
  * Mapper of domain model to DTO.
  */
-export interface IMapperToDto<TDto, TDomain> {
+export interface MapperToDto<Dto, Domain> {
 
   /**
    * Maps from Domain to DTO model.
    */
-  toDto(data: TDomain): TDto;
+  toDto(data: Domain): Dto;
 }
 
 /**
  * Mapper from DTO to Domain model and vice versa.
  */
-export interface IMapper<TDto, TDomain> extends IMapperFromDto<TDto, TDomain>, IMapperToDto<TDto, TDomain> {
+export interface Mapper<Dto, Domain> extends MapperFromDto<Dto, Domain>, MapperToDto<Dto, Domain> {
 }

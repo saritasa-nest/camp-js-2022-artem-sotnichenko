@@ -3,15 +3,15 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DestroyableComponent, takeUntilDestroy } from 'src/app/core/utils/destroyable';
 
-/** Login component. */
+/** Auth component. */
 @DestroyableComponent()
 @Component({
-  selector: 'sw-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: 'sw-auth',
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent {
+export class AuthComponent {
   public constructor(
     public authService: AuthService,
     public router: Router,

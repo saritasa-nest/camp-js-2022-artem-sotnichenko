@@ -1,5 +1,3 @@
-type UserArgs = User;
-
 /** User model. */
 export class User {
   /** Display name. */
@@ -8,8 +6,8 @@ export class User {
   /** Photo url. */
   public readonly photoUrl: string | null;
 
-  public constructor(args: UserArgs) {
-    this.name = args.name;
-    this.photoUrl = args.photoUrl;
+  public constructor(user: User) {
+    this.name = user.name;
+    this.photoUrl = user.photoUrl;
   }
 }

@@ -6,7 +6,7 @@ import { UnauthorizedOnlyGuard } from './core/guards/unauthorized-only.guard';
 const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: () => import('./features/login/login.module').then(m => m.LoginModule),
+    loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
     canActivate: [UnauthorizedOnlyGuard],
   },
 

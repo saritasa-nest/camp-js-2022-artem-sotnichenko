@@ -3,17 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { BlankLayoutComponent } from '../layouts/blank-layout/blank-layout.component';
 
-import { LoginComponent } from './login.component';
+import { AuthComponent } from './auth.component';
 
 const routes: Routes = [
   {
     path: '',
     component: BlankLayoutComponent,
-    children: [{ path: '', component: LoginComponent }],
+    children: [{ path: '', component: AuthComponent }],
   },
 ];
 
-/** Login routing. */
+/** Auth routing. */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],

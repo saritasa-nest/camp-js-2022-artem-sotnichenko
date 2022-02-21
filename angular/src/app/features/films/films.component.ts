@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
-/** Films list. */
+/** Films table component. */
 @Component({
   selector: 'sw-films',
   templateUrl: './films.component.html',
