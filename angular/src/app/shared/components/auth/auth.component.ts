@@ -3,7 +3,12 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 
-/** Auth component. */
+/**
+ * Authorization form component.
+ *
+ * Wrapper that have social authorization buttons
+ * and expect component of other authorization method (email+password) to be placed inside.
+ */
 @Component({
   selector: 'sw-auth',
   templateUrl: './auth.component.html',
