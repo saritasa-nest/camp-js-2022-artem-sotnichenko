@@ -25,6 +25,7 @@ export class AuthComponent implements OnDestroy {
   /** @inheritdoc */
   public ngOnDestroy(): void {
     this.destroy$.next();
+    this.destroy$.unsubscribe();
   }
 
   /** Handle sign in with google. */

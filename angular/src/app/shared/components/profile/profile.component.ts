@@ -27,6 +27,7 @@ export class ProfileComponent implements OnDestroy {
   /** @inheritdoc */
   public ngOnDestroy(): void {
     this.destroy$.next();
+    this.destroy$.unsubscribe();
   }
 
   /** Signs out user. */

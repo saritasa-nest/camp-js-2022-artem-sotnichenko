@@ -22,6 +22,7 @@ export class SignUpComponent implements OnDestroy {
   /** @inheritdoc */
   public ngOnDestroy(): void {
     this.destroy$.next();
+    this.destroy$.unsubscribe();
   }
 
   /**
