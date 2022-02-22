@@ -12,7 +12,6 @@ import { LogoComponent } from './components/logo/logo.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component';
-import { AuthFormComponent } from './components/auth-form/auth-form.component';
 import { HeaderComponent } from './components/header/header.component';
 
 const COMPONENTS = [
@@ -20,7 +19,6 @@ const COMPONENTS = [
   AvatarComponent,
   ProfileComponent,
   SignInFormComponent,
-  AuthFormComponent,
 ];
 
 const LAYOUTS = [
