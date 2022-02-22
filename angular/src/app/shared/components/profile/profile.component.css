@@ -10,4 +10,5 @@
 
 .profile__avatar {
   height: var(--font-size-md);
+  width: var(--font-size-md);
 }
