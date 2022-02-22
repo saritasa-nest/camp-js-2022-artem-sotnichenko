@@ -10,7 +10,10 @@ const ANONYMOUS_NAME = 'Anonymous' as const;
  */
 @Injectable({ providedIn: 'root' })
 export class UserMapper {
-  /** @inheritdoc */
+  /**
+   * Maps user dto to user model.
+   * @param dto User DTO.
+   */
   public fromDto(dto: UserDto): User {
     return new User({
       name: dto.displayName ?? ANONYMOUS_NAME,

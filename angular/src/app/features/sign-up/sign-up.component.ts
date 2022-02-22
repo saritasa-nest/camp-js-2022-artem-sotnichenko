@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { SignInForm } from 'src/app/core/models/sign-in-form';
+import { SignInData } from 'src/app/core/models/sign-in-form';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 /** Sign up page. */
@@ -15,7 +15,7 @@ export class SignUpComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   /** Error messages. */
-  public errorMessage$ = new Subject<string>();
+  public readonly errorMessage$ = new Subject<string>();
 
   private errors: Record<string, string> = {
     'auth/invalid-email': 'Invalid email.',
@@ -37,7 +37,7 @@ export class SignUpComponent implements OnDestroy {
    * Handles sign up.
    * @param form Form.
    */
-  public onFormChange(form: SignInForm): void {
+  public onFormChange(form: SignInData): void {
     this.authService
       .signUpWithEmailAndPassword(form)
       .pipe(takeUntil(this.destroy$))

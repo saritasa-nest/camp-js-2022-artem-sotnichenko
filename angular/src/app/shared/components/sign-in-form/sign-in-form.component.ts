@@ -1,7 +1,7 @@
 
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SignInForm } from 'src/app/core/models/sign-in-form';
+import { SignInData } from 'src/app/core/models/sign-in-form';
 
 /** Sign in form. */
 @Component({
@@ -17,7 +17,7 @@ export class SignInFormComponent {
 
   /** Change event. */
   @Output()
-  public formChange = new EventEmitter<SignInForm>();
+  public readonly formChange = new EventEmitter<SignInData>();
 
   /** Sign form with validation rules. */
   public signInForm = this.fb.group({

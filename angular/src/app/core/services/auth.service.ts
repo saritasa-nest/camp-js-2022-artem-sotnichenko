@@ -10,7 +10,7 @@ import {
 } from '@angular/fire/auth';
 import { defer, map, mapTo, Observable, shareReplay } from 'rxjs';
 
-import { SignInForm } from '../models/sign-in-form';
+import { SignInData } from '../models/sign-in-form';
 
 import { User } from '../models/user';
 
@@ -52,7 +52,7 @@ export class AuthService {
    * Sign in with email and password.
    * @param options Email and password object.
    */
-  public signInWithEmailAndPassword({ email, password }: SignInForm): Observable<void> {
+  public signInWithEmailAndPassword({ email, password }: SignInData): Observable<void> {
     return defer(() => signInWithEmailAndPassword(this.auth, email, password)).pipe(mapTo(void 0));
   }
 
@@ -60,7 +60,7 @@ export class AuthService {
    * Sign up with email and password.
    * @param options Email and password object.
    */
-  public signUpWithEmailAndPassword({ email, password }: SignInForm): Observable<void> {
+  public signUpWithEmailAndPassword({ email, password }: SignInData): Observable<void> {
     return defer(() => createUserWithEmailAndPassword(this.auth, email, password)).pipe(mapTo(void 0));
   }
 

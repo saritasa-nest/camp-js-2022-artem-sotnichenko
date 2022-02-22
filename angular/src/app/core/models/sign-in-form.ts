@@ -1,5 +1,5 @@
-/** Sign in form. */
-export interface SignInForm {
+/** Sign in form data. */
+export interface SignInData {
 
   /** Email. */
   readonly email: string;
