@@ -1,14 +1,14 @@
 <sw-blank-layout>
-  <sw-auth title="Sign in">
-    <div error *ngIf="errorMessage$ | async as errorMessage">
+  <sw-auth-form title="Sign in">
+    <div formError *ngIf="errorMessage$ | async as errorMessage">
       {{ errorMessage }}
     </div>
     <sw-sign-in-form
       (formChange)="onFormChange($event)"
       buttonText="Sign in"
     ></sw-sign-in-form>
-    <div hint>
+    <div formHint>
       Don't have an acount? <a routerLink="/auth/signup">Sign up</a>
     </div>
-  </sw-auth>
+  </sw-auth-form>
 </sw-blank-layout>

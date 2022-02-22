@@ -13,7 +13,7 @@ import { LogoComponent } from './components/logo/logo.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component';
-import { AuthComponent } from './components/auth/auth.component';
+import { AuthFormComponent } from './components/auth-form/auth-form.component';
 
 const COMPONENTS = [
   BlankLayoutComponent,
@@ -23,7 +23,7 @@ const COMPONENTS = [
   AvatarComponent,
   ProfileComponent,
   SignInFormComponent,
-  AuthComponent,
+  AuthFormComponent,
 ];
 
 /** Shared module, for shared components and derectives. */

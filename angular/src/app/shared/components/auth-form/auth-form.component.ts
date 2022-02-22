@@ -6,16 +6,16 @@ import { AuthService } from 'src/app/core/services/auth.service';
 /**
  * Authorization form component.
  *
- * Wrapper that have social authorization buttons
+ * Wrapper that have social authorization buttons on the top
  * and expect component of other authorization method (email+password) to be placed inside.
  */
 @Component({
-  selector: 'sw-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css'],
+  selector: 'sw-auth-form',
+  templateUrl: './auth-form.component.html',
+  styleUrls: ['./auth-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthComponent implements OnDestroy {
+export class AuthFormComponent implements OnDestroy {
   /** Auth form title. */
   @Input()
   public title = '';
