@@ -30,7 +30,7 @@ export class AuthService {
   /** Whether is user authorized. */
   public readonly isAuthorized$: Observable<boolean>;
 
-  private errors: Record<string, string> = {
+  private readonly errors: Record<string, string> = {
     'auth/invalid-email': 'Invalid email.',
     'auth/user-not-found': 'User not found.',
     'unknown': 'Unknown error.',
