@@ -8,7 +8,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from '@angular/fire/auth';
-import { defer, map, mapTo, Observable, shareReplay } from 'rxjs';
+import { FirestoreError } from 'firebase/firestore';
+import { catchError, defer, map, mapTo, Observable, shareReplay, throwError } from 'rxjs';
 
 import { SignInData } from '../models/sign-in-form';
 
@@ -29,6 +30,12 @@ export class AuthService {
   /** Whether is user authorized. */
   public readonly isAuthorized$: Observable<boolean>;
 
+  private errors: Record<string, string> = {
+    'auth/invalid-email': 'Invalid email.',
+    'auth/user-not-found': 'User not found.',
+    'unknown': 'Unknown error.',
+  };
+
   public constructor(
     private readonly auth: Auth,
     private readonly userMapper: UserMapper,
@@ -42,10 +49,17 @@ export class AuthService {
     );
   }
 
+  private mapError(error: FirestoreError): Error {
+    return new Error(this.errors[error?.code] ?? this.errors['unknown']);
+  }
+
   /** Sign in with google. */
   public signInWithGoogle(): Observable<void> {
     const provider = new GoogleAuthProvider();
-    return defer(() => signInWithPopup(this.auth, provider)).pipe(mapTo(void 0));
+    return defer(() => signInWithPopup(this.auth, provider)).pipe(
+      catchError((err: FirestoreError) => throwError(() => this.mapError(err))),
+      mapTo(void 0),
+    );
   }
 
   /**
@@ -53,7 +67,10 @@ export class AuthService {
    * @param options Email and password object.
    */
   public signInWithEmailAndPassword({ email, password }: SignInData): Observable<void> {
-    return defer(() => signInWithEmailAndPassword(this.auth, email, password)).pipe(mapTo(void 0));
+    return defer(() => signInWithEmailAndPassword(this.auth, email, password)).pipe(
+      catchError((err: FirestoreError) => throwError(() => this.mapError(err))),
+      mapTo(void 0),
+    );
   }
 
   /**
@@ -61,7 +78,10 @@ export class AuthService {
    * @param options Email and password object.
    */
   public signUpWithEmailAndPassword({ email, password }: SignInData): Observable<void> {
-    return defer(() => createUserWithEmailAndPassword(this.auth, email, password)).pipe(mapTo(void 0));
+    return defer(() => createUserWithEmailAndPassword(this.auth, email, password)).pipe(
+      catchError((err: FirestoreError) => throwError(() => this.mapError(err))),
+      mapTo(void 0),
+    );
   }
 
   /** Sign out. */

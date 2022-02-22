@@ -2,12 +2,18 @@
   <h1 class="auth__title">{{ title }}</h1>
   <div class="auth__content">
     <div class="auth__socials">
+      <div
+        *ngIf="errorMessage$ | async as errorMessage"
+        class="auth__error auth__error_socials"
+      >
+        {{ errorMessage }}
+      </div>
       <button type="button" mat-stroked-button (click)="onSignInWithGoogle()">
         Continue with Google
       </button>
     </div>
     <div class="auth__form">
-      <div class="auth__error">
+      <div class="auth__error auth__error_form">
         <ng-content select="[formError]"></ng-content>
       </div>
       <ng-content></ng-content>

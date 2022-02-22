@@ -17,11 +17,6 @@ export class SignInComponent implements OnDestroy {
   /** Error messages. */
   public readonly errorMessage$ = new Subject<string>();
 
-  private errors: Record<string, string> = {
-    'auth/user-not-found': 'User not found.',
-    'default': 'Unknown error.',
-  };
-
   public constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
@@ -42,12 +37,8 @@ export class SignInComponent implements OnDestroy {
       .signInWithEmailAndPassword(form)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        error: e => this.handleError(e.code as string),
+        error: (e: Error) => this.errorMessage$.next(e.message),
         complete: () => this.router.navigate(['/']),
       });
-  }
-
-  private handleError(code: string): void {
-    this.errorMessage$.next(this.errors[code] ?? this.errors['default']);
   }
 }

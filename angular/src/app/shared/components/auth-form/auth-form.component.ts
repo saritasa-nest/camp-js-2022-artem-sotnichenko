@@ -20,6 +20,9 @@ export class AuthFormComponent implements OnDestroy {
   @Input()
   public title = '';
 
+  /** Error messages. */
+  public readonly errorMessage$ = new Subject<string>();
+
   private readonly destroy$ = new Subject<void>();
 
   public constructor(
@@ -39,6 +42,7 @@ export class AuthFormComponent implements OnDestroy {
       .signInWithGoogle()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
+        error: (e: Error) => this.errorMessage$.next(e.message),
         complete: () => this.router.navigate(['films']),
       });
   }
