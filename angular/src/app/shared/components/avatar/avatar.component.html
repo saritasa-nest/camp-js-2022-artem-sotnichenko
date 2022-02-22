@@ -1,10 +1,5 @@
 <div class="avatar">
-  <img
-    *ngIf="src; else placeholder"
-    [src]="src"
-    [alt]="alt"
-    class="avatar__image"
-  />
+  <img *ngIf="src; else placeholder" [src]="src" alt="" class="avatar__image" />
   <ng-template #placeholder>
     <mat-icon
       class="avatar__placeholder"
