@@ -14,6 +14,14 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class SignInComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
+  /** Error messages. */
+  public errorMessage$ = new Subject<string>();
+
+  private errors: Record<string, string> = {
+    'auth/user-not-found': 'User not found.',
+    'default': 'Unknown error.',
+  };
+
   public constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
@@ -34,7 +42,12 @@ export class SignInComponent implements OnDestroy {
       .signInWithEmailAndPassword(form)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
+        error: e => this.handleError(e.code as string),
         complete: () => this.router.navigate(['/']),
       });
+  }
+
+  private handleError(code: string): void {
+    this.errorMessage$.next(this.errors[code] ?? this.errors['default']);
   }
 }

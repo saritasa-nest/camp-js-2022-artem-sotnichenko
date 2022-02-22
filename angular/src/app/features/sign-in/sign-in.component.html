@@ -1,5 +1,8 @@
 <sw-blank-layout>
   <sw-auth title="Sign in">
+    <div error *ngIf="errorMessage$ | async as errorMessage">
+      {{ errorMessage }}
+    </div>
     <sw-sign-in-form
       (formChange)="onFormChange($event)"
       buttonText="Sign in"

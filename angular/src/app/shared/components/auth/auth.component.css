@@ -19,7 +19,7 @@
 .auth__content {
   display: flex;
   flex-direction: column;
-  gap: var(--size-12);
+  gap: var(--size-8);
 }
 
 .auth__socials {
@@ -36,4 +36,10 @@
 
 .auth__hint {
   text-align: center;
+}
+
+.auth__error {
+  text-align: center;
+  color: var(--color-error);
+  height: var(--font-size-sm);
 }

@@ -1,4 +1,6 @@
 :root {
+  --color-error: #ef4444;
+
   --size-1: 4px;
   --size-2: 8px;
   --size-3: 12px;

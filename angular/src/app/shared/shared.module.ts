@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { RouterModule } from '@angular/router';
+
 import { MaterialModule } from './material.module';
 import { BlankLayoutComponent } from './components/blank-layout/blank-layout.component';
 import { MainLayoutComponent } from './components/main-layout/main-layout.component';
@@ -32,6 +34,7 @@ const COMPONENTS = [
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   exports: [
     MaterialModule,

@@ -14,6 +14,14 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class SignUpComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
+  /** Error messages. */
+  public errorMessage$ = new Subject<string>();
+
+  private errors: Record<string, string> = {
+    'auth/invalid-email': 'Invalid email.',
+    'default': 'Unknown error.',
+  };
+
   public constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
@@ -34,7 +42,13 @@ export class SignUpComponent implements OnDestroy {
       .signUpWithEmailAndPassword(form)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
+        error: e => this.handleError(e.code as string),
         complete: () => this.router.navigate(['/']),
       });
+  }
+
+  private handleError(code: string): void {
+    console.log(code);
+    this.errorMessage$.next(this.errors[code] ?? this.errors['default']);
   }
 }
