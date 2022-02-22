@@ -48,7 +48,6 @@ export class SignUpComponent implements OnDestroy {
   }
 
   private handleError(code: string): void {
-    console.log(code);
     this.errorMessage$.next(this.errors[code] ?? this.errors['default']);
   }
 }
