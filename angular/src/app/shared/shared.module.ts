@@ -6,19 +6,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from './material.module';
-import { BlankLayoutComponent } from './components/blank-layout/blank-layout.component';
-import { MainLayoutComponent } from './components/main-layout/main-layout.component';
-import { HeaderComponent } from './components/header/header.component';
+import { BlankLayoutComponent } from './layouts/blank-layout/blank-layout.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { LogoComponent } from './components/logo/logo.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component';
 import { AuthFormComponent } from './components/auth-form/auth-form.component';
+import { HeaderComponent } from './components/header/header.component';
 
 const COMPONENTS = [
-  BlankLayoutComponent,
-  MainLayoutComponent,
-  HeaderComponent,
   LogoComponent,
   AvatarComponent,
   ProfileComponent,
@@ -26,9 +23,18 @@ const COMPONENTS = [
   AuthFormComponent,
 ];
 
+const LAYOUTS = [
+  BlankLayoutComponent,
+  MainLayoutComponent,
+];
+
 /** Shared module, for shared components and derectives. */
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [
+    HeaderComponent,
+    ...COMPONENTS,
+    ...LAYOUTS,
+  ],
   imports: [
     CommonModule,
     MaterialModule,
@@ -39,6 +45,7 @@ const COMPONENTS = [
   exports: [
     MaterialModule,
     ...COMPONENTS,
+    ...LAYOUTS,
   ],
 })
 export class SharedModule { }
