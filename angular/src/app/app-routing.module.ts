@@ -4,7 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { UnauthorizedOnlyGuard } from './core/guards/unauthorized-only.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/films', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: '/films',
+    pathMatch: 'full',
+  },
   {
     path: 'films',
     loadChildren: () => import('./features/films/films.module').then(m => m.FilmsModule),

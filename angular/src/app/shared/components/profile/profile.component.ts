@@ -1,6 +1,5 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
 import { User } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -11,32 +10,13 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./profile.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileComponent implements OnDestroy {
+export class ProfileComponent {
   /** Current user. */
   public readonly user$: Observable<User | null>;
 
-  private readonly destroy$ = new Subject<void>();
-
   public constructor(
     private readonly authService: AuthService,
-    private readonly router: Router,
   ) {
     this.user$ = this.authService.user$;
-  }
-
-  /** @inheritdoc */
-  public ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.unsubscribe();
-  }
-
-  /** Signs out user. */
-  public onSignOut(): void {
-    this.authService
-      .signOut()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        complete: () => this.router.navigate(['/']),
-      });
   }
 }

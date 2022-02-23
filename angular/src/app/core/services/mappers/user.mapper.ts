@@ -3,7 +3,7 @@ import { User as UserDto } from 'firebase/auth';
 import { User } from 'src/app/core/models/user';
 
 /** Used when there are no name provided. */
-const ANONYMOUS_NAME = 'Anonymous' as const;
+const ANONYMOUS_NAME = 'Anonymous';
 
 /**
  * Mapper for user entities.
