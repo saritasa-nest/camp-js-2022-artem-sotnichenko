@@ -1,0 +1,8 @@
+<div class="film-line">
+  <div class="film-line__title">{{ title }}</div>
+  <div class="film-line__producers">{{ producers.join(", ") }}</div>
+  <div class="film-line__director">{{ director }}</div>
+  <div class="film-line__release-date">
+    {{ releaseDate | date: "mediumDate" }}
+  </div>
+</div>

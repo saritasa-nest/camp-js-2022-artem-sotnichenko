@@ -1,1 +1,17 @@
-<sw-main-layout><p>films works!</p> </sw-main-layout>
+<sw-main-layout>
+  <div class="films">
+    <div class="films__head">
+      <div class="films__column films__column_title">Title</div>
+      <div class="films__column films__column_producers">Producers</div>
+      <div class="films__column films__column_director">Director</div>
+      <div class="films__column films__column_release-date">Release</div>
+    </div>
+    <sw-film-line
+      *ngFor="let film of films$ | async as films"
+      [title]="film.title"
+      [producers]="film.producers.concat()"
+      [director]="film.director"
+      [releaseDate]="film.releaseDate"
+    ></sw-film-line>
+  </div>
+</sw-main-layout>
