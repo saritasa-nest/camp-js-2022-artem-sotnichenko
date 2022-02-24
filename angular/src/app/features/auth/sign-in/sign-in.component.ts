@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { SignInData } from 'src/app/core/models/sign-in-form';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { DestroyService } from 'src/app/core/services/destroy.service';
 
 /** Sign in page. */
 @Component({
@@ -10,23 +11,17 @@ import { AuthService } from 'src/app/core/services/auth.service';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DestroyService],
 })
-export class SignInComponent implements OnDestroy {
+export class SignInComponent {
   /** Error messages. */
   public readonly errorMessage$ = new Subject<string>();
 
-  private readonly destroy$ = new Subject<void>();
-
   public constructor(
+    private readonly destroy$: DestroyService,
     private readonly authService: AuthService,
     private readonly router: Router,
   ) {}
-
-  /** @inheritdoc */
-  public ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.unsubscribe();
-  }
 
   /**
    * Handles sign in.

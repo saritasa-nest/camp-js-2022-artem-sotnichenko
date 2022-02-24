@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { DestroyService } from 'src/app/core/services/destroy.service';
 
 /**
  * Authorization form component.
@@ -14,8 +15,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
   templateUrl: './auth-form.component.html',
   styleUrls: ['./auth-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DestroyService],
 })
-export class AuthFormComponent implements OnDestroy {
+export class AuthFormComponent {
   /** Auth form title. */
   @Input()
   public title = '';
@@ -23,18 +25,11 @@ export class AuthFormComponent implements OnDestroy {
   /** Error messages. */
   public readonly errorMessage$ = new Subject<string>();
 
-  private readonly destroy$ = new Subject<void>();
-
   public constructor(
+    private readonly destroy$: DestroyService,
     private readonly authService: AuthService,
     private readonly router: Router,
   ) { }
-
-  /** @inheritdoc */
-  public ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.unsubscribe();
-  }
 
   /** Handle sign in with google. */
   public onSignInWithGoogle(): void {
