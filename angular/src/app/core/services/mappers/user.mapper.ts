@@ -15,9 +15,9 @@ export class UserMapper {
    * @param dto User DTO.
    */
   public fromDto(dto: UserDto): User {
-    return new User({
+    return {
       name: dto.displayName ?? ANONYMOUS_NAME,
       photoUrl: dto.photoURL,
-    });
+    };
   }
 }
