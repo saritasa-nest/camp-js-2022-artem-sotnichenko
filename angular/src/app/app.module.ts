@@ -23,7 +23,6 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     SharedModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -12,10 +12,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent implements OnDestroy {
-  private readonly destroy$ = new Subject<void>();
-
   /** Error messages. */
   public readonly errorMessage$ = new Subject<string>();
+
+  private readonly destroy$ = new Subject<void>();
 
   public constructor(
     private readonly authService: AuthService,

@@ -28,14 +28,8 @@ export class AuthService {
   /** Current user state. */
   public readonly user$: Observable<User | null>;
 
-  /** Whether is user authorized. */
+  /** Whether user is authorized. */
   public readonly isAuthorized$: Observable<boolean>;
-
-  private readonly errors: Record<string, string> = {
-    'auth/invalid-email': 'Invalid email.',
-    'auth/user-not-found': 'User not found.',
-    'unknown': 'Unknown error.',
-  };
 
   public constructor(
     private readonly auth: Auth,
@@ -44,7 +38,7 @@ export class AuthService {
   ) {
     this.user$ = authState(this.auth).pipe(
       map(user => user !== null ? this.userMapper.fromDto(user) : null),
-      shareReplay(1),
+      shareReplay({ refCount: true, bufferSize: 1 }),
     );
     this.isAuthorized$ = this.user$.pipe(
       map(user => user !== null),
