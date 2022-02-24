@@ -14,14 +14,11 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component';
 import { HeaderComponent } from './components/header/header.component';
 
-const COMPONENTS = [
+const EXPORTED_DECLARATIONS = [
   LogoComponent,
   AvatarComponent,
   ProfileComponent,
   SignInFormComponent,
-];
-
-const LAYOUTS = [
   BlankLayoutComponent,
   MainLayoutComponent,
 ];
@@ -30,8 +27,7 @@ const LAYOUTS = [
 @NgModule({
   declarations: [
     HeaderComponent,
-    ...COMPONENTS,
-    ...LAYOUTS,
+    ...EXPORTED_DECLARATIONS,
   ],
   imports: [
     CommonModule,
@@ -42,8 +38,7 @@ const LAYOUTS = [
   ],
   exports: [
     MaterialModule,
-    ...COMPONENTS,
-    ...LAYOUTS,
+    ...EXPORTED_DECLARATIONS,
   ],
 })
 export class SharedModule { }

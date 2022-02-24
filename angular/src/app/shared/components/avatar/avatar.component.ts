@@ -11,8 +11,4 @@ export class AvatarComponent {
   /** Avatar src. */
   @Input()
   public src: string | null = null;
-
-  /** Image alt. */
-  @Input()
-  public alt: string | null = null;
 }

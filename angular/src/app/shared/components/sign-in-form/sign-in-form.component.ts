@@ -19,7 +19,7 @@ export class SignInFormComponent {
   public readonly formChange = new EventEmitter<SignInData>();
 
   /** Sign in form. */
-  public signInForm = this.fb.group({
+  public readonly signInForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
