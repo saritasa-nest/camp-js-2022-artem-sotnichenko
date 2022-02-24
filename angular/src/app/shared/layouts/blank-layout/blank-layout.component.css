@@ -1,5 +1,6 @@
 :host {
   display: block;
+  height: 100%;
 }
 
 .blank-layout {
@@ -7,5 +8,5 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
 }
