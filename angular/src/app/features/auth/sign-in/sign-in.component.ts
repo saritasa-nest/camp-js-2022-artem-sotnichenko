@@ -32,8 +32,8 @@ export class SignInComponent {
       .signInWithEmailAndPassword(form)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
+        next: () => this.router.navigate(['/']),
         error: (e: Error) => this.errorMessage$.next(e.message),
-        complete: () => this.router.navigate(['/']),
       });
   }
 }

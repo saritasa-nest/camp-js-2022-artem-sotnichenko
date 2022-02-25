@@ -37,8 +37,8 @@ export class AuthFormComponent {
       .signInWithGoogle()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
+        next: () => this.router.navigate(['films']),
         error: (e: Error) => this.errorMessage$.next(e.message),
-        complete: () => this.router.navigate(['films']),
       });
   }
 }

@@ -31,7 +31,7 @@ export class HeaderComponent {
       .signOut()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        complete: () => this.router.navigate(['/']),
+        next: () => this.router.navigate(['/']),
       });
   }
 }
