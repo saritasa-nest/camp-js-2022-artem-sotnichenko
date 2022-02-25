@@ -4,7 +4,7 @@ import { ReplaySubject } from 'rxjs';
 /**
  * Observable abstraction over ngOnDestroy to use with takeUntil.
  *
- * Component must have providers: `[TuiDestroyService]`.
+ * Component must have providers: `[DestroyService]`.
  * Also add `@Self()` to get error if service taken from its parent.
  *
  * Implementation is taken from https://github.com/Tinkoff/taiga-ui.
