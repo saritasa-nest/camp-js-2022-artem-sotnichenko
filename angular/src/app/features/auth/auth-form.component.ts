@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Self } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -26,7 +26,7 @@ export class AuthFormComponent {
   public readonly errorMessage$ = new Subject<string>();
 
   public constructor(
-    private readonly destroy$: DestroyService,
+    @Self() private readonly destroy$: DestroyService,
     private readonly authService: AuthService,
     private readonly router: Router,
   ) { }

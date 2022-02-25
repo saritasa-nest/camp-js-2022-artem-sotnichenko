@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { SignInData } from 'src/app/core/models/sign-in-form';
@@ -18,7 +18,7 @@ export class SignInComponent {
   public readonly errorMessage$ = new Subject<string>();
 
   public constructor(
-    private readonly destroy$: DestroyService,
+    @Self() private readonly destroy$: DestroyService,
     private readonly authService: AuthService,
     private readonly router: Router,
   ) {}
