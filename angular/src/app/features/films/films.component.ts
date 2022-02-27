@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FilmService } from 'src/app/core/services/film.service';
+import { Film } from 'src/app/core/models/film';
+import { FilmService } from 'src/app/core/services/film/film.service';
 
 /** Films table component. */
 @Component({
@@ -14,7 +15,14 @@ export class FilmsComponent {
 
   public constructor(
     private readonly filmService: FilmService,
-  ) {
-    // this.filmService.films$.subscribe(films => console.log(films));
+  ) {}
+
+  /**
+   * Film track function for ngFor.
+   * @param _index Index in array.
+   * @param film Film.
+   */
+  public trackFilm(_index: number, film: Film): string | undefined {
+    return film ? film.id : undefined;
   }
 }

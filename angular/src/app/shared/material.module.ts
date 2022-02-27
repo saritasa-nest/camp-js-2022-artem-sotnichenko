@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
 
 const MATERIAL_MODULES = [
   MatInputModule,
@@ -12,6 +13,7 @@ const MATERIAL_MODULES = [
   MatIconModule,
   MatFormFieldModule,
   MatDividerModule,
+  MatSelectModule,
 ];
 
 /** Material imports. */

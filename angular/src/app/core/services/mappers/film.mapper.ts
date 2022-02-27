@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Film } from '../../models/film';
 
-import { FilmDto } from './dto/film';
+import { FilmDto } from './dto/film.dto';
 
 /**
  * Mapper for user entities.

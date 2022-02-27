@@ -1,4 +1,4 @@
-import { FirebaseWrapper } from './firebase-wrapper';
+import { FirebaseWrapper } from './firebase-wrapper.dto';
 
 /** Film data that stored in firestore. */
 export interface FilmDocument {

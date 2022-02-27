@@ -1,17 +1,20 @@
 <sw-main-layout>
   <div class="films">
-    <div class="films__head">
-      <div class="films__column films__column_title">Title</div>
-      <div class="films__column films__column_producers">Producers</div>
-      <div class="films__column films__column_director">Director</div>
-      <div class="films__column films__column_release-date">Release</div>
+    <div class="films__table">
+      <div class="films__head">
+        <div class="films__column films__column_title">Title</div>
+        <div class="films__column films__column_producers">Producers</div>
+        <div class="films__column films__column_director">Director</div>
+        <div class="films__column films__column_release-date">Release</div>
+      </div>
+      <sw-film-line
+        *ngFor="let film of films$ | async; trackBy: trackFilm"
+        [title]="film.title"
+        [producers]="film.producers.concat()"
+        [director]="film.director"
+        [releaseDate]="film.releaseDate"
+      ></sw-film-line>
     </div>
-    <sw-film-line
-      *ngFor="let film of films$ | async as films"
-      [title]="film.title"
-      [producers]="film.producers.concat()"
-      [director]="film.director"
-      [releaseDate]="film.releaseDate"
-    ></sw-film-line>
+    <sw-filters class="films__filters"></sw-filters>
   </div>
 </sw-main-layout>

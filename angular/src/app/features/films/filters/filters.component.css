@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4);
+}
+
+.filters__sort {
+  display: flex;
+  flex-direction: column;
+}
+
+.filters__buttons {
+  display: flex;
+  gap: var(--size-2);
+}
+
+.filters__button {
+  flex-grow: 1;
+}

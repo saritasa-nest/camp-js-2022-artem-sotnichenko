@@ -10,19 +10,19 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 export class FilmLineComponent {
   /** Title. */
   @Input()
-  public title: string;
+  public title = '';
 
   /** Director. */
   @Input()
-  public director: string;
+  public director = '';
 
   /** Producers. */
   @Input()
-  public producers: string[];
+  public producers: string[] = [];
 
   /** Release date. */
   @Input()
-  public releaseDate: Date;
+  public releaseDate: Date = new Date();
 
   public constructor() {}
 }
