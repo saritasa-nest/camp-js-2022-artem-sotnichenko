@@ -1,17 +1,18 @@
 :host {
   display: block;
   --title-width: 200px;
-  /* --producers-width: 300px;
-  --director-width: 100px;
-  --release-date-width: 88px; */
-  --producers-width: 50px;
+  --producers-width: 200px;
+  --director-width: 120px;
+  --release-date-width: 88px;
+  /* --producers-width: 50px;
   --director-width: 50px;
-  --release-date-width: 50px;
+  --release-date-width: 50px; */
 }
 
 .films {
   display: flex;
-  gap: var(--size-4)
+  gap: var(--size-4);
+  align-items: start;
 }
 
 .films__table {
@@ -19,14 +20,13 @@
   flex-direction: column;
   border: 1px solid var(--color-border);
   padding-bottom: var(--size-2);
-  border-radius: 8px;
+  border-radius: var(--rounded-md);
 }
 
 .films__head {
   display: flex;
   gap: var(--size-4);
   padding: var(--size-3) var(--size-4);
-  margin-bottom: var(--size-2);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -45,4 +45,9 @@
 }
 .films__column_release-date {
   width: var(--release-date-width);
+}
+
+.films__filters {
+  /* for blocks to be on the same line, material inputs have top margin. */
+  margin-top: -0.25em;
 }
