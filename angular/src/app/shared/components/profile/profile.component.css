@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+.profile {
+  display: flex;
+  gap: var(--size-1);
+  align-items: center;
+}
+
+.profile__avatar {
+  height: var(--font-size-md);
+  width: var(--font-size-md);
+}

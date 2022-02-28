@@ -1,0 +1,17 @@
+<sw-blank-layout>
+  <sw-auth-form title="Sign up">
+    <ng-container
+      ngProjectAs="formError"
+      *ngIf="errorMessage$ | async as errorMessage"
+    >
+      {{ errorMessage }}
+    </ng-container>
+    <sw-sign-in-form
+      (formChange)="onFormChange($event)"
+      buttonText="Sign up"
+    ></sw-sign-in-form>
+    <ng-container ngProjectAs="formHint">
+      Already have an account? <a routerLink="/auth/signin">Sign in</a>
+    </ng-container>
+  </sw-auth-form>
+</sw-blank-layout>

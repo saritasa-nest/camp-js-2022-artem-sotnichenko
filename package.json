@@ -1,0 +1,29 @@
+{
+  "name": "camp-js-2022-artem-sotnichenko",
+  "version": "1.0.0",
+  "description": "Artem-Sotnichenko Repository For Camp-Js",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saritasa-nest/camp-js-2022-artem-sotnichenko.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saritasa-nest/camp-js-2022-artem-sotnichenko/issues"
+  },
+  "homepage": "https://github.com/saritasa-nest/camp-js-2022-artem-sotnichenko#readme",
+  "devDependencies": {
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.4"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,html}": "eslint --cache --fix",
+    "src/**/*.*css": "stylelint --fix",
+    "src/**/*.html": "prettier --write"
+  }
+}

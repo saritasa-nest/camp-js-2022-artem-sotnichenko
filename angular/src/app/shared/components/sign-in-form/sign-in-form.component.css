@@ -1,0 +1,8 @@
+:host {
+  display: block;
+}
+
+.sign-in-form {
+  display: flex;
+  flex-direction: column;
+}

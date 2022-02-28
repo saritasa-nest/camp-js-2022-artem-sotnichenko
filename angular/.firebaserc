@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "artem-sotnichenko-camp": {
+      "hosting": {
+        "sw-films": [
+          "artem-sotnichenko-camp"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "artem-sotnichenko-camp"
+  }
+}

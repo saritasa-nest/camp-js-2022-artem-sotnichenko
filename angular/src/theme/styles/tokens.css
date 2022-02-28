@@ -1,0 +1,24 @@
+:root {
+  --color-error: #ef4444;
+
+  /*
+   * It is a common approach in web design for all sizes to be multiples 4 for consistency and simplicity.
+   * A lot of ui frameworks are using it, chakra-ui and tailwindcss.
+   */
+  --size-1: 4px;
+  --size-2: 8px;
+  --size-3: 12px;
+  --size-4: 16px;
+  --size-5: 20px;
+  --size-6: 24px;
+  --size-7: 28px;
+  --size-8: 32px;
+  --size-9: 36px;
+  --size-10: 40px;
+  --size-11: 44px;
+  --size-12: 48px;
+
+  --font-size-sm: 16px;
+  --font-size-md: 20px;
+  --font-size-lg: 32px;
+}

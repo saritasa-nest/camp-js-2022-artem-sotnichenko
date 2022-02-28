@@ -1,0 +1,25 @@
+<header class="header">
+  <sw-logo></sw-logo>
+  <div class="header__user-block">
+    <ng-container *ngIf="isAuthorized$ | async; else signInLink">
+      <sw-profile></sw-profile>
+      <button
+        type="button"
+        mat-button
+        class="header__button header__button_signout"
+        (click)="onSignOut()"
+      >
+        Sign out
+      </button>
+    </ng-container>
+    <ng-template #signInLink>
+      <a
+        mat-button
+        class="header__button header__button_signin"
+        routerLink="/auth/signin"
+      >
+        Sign in
+      </a>
+    </ng-template>
+  </div>
+</header>

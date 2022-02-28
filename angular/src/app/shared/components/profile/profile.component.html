@@ -1,0 +1,4 @@
+<div *ngIf="user$ | async as user" class="profile">
+  <sw-avatar class="profile__avatar" [src]="user.photoUrl"></sw-avatar>
+  <div class="profile__name">{{ user.name }}</div>
+</div>

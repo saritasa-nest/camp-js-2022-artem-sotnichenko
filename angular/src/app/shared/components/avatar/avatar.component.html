@@ -1,0 +1,12 @@
+<div class="avatar">
+  <img *ngIf="src; else placeholder" [src]="src" alt="" class="avatar__image" />
+  <ng-template #placeholder>
+    <mat-icon
+      class="avatar__placeholder"
+      inline
+      aria-hidden="false"
+      aria-label="Avatar placeholder"
+      >account_circle</mat-icon
+    >
+  </ng-template>
+</div>
