@@ -162,10 +162,10 @@ export class FilmService {
    * @param text Search text.
    */
   public setSearchText(text: string | null): void {
-    this.resetPagination();
-    this.sortOptions$.next(null);
 
     this.searchText$.next(text);
+    this.sortOptions$.next(null);
+    this.resetPagination();
   }
 
   /**
@@ -175,10 +175,10 @@ export class FilmService {
    * @param sortOptions Sort options.
    */
   public setSortOptions(sortOptions: SortOptions): void {
-    this.resetPagination();
-    this.searchText$.next(null);
 
     this.sortOptions$.next(sortOptions);
+    this.searchText$.next(null);
+    this.resetPagination();
   }
 
   /**

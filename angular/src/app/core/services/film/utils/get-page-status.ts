@@ -44,24 +44,18 @@ export function getPageStatus(opts: GetPageStatusOptions): PageStatus {
   let isLastPage = false;
 
   if (opts.paginationDirection === PaginationDirection.Next) {
-    if (opts.backwardQueryCursorId === null) {
-      isFirstPage = true;
-    }
     if (opts.filmsLength - 1 < opts.filmsPerPage) {
-      if (opts.backwardQueryCursorId !== null) {
-        isFirstPage = false;
-      }
       isLastPage = true;
+    }
+    if (opts.backwardQueryCursorId === null && opts.forwardQueryCursorId === null) {
+      isFirstPage = true;
     }
   } else {
-    if (opts.forwardQueryCursorId === null) {
-      isLastPage = true;
-    }
     if (opts.filmsLength - 1 < opts.filmsPerPage) {
-      if (opts.forwardQueryCursorId !== null) {
-        isLastPage = false;
-      }
       isFirstPage = true;
+    }
+    if (opts.forwardQueryCursorId === null && opts.backwardQueryCursorId === null) {
+      isLastPage = true;
     }
   }
 
