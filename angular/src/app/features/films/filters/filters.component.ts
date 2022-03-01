@@ -69,25 +69,25 @@ export class FiltersComponent implements OnInit {
     searchTextControl?.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((text: string) => {
-      if (searchTextControl.pristine) {
-        return;
-      }
+        if (searchTextControl.pristine) {
+          return;
+        }
 
-      this.resetSortOptions();
-      this.filmService.setSearchText(text);
-    });
+        this.resetSortOptions();
+        this.filmService.setSearchText(text);
+      });
 
     const sortControl = this.filtersForm.get('sort');
     sortControl?.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((sortOptions: SortOptions) => {
-      if (sortControl.pristine) {
-        return;
-      }
+        if (sortControl.pristine) {
+          return;
+        }
 
-      this.resetSearchText();
-      this.filmService.setSortOptions(sortOptions);
-    });
+        this.resetSearchText();
+        this.filmService.setSortOptions(sortOptions);
+      });
   }
 
   private resetSearchText(): void {
