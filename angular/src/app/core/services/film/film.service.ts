@@ -1,26 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
-import { getDocs, query } from 'firebase/firestore';
 import {
   BehaviorSubject,
   combineLatestWith,
   debounceTime,
   distinctUntilChanged,
-  first,
   map,
   mergeMap,
   Observable,
+  switchMap,
   tap,
 } from 'rxjs';
 
 import { Film } from '../../models/film';
 import { FILMS_PER_PAGE } from '../../utils/constants';
-import { getCollection } from '../../utils/firebase/get-collection-typed';
-import { FirestoreService } from '../firestore.service';
-import { FilmDocument, FilmDto } from '../mappers/dto/film.dto';
+import { FirestoreService } from '../firestore/firestore.service';
+import { FilmDto } from '../mappers/dto/film.dto';
 import { FilmMapper } from '../mappers/film.mapper';
 
-import { getQueryCursorById } from './utils/get-cursor-by-id';
 import { getPageStatus } from './utils/get-page-status';
 import { getQueryConstraint } from './utils/get-query-constraint';
 import { FilterOptions, PaginationDirection, QueryCursorId, SortOptions } from './utils/types';
@@ -63,7 +59,6 @@ export class FilmService {
   private forwardQueryCursorId: QueryCursorId = null;
 
   public constructor(
-    private readonly db: Firestore,
     private readonly filmMapper: FilmMapper,
     private readonly firestoreService: FirestoreService,
   ) {
@@ -90,10 +85,11 @@ export class FilmService {
     const sortOptions = filters?.sortOptions ?? INITIAL_SORT_OPTIONS;
 
     return this.firestoreService.getQueryCursorById(
-      this.db, paginationDirection === PaginationDirection.Next ? this.forwardQueryCursorId : this.backwardQueryCursorId,
+      'films',
+      paginationDirection === PaginationDirection.Next ? this.forwardQueryCursorId : this.backwardQueryCursorId,
     ).pipe(
-      first(),
-      mergeMap(queryCursor => this.firestoreService.fetchEntities<FilmDto>(
+      tap(v => console.log(v)),
+      switchMap(queryCursor => this.firestoreService.fetchMany<FilmDto>(
         'films',
         getQueryConstraint({
           count: FILMS_PER_PAGE + 1,
@@ -103,17 +99,18 @@ export class FilmService {
           sortOptions,
         }),
       )),
+      tap(v => console.log(v)),
       map(filmDtos => filmDtos.map(this.filmMapper.fromDto)),
       tap(films => this.updatePagination(films, paginationDirection)),
       map(films => {
-      if (films.length - 1 < FILMS_PER_PAGE) {
-        return films;
-      }
-      if (paginationDirection === PaginationDirection.Next) {
-        return films.slice(0, -1);
-      }
-      return films.slice(1);
-    }),
+        if (films.length - 1 < FILMS_PER_PAGE) {
+          return films;
+        }
+        if (paginationDirection === PaginationDirection.Next) {
+          return films.slice(0, -1);
+        }
+        return films.slice(1);
+      }),
     );
   }
 
@@ -158,7 +155,6 @@ export class FilmService {
    * @param text Search text.
    */
   public setSearchText(text: string | null): void {
-
     this.searchText$.next(text);
     this.sortOptions$.next(null);
     this.resetPagination();
@@ -171,7 +167,6 @@ export class FilmService {
    * @param sortOptions Sort options.
    */
   public setSortOptions(sortOptions: SortOptions): void {
-
     this.sortOptions$.next(sortOptions);
     this.searchText$.next(null);
     this.resetPagination();

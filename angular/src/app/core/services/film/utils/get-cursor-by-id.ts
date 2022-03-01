@@ -11,8 +11,8 @@ import { QueryCursor } from './types';
  * @param db Firebase instance.
  * @param id Document id.
  */
-// Prevents returning only promise, without async return signature would be `Promise<...> | ''`
+// Prevents returning only promise, without async return signature would be `Promise<QueryCursor> | ''`
 // eslint-disable-next-line require-await
-export async function getQueryCursorById(db: Firestore, id: string | null): Promise<QueryCursor> {
+export async function getQueryCursorById(db: Firestore, id: string | null): Promise<QueryCursor | ''> {
   return id ? getDoc(doc(getCollection<FilmDocument>(db, 'films'), id)) : '';
 }

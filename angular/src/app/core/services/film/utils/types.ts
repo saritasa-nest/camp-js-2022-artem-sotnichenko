@@ -21,7 +21,7 @@ export enum SortField {
 export type QueryCursorId = string | null;
 
 /** Query cursor used for pagination. */
-export type QueryCursor = DocumentSnapshot<FilmDocument> | DocumentData | '';
+export type QueryCursor = DocumentSnapshot<DocumentData> | '';
 
 /** Sort options. */
 export interface SortOptions {
