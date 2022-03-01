@@ -38,8 +38,6 @@ export class FilmService {
   /** Films. */
   public readonly films$: Observable<Film[]>;
 
-  private readonly filters$: Observable<FilterOptions>;
-
   // Fetch options
   private readonly page$ = new BehaviorSubject<PaginationDirection | null>(INITIAL_PAGE);
 
@@ -69,7 +67,7 @@ export class FilmService {
     private readonly filmMapper: FilmMapper,
     private readonly firestoreService: FirestoreService,
   ) {
-    this.filters$ = this.page$.pipe(
+    this.films$ = this.page$.pipe(
       combineLatestWith(
         this.sortOptions$.pipe(distinctUntilChanged()),
         this.searchText$.pipe(distinctUntilChanged(), debounceTime(300)),
@@ -77,11 +75,8 @@ export class FilmService {
       map(([paginationDirection, sortOptions, searchText]) => ({
         paginationDirection, sortOptions, searchText,
       })),
-    );
-
-    this.films$ = this.filters$.pipe(
       debounceTime(300),
-      mergeMap(filter => this.getFilms(filter)),
+      mergeMap(filter => this.getFilmsPage(filter)),
     );
   }
 
@@ -89,16 +84,14 @@ export class FilmService {
    * Get films.
    * @param filters Filters.
    */
-  private getFilms(filters?: FilterOptions): Observable<Film[]> {
+  private getFilmsPage(filters?: FilterOptions): Observable<Film[]> {
     const paginationDirection = filters?.paginationDirection ?? INITIAL_PAGE;
     const searchText = filters?.searchText ?? INITIAL_SEARCH_TEXT;
     const sortOptions = filters?.sortOptions ?? INITIAL_SORT_OPTIONS;
 
-    const queryCursor$ = this.firestoreService.getQueryCursorById(
+    return this.firestoreService.getQueryCursorById(
       this.db, paginationDirection === PaginationDirection.Next ? this.forwardQueryCursorId : this.backwardQueryCursorId,
-    );
-
-    const films$ = queryCursor$.pipe(
+    ).pipe(
       first(),
       mergeMap(queryCursor => this.firestoreService.fetchEntities<FilmDto>(
         'films',
@@ -112,9 +105,7 @@ export class FilmService {
       )),
       map(filmDtos => filmDtos.map(this.filmMapper.fromDto)),
       tap(films => this.updatePagination(films, paginationDirection)),
-    );
-
-    const filmsPage$ = films$.pipe(map(films => {
+      map(films => {
       if (films.length - 1 < FILMS_PER_PAGE) {
         return films;
       }
@@ -122,9 +113,8 @@ export class FilmService {
         return films.slice(0, -1);
       }
       return films.slice(1);
-    }));
-
-    return filmsPage$;
+    }),
+    );
   }
 
   private updatePagination(films: Film[], paginationDirection: PaginationDirection): void {
