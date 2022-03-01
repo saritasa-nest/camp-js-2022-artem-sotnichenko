@@ -12,7 +12,7 @@ import { PaginationDirection, QueryCursor, SortField, SortOptions, SortOrder } f
 
 const DEFAULT_SORT_FIELD = SortField.Title;
 const DEFAULT_SORT_ORDER = SortOrder.Ascending;
-const SEARCH_FIELD = 'fields.title';
+const SEARCH_SORT_FIELD = SortField.Title;
 const FIREBASE_SEARCH_SYMBOL = '~';
 
 interface GetQueryConstraintOptions {
@@ -20,7 +20,7 @@ interface GetQueryConstraintOptions {
   /** Items count per page. */
   count: number;
 
-  /** Query cursor for paginating. */
+  /** Query cursor. */
   queryCursor: QueryCursor;
 
   /** Whether it fetch after or before query cursor. */
@@ -44,89 +44,47 @@ export function getQueryConstraint({
   searchText,
   sortOptions,
 }: GetQueryConstraintOptions): QueryConstraint[] {
-  if (paginationDirection === PaginationDirection.Next) {
-    if (sortOptions !== null) {
-      if (queryCursor === '') {
-        return [
-          limit(count),
-          orderBy(sortOptions.field, sortOptions.order),
-        ];
-      }
-      return [
-        limit(count),
-        orderBy(sortOptions.field, sortOptions.order),
-        startAt(queryCursor),
-      ];
-    }
-    if (searchText !== null) {
-      if (queryCursor === '') {
-        return [
-          limit(count),
-          orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
-          where(SEARCH_FIELD, '>=', searchText),
-          where(SEARCH_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
-        ];
-      }
-      return [
-        limit(count),
-        orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
-        startAt(queryCursor),
-        where(SEARCH_FIELD, '>=', searchText),
-        where(SEARCH_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
-      ];
-    }
-    if (queryCursor === '') {
-      return [
-        limit(count),
-        orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
-      ];
-    }
-    return [
-      limit(count),
-      orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
-      startAt(queryCursor),
-    ];
+  const constraints: QueryConstraint[] = [];
 
-  }
-  if (sortOptions !== null) {
-    if (queryCursor === '') {
-      return [
-        limitToLast(count),
-        orderBy(sortOptions.field, sortOptions.order),
-      ];
-    }
-    return [
-      limitToLast(count),
-      orderBy(sortOptions.field, sortOptions.order),
-      endAt(queryCursor),
-    ];
-  }
-  if (searchText !== null) {
-    if (queryCursor === '') {
-      return [
-        limitToLast(count),
+  if (paginationDirection === PaginationDirection.Next) {
+    constraints.push(limit(count));
+
+    if (sortOptions !== null) {
+      constraints.push(orderBy(sortOptions.field, sortOptions.order));
+    } else if (searchText !== null) {
+      constraints.push(
         orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
-        where(SEARCH_FIELD, '>=', searchText),
-        where(SEARCH_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
-      ];
+        where(SEARCH_SORT_FIELD, '>=', searchText),
+        where(SEARCH_SORT_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
+      );
+    } else {
+      constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER));
     }
-    return [
-      limitToLast(count),
-      orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
-      endAt(queryCursor),
-      where(SEARCH_FIELD, '>=', searchText),
-      where(SEARCH_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
-    ];
+
+    if (queryCursor !== '') {
+      constraints.push(startAt(queryCursor));
+    }
+
+    return constraints;
   }
-  if (queryCursor === '') {
-    return [
-      limitToLast(count),
+
+  constraints.push(limitToLast(count));
+
+  if (sortOptions !== null) {
+    constraints.push(orderBy(sortOptions.field, sortOptions.order));
+  } else if (searchText !== null) {
+    constraints.push(
       orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
-    ];
+      where(SEARCH_SORT_FIELD, '>=', searchText),
+      where(SEARCH_SORT_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
+    );
+  } else {
+    constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER));
   }
-  return [
-    limitToLast(count),
-    orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
-    endAt(queryCursor),
-  ];
+
+  if (queryCursor !== '') {
+    constraints.push(endAt(queryCursor));
+  }
+
+  return constraints;
 }
