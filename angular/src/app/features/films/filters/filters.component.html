@@ -13,16 +13,22 @@
     <mat-form-field appearance="outline">
       <mat-label>Sort field</mat-label>
       <mat-select formControlName="field">
-        <mat-option *ngFor="let field of sortFileds" [value]="field.value">
-          {{ field.text }}
+        <mat-option
+          *ngFor="let option of sortFiledOptions"
+          [value]="option.value"
+        >
+          {{ option.text }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Sort order</mat-label>
       <mat-select formControlName="order">
-        <mat-option *ngFor="let order of sortOrders" [value]="order.value">
-          {{ order.text }}
+        <mat-option
+          *ngFor="let option of sortOrderOptions"
+          [value]="option.value"
+        >
+          {{ option.text }}
         </mat-option>
       </mat-select>
     </mat-form-field>

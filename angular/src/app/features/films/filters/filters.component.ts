@@ -15,6 +15,7 @@ export const TO_READABLE_SORT_ORDER_MAP: Readonly<Record<SortOrder, string>> = {
   [SortOrder.Descending]: 'Descending',
 };
 
+const INITIAL_SEARCH_TEXT = '';
 const INITIAL_SORT_FIELD = SortField.Title;
 const INITIAL_SORT_ORDER = SortOrder.Ascending;
 const INITIAL_PAGE = PaginationDirection.Next;
@@ -28,20 +29,18 @@ const INITIAL_PAGE = PaginationDirection.Next;
 })
 export class FiltersComponent implements OnInit {
   /** Sort field select options. */
-  public sortFileds = (Object.values(SortField) as SortField[]).map(field => ({
-    value: field,
-    text: TO_READABLE_SORT_FIELD_MAP[field],
+  public sortFiledOptions = (Object.entries(TO_READABLE_SORT_FIELD_MAP)).map(([value, text]) => ({
+    value, text,
   }));
 
   /** Sort order select options. */
-  public sortOrders = (Object.values(SortOrder) as SortOrder[]).map(order => ({
-    value: order,
-    text: TO_READABLE_SORT_ORDER_MAP[order],
+  public sortOrderOptions = (Object.entries(TO_READABLE_SORT_ORDER_MAP)).map(([value, text]) => ({
+    value, text,
   }));
 
   /** Filters form. */
   public filtersForm = this.fb.group({
-    searchText: this.fb.control(''),
+    searchText: this.fb.control(INITIAL_SEARCH_TEXT),
     sort: this.fb.group({
       field: this.fb.control(INITIAL_SORT_FIELD),
       order: this.fb.control(INITIAL_SORT_ORDER),
