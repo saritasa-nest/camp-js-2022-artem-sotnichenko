@@ -1,4 +1,5 @@
 import { DocumentSnapshot } from 'firebase/firestore';
+import { DocumentData } from 'rxfire/firestore/interfaces';
 
 import { FilmDocument } from '../../mappers/dto/film.dto';
 
@@ -20,7 +21,7 @@ export enum SortField {
 export type QueryCursorId = string | null;
 
 /** Query cursor used for pagination. */
-export type QueryCursor = DocumentSnapshot<FilmDocument> | '';
+export type QueryCursor = DocumentSnapshot<FilmDocument> | DocumentData | '';
 
 /** Sort options. */
 export interface SortOptions {

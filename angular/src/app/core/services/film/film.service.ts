@@ -6,15 +6,18 @@ import {
   combineLatestWith,
   debounceTime,
   distinctUntilChanged,
+  first,
   map,
   mergeMap,
   Observable,
+  tap,
 } from 'rxjs';
 
 import { Film } from '../../models/film';
 import { FILMS_PER_PAGE } from '../../utils/constants';
 import { getCollection } from '../../utils/firebase/get-collection-typed';
-import { FilmDocument } from '../mappers/dto/film.dto';
+import { FirestoreService } from '../firestore.service';
+import { FilmDocument, FilmDto } from '../mappers/dto/film.dto';
 import { FilmMapper } from '../mappers/film.mapper';
 
 import { getQueryCursorById } from './utils/get-cursor-by-id';
@@ -64,6 +67,7 @@ export class FilmService {
   public constructor(
     private readonly db: Firestore,
     private readonly filmMapper: FilmMapper,
+    private readonly firestoreService: FirestoreService,
   ) {
     this.filters$ = this.page$.pipe(
       combineLatestWith(
@@ -85,40 +89,42 @@ export class FilmService {
    * Get films.
    * @param filters Filters.
    */
-  private async getFilms(filters?: FilterOptions): Promise<Film[]> {
+  private getFilms(filters?: FilterOptions): Observable<Film[]> {
     const paginationDirection = filters?.paginationDirection ?? INITIAL_PAGE;
     const searchText = filters?.searchText ?? INITIAL_SEARCH_TEXT;
     const sortOptions = filters?.sortOptions ?? INITIAL_SORT_OPTIONS;
 
-    const queryCursor = paginationDirection === PaginationDirection.Next ?
-      await getQueryCursorById(this.db, this.forwardQueryCursorId) :
-      await getQueryCursorById(this.db, this.backwardQueryCursorId);
-
-    // Fetching one more film to know if next page is exist.
-    const filmQuery = query(
-      getCollection<FilmDocument>(this.db, 'films'),
-      ...getQueryConstraint({
-        count: FILMS_PER_PAGE + 1,
-        queryCursor,
-        paginationDirection,
-        searchText,
-        sortOptions,
-      }),
+    const queryCursor$ = this.firestoreService.getQueryCursorById(
+      this.db, paginationDirection === PaginationDirection.Next ? this.forwardQueryCursorId : this.backwardQueryCursorId,
     );
-    const filmsSnapshot = await getDocs(filmQuery);
-    const films = filmsSnapshot.docs.map(this.filmMapper.fromDoc);
 
-    this.updatePagination(films, paginationDirection);
+    const films$ = queryCursor$.pipe(
+      first(),
+      mergeMap(queryCursor => this.firestoreService.fetchEntities<FilmDto>(
+        'films',
+        getQueryConstraint({
+          count: FILMS_PER_PAGE + 1,
+          queryCursor,
+          paginationDirection,
+          searchText,
+          sortOptions,
+        }),
+      )),
+      map(filmDtos => filmDtos.map(this.filmMapper.fromDto)),
+      tap(films => this.updatePagination(films, paginationDirection)),
+    );
 
-    let filmsPage;
-    if (films.length - 1 < FILMS_PER_PAGE) {
-      filmsPage = films;
-    } else if (paginationDirection === PaginationDirection.Next) {
-      filmsPage = films.slice(0, -1);
-    } else {
-      filmsPage = films.slice(1);
-    }
-    return filmsPage;
+    const filmsPage$ = films$.pipe(map(films => {
+      if (films.length - 1 < FILMS_PER_PAGE) {
+        return films;
+      }
+      if (paginationDirection === PaginationDirection.Next) {
+        return films.slice(0, -1);
+      }
+      return films.slice(1);
+    }));
+
+    return filmsPage$;
   }
 
   private updatePagination(films: Film[], paginationDirection: PaginationDirection): void {
