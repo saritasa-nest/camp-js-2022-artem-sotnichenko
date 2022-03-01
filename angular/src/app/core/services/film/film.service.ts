@@ -6,12 +6,9 @@ import {
   combineLatestWith,
   debounceTime,
   distinctUntilChanged,
-  ignoreElements,
   map,
-  merge,
   mergeMap,
   Observable,
-  tap,
 } from 'rxjs';
 
 import { Film } from '../../models/film';
@@ -36,21 +33,21 @@ const INITIAL_SORT_OPTIONS = null;
 export class FilmService {
 
   /** Films. */
-  public films$: Observable<Film[]>;
+  public readonly films$: Observable<Film[]>;
 
-  private filters$: Observable<FilterOptions>;
+  private readonly filters$: Observable<FilterOptions>;
 
   // Fetch options
-  private page$ = new BehaviorSubject<PaginationDirection | null>(INITIAL_PAGE);
+  private readonly page$ = new BehaviorSubject<PaginationDirection | null>(INITIAL_PAGE);
 
-  private searchText$ = new BehaviorSubject<FilterOptions['searchText'] | null>(INITIAL_SEARCH_TEXT);
+  private readonly searchText$ = new BehaviorSubject<FilterOptions['searchText'] | null>(INITIAL_SEARCH_TEXT);
 
-  private sortOptions$ = new BehaviorSubject<SortOptions | null>(INITIAL_SORT_OPTIONS);
+  private readonly sortOptions$ = new BehaviorSubject<SortOptions | null>(INITIAL_SORT_OPTIONS);
 
   // Pagination flags
-  private isFirstPageSubject$ = new BehaviorSubject(true);
+  private readonly isFirstPageSubject$ = new BehaviorSubject(true);
 
-  private isLastPageSubject$ = new BehaviorSubject(true);
+  private readonly isLastPageSubject$ = new BehaviorSubject(true);
 
   /** Whether it is a first page. */
   public readonly isFirstPage$ = this.isFirstPageSubject$.asObservable();
@@ -82,27 +79,6 @@ export class FilmService {
       debounceTime(300),
       mergeMap(filter => this.getFilms(filter)),
     );
-
-    // Side effects
-    const resetSortOptionsSideEffect$ = this.searchText$.pipe(
-      distinctUntilChanged(),
-      tap(() => this.sortOptions$.next(null)),
-    );
-
-    const resetSearchTextSideEffect$ = this.sortOptions$.pipe(
-      distinctUntilChanged(),
-      tap(() => this.searchText$.next(null)),
-    );
-
-    const resetPaginationSideEffect$ = merge(
-      resetSortOptionsSideEffect$,
-      resetSearchTextSideEffect$,
-    ).pipe(
-      tap(() => this.resetPagination()),
-      ignoreElements(),
-    );
-
-    resetPaginationSideEffect$.subscribe();
   }
 
   /**
@@ -186,6 +162,9 @@ export class FilmService {
    * @param text Search text.
    */
   public setSearchText(text: string | null): void {
+    this.resetPagination();
+    this.sortOptions$.next(null);
+
     this.searchText$.next(text);
   }
 
@@ -196,6 +175,9 @@ export class FilmService {
    * @param sortOptions Sort options.
    */
   public setSortOptions(sortOptions: SortOptions): void {
+    this.resetPagination();
+    this.searchText$.next(null);
+
     this.sortOptions$.next(sortOptions);
   }
 

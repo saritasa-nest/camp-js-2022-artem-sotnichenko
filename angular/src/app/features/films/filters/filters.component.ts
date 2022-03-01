@@ -1,5 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Self } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { takeUntil } from 'rxjs';
+import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmService } from 'src/app/core/services/film/film.service';
 import { PaginationDirection, SortField, SortOptions, SortDirection } from 'src/app/core/services/film/utils/types';
 
@@ -26,6 +28,7 @@ const INITIAL_PAGE = PaginationDirection.Next;
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DestroyService],
 })
 export class FiltersComponent implements OnInit {
   /** Sort field select options. */
@@ -55,6 +58,7 @@ export class FiltersComponent implements OnInit {
   public isLastPage$ = this.filmService.isLastPage$;
 
   public constructor(
+    @Self() private readonly destroy$: DestroyService,
     private readonly fb: FormBuilder,
     private readonly filmService: FilmService,
   ) {}
@@ -62,7 +66,9 @@ export class FiltersComponent implements OnInit {
   /** @inheritdoc */
   public ngOnInit(): void {
     const searchTextControl = this.filtersForm.get('searchText');
-    searchTextControl?.valueChanges.subscribe((text: string) => {
+    searchTextControl?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((text: string) => {
       if (searchTextControl.pristine) {
         return;
       }
@@ -72,7 +78,9 @@ export class FiltersComponent implements OnInit {
     });
 
     const sortControl = this.filtersForm.get('sort');
-    sortControl?.valueChanges.subscribe((sortOptions: SortOptions) => {
+    sortControl?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((sortOptions: SortOptions) => {
       if (sortControl.pristine) {
         return;
       }
