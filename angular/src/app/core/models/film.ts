@@ -13,10 +13,10 @@ export interface Film {
   /** The name of the director of this film. */
   readonly director: string;
 
-  /** The name(s) of the producer(s) of this film. Comma separated. */
+  /** The name(s) of the producer(s) of this film. */
   readonly producers: readonly string[];
 
-  /** The ISO 8601 date format of film release at original creator country. */
+  /** The Date of film release at original creator country. */
   readonly releaseDate: Date;
 
   /** An array of people ids that are in this film. */

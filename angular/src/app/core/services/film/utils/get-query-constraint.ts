@@ -8,10 +8,10 @@ import {
   where,
 } from 'firebase/firestore';
 
-import { PaginationDirection, QueryCursor, SortField, SortOptions, SortOrder } from './types';
+import { PaginationDirection, QueryCursor, SortField, SortOptions, SortDirection } from './types';
 
 const DEFAULT_SORT_FIELD = SortField.Title;
-const DEFAULT_SORT_ORDER = SortOrder.Ascending;
+const DEFAULT_SORT_DIRECTION = SortDirection.Ascending;
 const SEARCH_SORT_FIELD = SortField.Title;
 const FIREBASE_SEARCH_SYMBOL = '~';
 
@@ -50,15 +50,15 @@ export function getQueryConstraint({
     constraints.push(limit(count));
 
     if (sortOptions !== null) {
-      constraints.push(orderBy(sortOptions.field, sortOptions.order));
+      constraints.push(orderBy(sortOptions.field, sortOptions.direction));
     } else if (searchText !== null) {
       constraints.push(
-        orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
+        orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION),
         where(SEARCH_SORT_FIELD, '>=', searchText),
         where(SEARCH_SORT_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
       );
     } else {
-      constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER));
+      constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION));
     }
 
     if (queryCursor !== '') {
@@ -71,15 +71,15 @@ export function getQueryConstraint({
   constraints.push(limitToLast(count));
 
   if (sortOptions !== null) {
-    constraints.push(orderBy(sortOptions.field, sortOptions.order));
+    constraints.push(orderBy(sortOptions.field, sortOptions.direction));
   } else if (searchText !== null) {
     constraints.push(
-      orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER),
+      orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION),
       where(SEARCH_SORT_FIELD, '>=', searchText),
       where(SEARCH_SORT_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
     );
   } else {
-    constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_ORDER));
+    constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION));
   }
 
   if (queryCursor !== '') {

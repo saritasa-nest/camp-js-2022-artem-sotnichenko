@@ -12,26 +12,23 @@
   background: var(--color-foreground);
 }
 
-.film-line__title,
-.film-line__producers,
-.film-line__director,
-.film-line__release-date {
+.film-line__field {
   flex-shrink: 0;
 }
 
-.film-line__title {
+.film-line__field_title {
   width: var(--title-width);
   font-weight: 500;
 }
 
-.film-line__producers {
+.film-line__field_producers {
   width: var(--producers-width);
 }
 
-.film-line__director {
+.film-line__field_director {
   width: var(--director-width);
 }
 
-.film-line__release-date {
+.film-line__field_release-date {
   width: var(--release-date-width);
 }

@@ -19,10 +19,10 @@ export class FilmsComponent {
 
   /**
    * Film track function for ngFor.
-   * @param _index Index in array.
+   * @param index Index in array.
    * @param film Film.
    */
-  public trackFilm(_index: number, film: Film): string | undefined {
-    return film ? film.id : undefined;
+  public trackFilm(index: number, film: Film): Film['id'] {
+    return film.id;
   }
 }

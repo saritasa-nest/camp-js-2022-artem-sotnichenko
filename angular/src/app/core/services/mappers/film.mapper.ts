@@ -11,23 +11,6 @@ import { FilmDocument, FilmDto } from './dto/film.dto';
 @Injectable({ providedIn: 'root' })
 export class FilmMapper {
   /**
-   * Maps Film dto to Film model.
-   * @param dto Film DTO.
-   */
-  public fromDto(dto: FilmDto): Film {
-    return {
-      id: dto.id,
-      title: dto.fields.title,
-      director: dto.fields.director,
-      producers: dto.fields.producer.split(',').map(str => str.trim()),
-      openingCrawl: dto.fields.opening_crawl,
-      releaseDate: new Date(dto.fields.release_date),
-      characterIds: dto.fields.characters,
-      planetIds: dto.fields.planets,
-    };
-  }
-
-  /**
    * Maps Film document to Film model.
    * @param doc Film Document.
    */

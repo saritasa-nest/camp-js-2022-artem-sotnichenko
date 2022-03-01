@@ -2,8 +2,8 @@ import { DocumentSnapshot } from 'firebase/firestore';
 
 import { FilmDocument } from '../../mappers/dto/film.dto';
 
-/** Sort order. */
-export enum SortOrder {
+/** Sort direction. */
+export enum SortDirection {
   Ascending = 'asc',
   Descending = 'desc',
 }
@@ -28,8 +28,8 @@ export interface SortOptions {
   /** Field to sort by. */
   field: SortField;
 
-  /** Sort ordering. */
-  order: SortOrder;
+  /** Sort direction. */
+  direction: SortDirection;
 }
 
 /** Direction of pagination. */

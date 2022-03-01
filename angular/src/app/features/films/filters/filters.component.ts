@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { FilmService } from 'src/app/core/services/film/film.service';
-import { PaginationDirection, SortField, SortOptions, SortOrder } from 'src/app/core/services/film/utils/types';
+import { PaginationDirection, SortField, SortOptions, SortDirection } from 'src/app/core/services/film/utils/types';
 
 export const TO_READABLE_SORT_FIELD_MAP: Readonly<Record<SortField, string>> = {
   [SortField.Title]: 'Title',
@@ -10,14 +10,14 @@ export const TO_READABLE_SORT_FIELD_MAP: Readonly<Record<SortField, string>> = {
   [SortField.ReleaseDate]: 'Release date',
 };
 
-export const TO_READABLE_SORT_ORDER_MAP: Readonly<Record<SortOrder, string>> = {
-  [SortOrder.Ascending]: 'Ascending',
-  [SortOrder.Descending]: 'Descending',
+export const TO_READABLE_SORT_DIRECTION_MAP: Readonly<Record<SortDirection, string>> = {
+  [SortDirection.Ascending]: 'Ascending',
+  [SortDirection.Descending]: 'Descending',
 };
 
 const INITIAL_SEARCH_TEXT = '';
 const INITIAL_SORT_FIELD = SortField.Title;
-const INITIAL_SORT_ORDER = SortOrder.Ascending;
+const INITIAL_SORT_DIRECTION = SortDirection.Ascending;
 const INITIAL_PAGE = PaginationDirection.Next;
 
 /** Films filters. */
@@ -33,8 +33,8 @@ export class FiltersComponent implements OnInit {
     value, text,
   }));
 
-  /** Sort order select options. */
-  public sortOrderOptions = (Object.entries(TO_READABLE_SORT_ORDER_MAP)).map(([value, text]) => ({
+  /** Sort direction select options. */
+  public sortDirectionOptions = (Object.entries(TO_READABLE_SORT_DIRECTION_MAP)).map(([value, text]) => ({
     value, text,
   }));
 
@@ -43,7 +43,7 @@ export class FiltersComponent implements OnInit {
     searchText: this.fb.control(INITIAL_SEARCH_TEXT),
     sort: this.fb.group({
       field: this.fb.control(INITIAL_SORT_FIELD),
-      order: this.fb.control(INITIAL_SORT_ORDER),
+      direction: this.fb.control(INITIAL_SORT_DIRECTION),
     }),
     page: this.fb.control(INITIAL_PAGE),
   });
@@ -93,7 +93,7 @@ export class FiltersComponent implements OnInit {
     const sortControl = this.filtersForm.get('sort');
     sortControl?.reset({
       field: INITIAL_SORT_FIELD,
-      order: INITIAL_SORT_ORDER,
+      direction: INITIAL_SORT_DIRECTION,
     });
     sortControl?.markAsPristine();
     sortControl?.markAsUntouched();

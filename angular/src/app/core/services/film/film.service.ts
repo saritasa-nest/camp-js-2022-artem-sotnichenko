@@ -26,7 +26,7 @@ import { getQueryConstraint } from './utils/get-query-constraint';
 import { FilterOptions, PaginationDirection, QueryCursorId, SortOptions } from './utils/types';
 
 const INITIAL_PAGE = PaginationDirection.Next;
-const INITIAL_SEARCH_STRING = null;
+const INITIAL_SEARCH_TEXT = null;
 const INITIAL_SORT_OPTIONS = null;
 
 /** Film service. */
@@ -43,7 +43,7 @@ export class FilmService {
   // Fetch options
   private page$ = new BehaviorSubject<PaginationDirection | null>(INITIAL_PAGE);
 
-  private searchText$ = new BehaviorSubject<FilterOptions['searchText'] | null>(INITIAL_SEARCH_STRING);
+  private searchText$ = new BehaviorSubject<FilterOptions['searchText'] | null>(INITIAL_SEARCH_TEXT);
 
   private sortOptions$ = new BehaviorSubject<SortOptions | null>(INITIAL_SORT_OPTIONS);
 
@@ -52,14 +52,16 @@ export class FilmService {
 
   private isLastPageSubject$ = new BehaviorSubject(true);
 
-  /** Whether it first page. */
+  /** Whether it is a first page. */
   public readonly isFirstPage$ = this.isFirstPageSubject$.asObservable();
 
-  /** Whether it last page. */
+  /** Whether it is a last page. */
   public readonly isLastPage$ = this.isLastPageSubject$.asObservable();
 
+  /** Cursor to fetch films backward of it. */
   private backwardQueryCursorId: QueryCursorId = null;
 
+  /** Cursor to fetch films forward of it. */
   private forwardQueryCursorId: QueryCursorId = null;
 
   public constructor(
@@ -77,7 +79,7 @@ export class FilmService {
     );
 
     this.films$ = this.filters$.pipe(
-      debounceTime(500),
+      debounceTime(300),
       mergeMap(filter => this.getFilms(filter)),
     );
 
@@ -109,13 +111,14 @@ export class FilmService {
    */
   public async getFilms(filters?: FilterOptions): Promise<Film[]> {
     const paginationDirection = filters?.paginationDirection ?? INITIAL_PAGE;
-    const searchText = filters?.searchText ?? INITIAL_SEARCH_STRING;
+    const searchText = filters?.searchText ?? INITIAL_SEARCH_TEXT;
     const sortOptions = filters?.sortOptions ?? INITIAL_SORT_OPTIONS;
 
     const queryCursor = paginationDirection === PaginationDirection.Next ?
       await getQueryCursorById(this.db, this.forwardQueryCursorId) :
       await getQueryCursorById(this.db, this.backwardQueryCursorId);
 
+    // Fetching one more film to know if next page is exist.
     const filmQuery = query(
       getCollection<FilmDocument>(this.db, 'films'),
       ...getQueryConstraint({

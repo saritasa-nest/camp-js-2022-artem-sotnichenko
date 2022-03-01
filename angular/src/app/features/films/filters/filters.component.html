@@ -22,10 +22,10 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Sort order</mat-label>
-      <mat-select formControlName="order">
+      <mat-label>Sort direction</mat-label>
+      <mat-select formControlName="direction">
         <mat-option
-          *ngFor="let option of sortOrderOptions"
+          *ngFor="let option of sortDirectionOptions"
           [value]="option.value"
         >
           {{ option.text }}

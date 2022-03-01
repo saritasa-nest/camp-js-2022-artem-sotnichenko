@@ -23,6 +23,4 @@ export class FilmLineComponent {
   /** Release date. */
   @Input()
   public releaseDate: Date = new Date();
-
-  public constructor() {}
 }
