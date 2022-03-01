@@ -16,6 +16,9 @@ export enum SortField {
   ReleaseDate = 'fields.release_date',
 }
 
+/** Film id or null. */
+export type QueryCursorId = string | null;
+
 /** Query cursor used for pagination. */
 export type QueryCursor = DocumentSnapshot<FilmDocument> | '';
 

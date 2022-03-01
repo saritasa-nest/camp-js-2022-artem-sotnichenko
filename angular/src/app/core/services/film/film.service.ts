@@ -21,15 +21,13 @@ import { FilmDocument } from '../mappers/dto/film.dto';
 import { FilmMapper } from '../mappers/film.mapper';
 
 import { getQueryCursorById } from './utils/get-cursor-by-id';
+import { getPageStatus } from './utils/get-page-status';
 import { getQueryConstraint } from './utils/get-query-constraint';
-import { FilterOptions, PaginationDirection, SortOptions } from './utils/types';
+import { FilterOptions, PaginationDirection, QueryCursorId, SortOptions } from './utils/types';
 
 const INITIAL_PAGE = PaginationDirection.Next;
 const INITIAL_SEARCH_STRING = null;
 const INITIAL_SORT_OPTIONS = null;
-
-/** Film id or null. */
-type QueryCursorId = string | null;
 
 /** Film service. */
 @Injectable({
@@ -60,20 +58,30 @@ export class FilmService {
   /** Whether it last page. */
   public readonly isLastPage$ = this.isLastPageSubject$.asObservable();
 
-  private firstQueryCursorId: QueryCursorId = null;
+  private backwardQueryCursorId: QueryCursorId = null;
 
-  private lastQueryCursorId: QueryCursorId = null;
-
-  private currentPageQueryCursorTitles: QueryCursorId[] = [];
-
-  private currentPageQueryCursorIds: QueryCursorId[] = [];
-
-  private queryCursorId: QueryCursorId = null;
+  private forwardQueryCursorId: QueryCursorId = null;
 
   public constructor(
     private readonly db: Firestore,
     private readonly filmMapper: FilmMapper,
   ) {
+    this.filters$ = this.page$.pipe(
+      combineLatestWith(
+        this.sortOptions$.pipe(distinctUntilChanged()),
+        this.searchText$.pipe(distinctUntilChanged(), debounceTime(300)),
+      ),
+      map(([paginationDirection, sortOptions, searchText]) => ({
+        paginationDirection, sortOptions, searchText,
+      })),
+    );
+
+    this.films$ = this.filters$.pipe(
+      debounceTime(500),
+      mergeMap(filter => this.getFilms(filter)),
+    );
+
+    // Side effects
     const resetSortOptionsSideEffect$ = this.searchText$.pipe(
       distinctUntilChanged(),
       tap(() => this.sortOptions$.next(null)),
@@ -84,56 +92,29 @@ export class FilmService {
       tap(() => this.searchText$.next(null)),
     );
 
-    merge(
+    const resetPaginationSideEffect$ = merge(
       resetSortOptionsSideEffect$,
       resetSearchTextSideEffect$,
-    )
-      .pipe(
-        tap(() => this.resetPagination()),
-        ignoreElements(),
-      )
-      .subscribe();
-
-    this.filters$ = this.page$.pipe(
-      combineLatestWith(
-        this.sortOptions$.pipe(distinctUntilChanged()),
-        this.searchText$.pipe(distinctUntilChanged(), debounceTime(300)),
-      ),
-      tap(v => console.log('comb', v)),
-
-      map(([paginationDirection, sortOptions, searchText]) => ({
-        paginationDirection, sortOptions, searchText,
-      })),
+    ).pipe(
+      tap(() => this.resetPagination()),
+      ignoreElements(),
     );
 
-    this.films$ = this.filters$.pipe(
-      tap(v => console.log('filters', v)),
-      debounceTime(500),
-      mergeMap(filter => this.getFilms(filter)),
-      tap(v => console.log('films', v.map(el => el.title))),
-    );
+    resetPaginationSideEffect$.subscribe();
   }
 
   /**
    * Get films.
    * @param filters Filters.
-   *
-   * TODO: Fix backwards pagination.
    */
   public async getFilms(filters?: FilterOptions): Promise<Film[]> {
-    console.log('getting films');
     const paginationDirection = filters?.paginationDirection ?? INITIAL_PAGE;
     const searchText = filters?.searchText ?? INITIAL_SEARCH_STRING;
     const sortOptions = filters?.sortOptions ?? INITIAL_SORT_OPTIONS;
 
-    console.log(this.lastQueryCursorId, this.firstQueryCursorId);
-    console.log(paginationDirection);
-
     const queryCursor = paginationDirection === PaginationDirection.Next ?
-      await getQueryCursorById(this.db, this.lastQueryCursorId) :
-      await getQueryCursorById(this.db, this.firstQueryCursorId);
-
-    console.log('q', queryCursor);
+      await getQueryCursorById(this.db, this.forwardQueryCursorId) :
+      await getQueryCursorById(this.db, this.backwardQueryCursorId);
 
     const filmQuery = query(
       getCollection<FilmDocument>(this.db, 'films'),
@@ -148,7 +129,7 @@ export class FilmService {
     const filmsSnapshot = await getDocs(filmQuery);
     const films = filmsSnapshot.docs.map(this.filmMapper.fromDoc);
 
-    console.log('all films', films.map(el => el.title));
+    this.updatePagination(films, paginationDirection);
 
     let filmsPage;
     if (films.length - 1 < FILMS_PER_PAGE) {
@@ -158,53 +139,40 @@ export class FilmService {
     } else {
       filmsPage = films.slice(1);
     }
-
-    this.setPageData(films, paginationDirection);
-
     return filmsPage;
   }
 
-  private setPageData(films: Film[], paginationDirection: PaginationDirection): void {
-    console.log('set page data');
-    if (films.length === 0) {
-      this.isLastPageSubject$.next(true);
-      this.isFirstPageSubject$.next(true);
-      return;
-    }
-
-    let isFirstPage = this.firstQueryCursorId === null && paginationDirection !== PaginationDirection.Prev;
-    let isLastPage = false;
-
-    if (paginationDirection === PaginationDirection.Next) {
-      if (films.length - 1 < FILMS_PER_PAGE) {
-        isLastPage = true;
-        this.lastQueryCursorId = null;
-      } else {
-        this.lastQueryCursorId = films[films.length - 1].id;
-      }
-
-      this.firstQueryCursorId = films[0].id;
-    } else if (films.length - 1 < FILMS_PER_PAGE) {
-      isFirstPage = true;
-
-      this.lastQueryCursorId = this.firstQueryCursorId;
-      this.firstQueryCursorId = null;
-    } else {
-      this.firstQueryCursorId = films[1].id;
-      this.lastQueryCursorId = films[films.length - 1].id;
-    }
-
-    this.currentPageQueryCursorTitles = films.map(film => film.title);
-    this.currentPageQueryCursorIds = films.map(film => film.id);
+  private updatePagination(films: Film[], paginationDirection: PaginationDirection): void {
+    const { isFirstPage, isLastPage } = getPageStatus({
+      filmsLength: films.length,
+      paginationDirection,
+      filmsPerPage: FILMS_PER_PAGE,
+      backwardQueryCursorId: this.backwardQueryCursorId,
+      forwardQueryCursorId: this.forwardQueryCursorId,
+    });
 
     this.isFirstPageSubject$.next(isFirstPage);
     this.isLastPageSubject$.next(isLastPage);
+
+    if (paginationDirection === PaginationDirection.Next) {
+      if (films.length - 1 < FILMS_PER_PAGE) {
+        this.forwardQueryCursorId = null;
+      } else {
+        this.forwardQueryCursorId = films[films.length - 1].id;
+      }
+      this.backwardQueryCursorId = films[0].id;
+    } else if (films.length - 1 < FILMS_PER_PAGE) {
+      this.forwardQueryCursorId = this.backwardQueryCursorId;
+      this.backwardQueryCursorId = null;
+    } else {
+      this.backwardQueryCursorId = films[1].id;
+      this.forwardQueryCursorId = films[films.length - 1].id;
+    }
   }
 
   private resetPagination(): void {
-    console.log('reset pagination');
-    this.firstQueryCursorId = null;
-    this.lastQueryCursorId = null;
+    this.backwardQueryCursorId = null;
+    this.forwardQueryCursorId = null;
     this.page$.next(PaginationDirection.Next);
   }
 
