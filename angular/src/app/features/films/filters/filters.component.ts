@@ -32,17 +32,17 @@ const INITIAL_PAGE = PaginationDirection.Next;
 })
 export class FiltersComponent implements OnInit {
   /** Sort field select options. */
-  public sortFiledOptions = (Object.entries(TO_READABLE_SORT_FIELD_MAP)).map(([value, text]) => ({
+  public readonly sortFiledOptions = (Object.entries(TO_READABLE_SORT_FIELD_MAP)).map(([value, text]) => ({
     value, text,
   }));
 
   /** Sort direction select options. */
-  public sortDirectionOptions = (Object.entries(TO_READABLE_SORT_DIRECTION_MAP)).map(([value, text]) => ({
+  public readonly sortDirectionOptions = (Object.entries(TO_READABLE_SORT_DIRECTION_MAP)).map(([value, text]) => ({
     value, text,
   }));
 
   /** Filters form. */
-  public filtersForm = this.fb.group({
+  public readonly filtersForm = this.fb.group({
     searchText: this.fb.control(INITIAL_SEARCH_TEXT),
     sort: this.fb.group({
       field: this.fb.control(INITIAL_SORT_FIELD),
@@ -52,10 +52,10 @@ export class FiltersComponent implements OnInit {
   });
 
   /** Whether it is first page, used for button disabling. */
-  public isFirstPage$ = this.filmService.isFirstPage$;
+  public readonly isFirstPage$ = this.filmService.isFirstPage$;
 
   /** Whether it is last page, used for button disabling. */
-  public isLastPage$ = this.filmService.isLastPage$;
+  public readonly isLastPage$ = this.filmService.isLastPage$;
 
   public constructor(
     @Self() private readonly destroy$: DestroyService,

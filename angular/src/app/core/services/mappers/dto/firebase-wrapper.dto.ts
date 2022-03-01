@@ -2,5 +2,5 @@
 export interface FirebaseWrapper {
 
   /** Firebase document id. */
-  id: string;
+  readonly id: string;
 }

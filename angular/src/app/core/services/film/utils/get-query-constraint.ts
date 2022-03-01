@@ -18,19 +18,19 @@ const FIREBASE_SEARCH_SYMBOL = '~';
 interface GetQueryConstraintOptions {
 
   /** Items count per page. */
-  count: number;
+  readonly count: number;
 
   /** Query cursor. */
-  queryCursor: QueryCursor;
+  readonly queryCursor: QueryCursor;
 
   /** Whether it fetch after or before query cursor. */
-  paginationDirection: PaginationDirection;
+  readonly paginationDirection: PaginationDirection;
 
   /** Search text. */
-  searchText: string | null;
+  readonly searchText: string | null;
 
   /** Sort options. */
-  sortOptions: SortOptions | null;
+  readonly sortOptions: SortOptions | null;
 }
 
 /**

@@ -3,28 +3,28 @@ import { PaginationDirection, QueryCursorId } from './types';
 interface GetPageStatusOptions {
 
   /** Films array length. */
-  filmsLength: number;
+  readonly filmsLength: number;
 
   /** Pagination direction. */
-  paginationDirection: PaginationDirection;
+  readonly paginationDirection: PaginationDirection;
 
   /** Films count per page. */
-  filmsPerPage: number;
+  readonly filmsPerPage: number;
 
   /** Cursor for fetching bakwards. */
-  backwardQueryCursorId: QueryCursorId;
+  readonly backwardQueryCursorId: QueryCursorId;
 
   /** Cursor for fetching forward. */
-  forwardQueryCursorId: QueryCursorId;
+  readonly forwardQueryCursorId: QueryCursorId;
 }
 
 interface PageStatus {
 
   /** Whether it is first page. */
-  isFirstPage: boolean;
+  readonly isFirstPage: boolean;
 
   /** Whether it is last page. */
-  isLastPage: boolean;
+  readonly isLastPage: boolean;
 }
 
 /**

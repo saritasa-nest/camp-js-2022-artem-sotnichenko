@@ -85,7 +85,7 @@ export class FilmService {
    * Get films.
    * @param filters Filters.
    */
-  public async getFilms(filters?: FilterOptions): Promise<Film[]> {
+  private async getFilms(filters?: FilterOptions): Promise<Film[]> {
     const paginationDirection = filters?.paginationDirection ?? INITIAL_PAGE;
     const searchText = filters?.searchText ?? INITIAL_SEARCH_TEXT;
     const sortOptions = filters?.sortOptions ?? INITIAL_SORT_OPTIONS;

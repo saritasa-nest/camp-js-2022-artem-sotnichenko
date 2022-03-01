@@ -26,10 +26,10 @@ export type QueryCursor = DocumentSnapshot<FilmDocument> | '';
 export interface SortOptions {
 
   /** Field to sort by. */
-  field: SortField;
+  readonly field: SortField;
 
   /** Sort direction. */
-  direction: SortDirection;
+  readonly direction: SortDirection;
 }
 
 /** Direction of pagination. */
@@ -42,11 +42,11 @@ export enum PaginationDirection {
 export interface FilterOptions {
 
   /** Search text. */
-  searchText: string | null;
+  readonly searchText: string | null;
 
   /** Sort options. */
-  sortOptions: SortOptions | null;
+  readonly sortOptions: SortOptions | null;
 
   /** Pagination direction. */
-  paginationDirection: PaginationDirection | null;
+  readonly paginationDirection: PaginationDirection | null;
 }
