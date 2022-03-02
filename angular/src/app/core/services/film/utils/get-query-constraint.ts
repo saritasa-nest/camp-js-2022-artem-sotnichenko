@@ -15,6 +15,7 @@ const DEFAULT_SORT_DIRECTION = SortDirection.Ascending;
 const SEARCH_SORT_FIELD = SortField.Title;
 const FIREBASE_SEARCH_SYMBOL = '~';
 
+/** Query constraint options. */
 export interface GetQueryConstraintOptions {
 
   /** Items count per page. */
