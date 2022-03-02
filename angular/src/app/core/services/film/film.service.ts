@@ -6,6 +6,7 @@ import {
   map,
   mergeMap,
   Observable,
+  shareReplay,
   switchMap,
   tap,
 } from 'rxjs';
@@ -67,6 +68,7 @@ export class FilmService {
       map(([paginationDirection, fetchOptions]) => ({ ...fetchOptions, paginationDirection })),
       debounceTime(300),
       mergeMap(fetchOptions => this.getFilmsPage(fetchOptions)),
+      shareReplay(),
     );
   }
 
