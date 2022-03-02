@@ -93,7 +93,7 @@ export class FiltersComponent implements OnInit {
   /** Handle filters apply. */
   public onFiltersApply(): void {
     const { searchText, sortOptions } = this.filtersForm.value as FilterOptions;
-    if (searchText !== '') {
+    if (searchText !== '' && searchText != null) {
       return this.filmService.setSearchText(searchText);
     }
     return this.filmService.setSortOptions(sortOptions);
