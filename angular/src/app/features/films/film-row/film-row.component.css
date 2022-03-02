@@ -2,33 +2,34 @@
   display: block;
 }
 
-.film-line {
+.film-row {
   display: flex;
   gap: var(--size-4);
   padding: var(--size-2) var(--size-4);
 }
 
-.film-line:hover {
+.film-row:hover {
   background: var(--color-foreground);
 }
 
-.film-line__field {
+.film-row__field {
   flex-shrink: 0;
 }
 
-.film-line__field_title {
+.film-row__field_title {
   width: var(--title-width);
   font-weight: 500;
+  flex-grow: 1;
 }
 
-.film-line__field_producers {
+.film-row__field_producers {
   width: var(--producers-width);
 }
 
-.film-line__field_director {
+.film-row__field_director {
   width: var(--director-width);
 }
 
-.film-line__field_release-date {
+.film-row__field_release-date {
   width: var(--release-date-width);
 }

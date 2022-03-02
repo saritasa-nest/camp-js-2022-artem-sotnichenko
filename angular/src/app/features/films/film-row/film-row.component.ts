@@ -2,12 +2,12 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 /** Films table row. */
 @Component({
-  selector: 'sw-film-line',
-  templateUrl: './film-line.component.html',
-  styleUrls: ['./film-line.component.css'],
+  selector: 'sw-film-row',
+  templateUrl: './film-row.component.html',
+  styleUrls: ['./film-row.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilmLineComponent {
+export class FilmRowComponent {
   /** Title. */
   @Input()
   public title = '';
@@ -18,7 +18,7 @@ export class FilmLineComponent {
 
   /** Producers. */
   @Input()
-  public producers: string[] = [];
+  public producers: readonly string[] = [];
 
   /** Release date. */
   @Input()

@@ -7,13 +7,13 @@
         <div class="films__column films__column_director">Director</div>
         <div class="films__column films__column_release-date">Release</div>
       </div>
-      <sw-film-line
+      <sw-film-row
         *ngFor="let film of films$ | async; trackBy: trackFilm"
         [title]="film.title"
-        [producers]="film.producers.concat()"
+        [producers]="film.producers"
         [director]="film.director"
         [releaseDate]="film.releaseDate"
-      ></sw-film-line>
+      ></sw-film-row>
     </div>
     <sw-filters class="films__filters"></sw-filters>
   </div>

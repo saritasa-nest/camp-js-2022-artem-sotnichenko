@@ -18,6 +18,7 @@
   border: var(--border);
   padding-bottom: var(--size-2);
   border-radius: var(--rounded-md);
+  flex-grow: 1;
 }
 
 .films__head {
@@ -33,6 +34,7 @@
 
 .films__column_title {
   width: var(--title-width);
+  flex-grow: 1;
 }
 .films__column_producers {
   width: var(--producers-width);
@@ -44,7 +46,3 @@
   width: var(--release-date-width);
 }
 
-.films__filters {
-  /* for blocks to be on the same line, material inputs have top margin. */
-  margin-top: -0.25em;
-}

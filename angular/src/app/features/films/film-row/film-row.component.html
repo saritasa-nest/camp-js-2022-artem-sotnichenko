@@ -1,0 +1,10 @@
+<div class="film-row">
+  <div class="film-row__field film-row__field_title">{{ title }}</div>
+  <div class="film-row__field film-row__field_producers">
+    {{ producers.join(", ") }}
+  </div>
+  <div class="film-row__field film-row__field_director">{{ director }}</div>
+  <div class="film-row__field film-row__field_release-date">
+    {{ releaseDate | date: "mediumDate" }}
+  </div>
+</div>

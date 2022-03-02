@@ -5,7 +5,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  padding: var(--size-4) var(--size-8);
+  padding: var(--size-4) 0;
 }
 
 .header__user-block {
