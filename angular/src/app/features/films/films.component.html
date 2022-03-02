@@ -1,6 +1,6 @@
 <sw-main-layout>
   <div class="films">
-    <div class="films__table">
+    <div class="films__table" *ngIf="films$ | async; else spinner">
       <div class="films__head">
         <div class="films__column films__column_title">Title</div>
         <div class="films__column films__column_producers">Producers</div>
@@ -15,6 +15,11 @@
         [releaseDate]="film.releaseDate"
       ></sw-film-row>
     </div>
+    <ng-template #spinner>
+      <div class="films__spinner">
+        <mat-spinner [diameter]="32"></mat-spinner>
+      </div>
+    </ng-template>
     <sw-filters class="films__filters"></sw-filters>
   </div>
 </sw-main-layout>

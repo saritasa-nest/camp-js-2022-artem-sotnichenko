@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const MATERIAL_MODULES = [
   MatInputModule,
@@ -14,6 +15,7 @@ const MATERIAL_MODULES = [
   MatFormFieldModule,
   MatDividerModule,
   MatSelectModule,
+  MatProgressSpinnerModule,
 ];
 
 /** Material imports. */

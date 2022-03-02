@@ -12,6 +12,13 @@
   align-items: start;
 }
 
+.films__spinner {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
 .films__table {
   display: flex;
   flex-direction: column;
