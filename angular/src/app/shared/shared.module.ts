@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { RouterModule } from '@angular/router';
+
 import { MaterialModule } from './material.module';
 import { BlankLayoutComponent } from './layouts/blank-layout/blank-layout.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
@@ -32,11 +34,13 @@ const EXPORTED_DECLARATIONS = [
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   exports: [
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     ...EXPORTED_DECLARATIONS,
   ],
 })
