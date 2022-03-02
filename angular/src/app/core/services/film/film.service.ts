@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
-  combineLatestWith,
+  combineLatest,
   debounceTime,
   map,
-  mergeMap,
   Observable,
   shareReplay,
   switchMap,
@@ -63,12 +62,14 @@ export class FilmService {
     private readonly filmMapper: FilmMapper,
     private readonly firestoreService: FirestoreService,
   ) {
-    this.films$ = this.paginationDirection$.pipe(
-      combineLatestWith(this.fetchOptions$),
+    this.films$ = combineLatest([
+      this.paginationDirection$,
+      this.fetchOptions$,
+    ]).pipe(
       map(([paginationDirection, fetchOptions]) => ({ ...fetchOptions, paginationDirection })),
       debounceTime(300),
-      mergeMap(fetchOptions => this.getFilmsPage(fetchOptions)),
-      shareReplay(),
+      switchMap(fetchOptions => this.getFilmsPage(fetchOptions)),
+      shareReplay({ refCount: true, bufferSize: 1 }),
     );
   }
 
@@ -156,7 +157,7 @@ export class FilmService {
     );
   }
 
-  private parseFilmsPage(films: Film[], paginationDirection: PaginationDirection): Film[] {
+  private parseFilmsPage(films: readonly Film[], paginationDirection: PaginationDirection): readonly Film[] {
     // Means it is last page.
     if (films.length < FILMS_PER_PAGE + 1) {
       return films;
@@ -169,7 +170,7 @@ export class FilmService {
     return films.slice(1);
   }
 
-  private updatePagination(films: Film[], paginationDirection: PaginationDirection): void {
+  private updatePagination(films: readonly Film[], paginationDirection: PaginationDirection): void {
     const { isFirstPage, isLastPage } = getPageStatus({
       filmsLength: films.length,
       paginationDirection,
@@ -180,6 +181,12 @@ export class FilmService {
 
     this.isFirstPageSubject$.next(isFirstPage);
     this.isLastPageSubject$.next(isLastPage);
+
+    if (films.length === 0) {
+      this.backwardQueryCursorId = null;
+      this.forwardQueryCursorId = null;
+      return;
+    }
 
     if (paginationDirection === PaginationDirection.Next) {
       if (films.length - 1 < FILMS_PER_PAGE) {

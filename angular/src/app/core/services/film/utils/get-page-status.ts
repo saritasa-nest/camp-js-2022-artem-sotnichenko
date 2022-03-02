@@ -30,7 +30,6 @@ interface PageStatus {
 /**
  * Get page statuses, whether they are last or/and first page.
  * @param options Options.
- * @returns
  */
 export function getPageStatus(options: GetPageStatusOptions): PageStatus {
   if (options.filmsLength === 0) {

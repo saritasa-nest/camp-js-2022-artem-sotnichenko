@@ -21,7 +21,7 @@ export class FirestoreService {
 
   /**
    * Fetch entities.
-   * @param collectionName Collection  name.
+   * @param collectionName Collection name.
    * @param constraints Query constraints.
    */
   public fetchMany<T extends FirebaseWrapper>(collectionName: CollectionName, constraints: QueryConstraint[]): Observable<T[]> {
