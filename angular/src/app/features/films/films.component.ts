@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Film } from 'src/app/core/models/film';
 import { FilmService } from 'src/app/core/services/film/film.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 /** Films table component. */
 @Component({
@@ -8,6 +9,17 @@ import { FilmService } from 'src/app/core/services/film/film.service';
   templateUrl: './films.component.html',
   styleUrls: ['./films.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('show', [
+      state('void', style({
+        opacity: 0,
+      })),
+      state('visible', style({
+        opacity: 1,
+      })),
+      transition('void => visible', [animate('0.5s ease-in')]),
+    ]),
+  ],
 })
 export class FilmsComponent {
   /** Films. */

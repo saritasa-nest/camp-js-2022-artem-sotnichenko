@@ -1,6 +1,10 @@
 <sw-main-layout>
   <div class="films">
-    <div class="films__table" *ngIf="films$ | async; else spinner">
+    <div
+      class="films__table"
+      [@show]="(films$ | async) ? 'visible' : 'hidden'"
+      *ngIf="films$ | async; else spinner"
+    >
       <div class="films__head">
         <div class="films__column films__column_title">Title</div>
         <div class="films__column films__column_producers">Producers</div>
