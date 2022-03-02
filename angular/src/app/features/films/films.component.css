@@ -36,12 +36,15 @@
   width: var(--title-width);
   flex-grow: 1;
 }
+
 .films__column_producers {
   width: var(--producers-width);
 }
+
 .films__column_director {
   width: var(--director-width);
 }
+
 .films__column_release-date {
   width: var(--release-date-width);
 }

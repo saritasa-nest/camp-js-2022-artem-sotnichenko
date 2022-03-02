@@ -38,12 +38,10 @@ export class FilmService {
   /** Films. */
   public readonly films$: Observable<Film[]>;
 
-  // Fetch options
   private readonly fetchOptions$ = new BehaviorSubject<FetchOptions>(INITIAL_FILTER_OPTIONS);
 
   private readonly paginationDirection$ = new BehaviorSubject<PaginationDirection>(INITIAL_PAGINATION_DIRECTION);
 
-  // Pagination flags
   private readonly isFirstPageSubject$ = new BehaviorSubject(true);
 
   private readonly isLastPageSubject$ = new BehaviorSubject(true);
@@ -146,6 +144,7 @@ export class FilmService {
     return this.firestoreService.fetchMany<FilmDto>(
       'films',
       getQueryConstraint({
+        // Fetching one more to know if there is next page.
         count: FILMS_PER_PAGE + 1,
         queryCursor: options.queryCursor,
         paginationDirection: options.paginationDirection,
@@ -156,9 +155,12 @@ export class FilmService {
   }
 
   private parseFilmsPage(films: Film[], paginationDirection: PaginationDirection): Film[] {
-    if (films.length - 1 < FILMS_PER_PAGE) {
+    // Means it is last page.
+    if (films.length < FILMS_PER_PAGE + 1) {
       return films;
     }
+
+    // Otherwise slicing element depending on direction.
     if (paginationDirection === PaginationDirection.Next) {
       return films.slice(0, -1);
     }

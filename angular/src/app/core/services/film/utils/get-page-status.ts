@@ -44,14 +44,14 @@ export function getPageStatus(options: GetPageStatusOptions): PageStatus {
   let isLastPage = false;
 
   if (options.paginationDirection === PaginationDirection.Next) {
-    if (options.filmsLength - 1 < options.filmsPerPage) {
+    if (options.filmsLength < options.filmsPerPage + 1) {
       isLastPage = true;
     }
     if (options.backwardQueryCursorId === null && options.forwardQueryCursorId === null) {
       isFirstPage = true;
     }
   } else {
-    if (options.filmsLength - 1 < options.filmsPerPage) {
+    if (options.filmsLength < options.filmsPerPage + 1) {
       isFirstPage = true;
     }
     if (options.forwardQueryCursorId === null && options.backwardQueryCursorId === null) {

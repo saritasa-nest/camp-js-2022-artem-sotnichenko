@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { QueryDocumentSnapshot } from 'firebase/firestore';
 
 import { Film } from '../../models/film';
 
-import { FilmDocument, FilmDto } from './dto/film.dto';
+import { FilmDto } from './dto/film.dto';
 
 /**
  * Mapper for user entities.
@@ -17,24 +16,6 @@ export class FilmMapper {
   public fromDto(dto: FilmDto): Film {
     return {
       id: dto.id,
-      title: dto.fields.title,
-      director: dto.fields.director,
-      producers: dto.fields.producer.split(',').map(str => str.trim()),
-      openingCrawl: dto.fields.opening_crawl,
-      releaseDate: new Date(dto.fields.release_date),
-      characterIds: dto.fields.characters,
-      planetIds: dto.fields.planets,
-    };
-  }
-
-  /**
-   * Maps Film document to Film model.
-   * @param doc Film Document.
-   */
-  public fromDoc(doc: QueryDocumentSnapshot<FilmDocument>): Film {
-    const dto = doc.data();
-    return {
-      id: doc.id,
       title: dto.fields.title,
       director: dto.fields.director,
       producers: dto.fields.producer.split(',').map(str => str.trim()),
