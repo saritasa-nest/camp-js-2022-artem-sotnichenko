@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, Self } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { takeUntil } from 'rxjs';
+import { distinctUntilChanged, takeUntil } from 'rxjs';
 import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmService } from 'src/app/core/services/film/film.service';
-import { PaginationDirection, SortField, SortOptions, SortDirection } from 'src/app/core/services/film/utils/types';
+import { PaginationDirection, SortField, SortDirection, FilterOptions } from 'src/app/core/services/film/utils/types';
 
 export const TO_READABLE_SORT_FIELD_MAP: Readonly<Record<SortField, string>> = {
   [SortField.Title]: 'Title',
@@ -20,7 +20,6 @@ export const TO_READABLE_SORT_DIRECTION_MAP: Readonly<Record<SortDirection, stri
 const INITIAL_SEARCH_TEXT = '';
 const INITIAL_SORT_FIELD = SortField.Title;
 const INITIAL_SORT_DIRECTION = SortDirection.Ascending;
-const INITIAL_PAGE = PaginationDirection.Next;
 
 /** Films filters. */
 @Component({
@@ -32,7 +31,7 @@ const INITIAL_PAGE = PaginationDirection.Next;
 })
 export class FiltersComponent implements OnInit {
   /** Sort field select options. */
-  public readonly sortFiledOptions = (Object.entries(TO_READABLE_SORT_FIELD_MAP)).map(([value, text]) => ({
+  public readonly sortFieldOptions = (Object.entries(TO_READABLE_SORT_FIELD_MAP)).map(([value, text]) => ({
     value, text,
   }));
 
@@ -44,11 +43,10 @@ export class FiltersComponent implements OnInit {
   /** Filters form. */
   public readonly filtersForm = this.fb.group({
     searchText: this.fb.control(INITIAL_SEARCH_TEXT),
-    sort: this.fb.group({
+    sortOptions: this.fb.group({
       field: this.fb.control(INITIAL_SORT_FIELD),
       direction: this.fb.control(INITIAL_SORT_DIRECTION),
     }),
-    page: this.fb.control(INITIAL_PAGE),
   });
 
   /** Whether it is first page, used for button disabling. */
@@ -65,46 +63,55 @@ export class FiltersComponent implements OnInit {
 
   /** @inheritdoc */
   public ngOnInit(): void {
-    const searchTextControl = this.filtersForm.get('searchText');
-    searchTextControl?.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((text: string) => {
-        if (searchTextControl.pristine) {
-          return;
-        }
-
-        this.resetSortOptions();
-        this.filmService.setSearchText(text);
-      });
-
-    const sortControl = this.filtersForm.get('sort');
-    sortControl?.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((sortOptions: SortOptions) => {
-        if (sortControl.pristine) {
-          return;
-        }
-
-        this.resetSearchText();
-        this.filmService.setSortOptions(sortOptions);
-      });
-  }
-
-  private resetSearchText(): void {
-    const searchControl = this.filtersForm.get('searchText');
-    searchControl?.reset();
-    searchControl?.markAsPristine();
-    searchControl?.markAsUntouched();
-  }
-
-  private resetSortOptions(): void {
-    const sortControl = this.filtersForm.get('sort');
-    sortControl?.reset({
-      field: INITIAL_SORT_FIELD,
-      direction: INITIAL_SORT_DIRECTION,
+    this.filtersForm.get('searchText')?.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(searchText => {
+      if (searchText !== '') {
+        this.filtersForm.get('sortOptions')?.disable();
+      } else {
+        this.filtersForm.get('sortOptions')?.enable();
+      }
     });
-    sortControl?.markAsPristine();
-    sortControl?.markAsUntouched();
+
+    this.filtersForm.get('sortOptions')?.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(sortOptions => {
+      if (sortOptions.field !== INITIAL_SORT_FIELD || sortOptions.direction !== INITIAL_SORT_DIRECTION) {
+        this.filtersForm.get('searchText')?.disable();
+      } else {
+        this.filtersForm.get('searchText')?.enable();
+      }
+    });
+  }
+
+  /** Handle filters apply. */
+  public onFiltersApply(): void {
+    const { searchText, sortOptions } = this.filtersForm.value as FilterOptions;
+    if (searchText !== '') {
+      return this.filmService.setSearchText(searchText);
+    }
+    return this.filmService.setSortOptions(sortOptions);
+  }
+
+  /**
+   * Handle filters reset.
+   * @param event Event.
+   */
+  public onFiltersReset(event: Event): void {
+    event.preventDefault();
+    this.filtersForm.reset({
+      searchText: INITIAL_SEARCH_TEXT,
+      sortOptions: {
+        field: INITIAL_SORT_FIELD,
+        direction: INITIAL_SORT_DIRECTION,
+      },
+    });
   }
 
   /** Handle next page button click. */
