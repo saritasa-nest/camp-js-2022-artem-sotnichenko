@@ -36,7 +36,7 @@ const INITIAL_FILTER_OPTIONS: FetchOptions = {
 export class FilmService {
 
   /** Films. */
-  public readonly films$: Observable<Film[]>;
+  public readonly films$: Observable<readonly Film[]>;
 
   private readonly fetchOptions$ = new BehaviorSubject<FetchOptions>(INITIAL_FILTER_OPTIONS);
 
@@ -115,7 +115,7 @@ export class FilmService {
    * Get films.
    * @param fetchOptions Fetch options.
    */
-  private getFilmsPage(fetchOptions: FetchOptions): Observable<Film[]> {
+  private getFilmsPage(fetchOptions: FetchOptions): Observable<readonly Film[]> {
     const {
       paginationDirection,
       searchText,
@@ -130,7 +130,7 @@ export class FilmService {
           searchText,
           sortOptions,
         })),
-        map(filmDtos => filmDtos.map(this.filmMapper.fromDto)),
+        map(filmDtos => filmDtos.map(dto => this.filmMapper.fromDto(dto))),
         tap(films => this.updatePagination(films, paginationDirection)),
         map(films => this.parseFilmsPage(films, paginationDirection)),
       );
@@ -143,7 +143,7 @@ export class FilmService {
     );
   }
 
-  private fetchFilms(options: Omit<GetQueryConstraintOptions, 'count'>): Observable<FilmDto[]> {
+  private fetchFilms(options: Omit<GetQueryConstraintOptions, 'count'>): Observable<readonly FilmDto[]> {
     return this.firestoreService.fetchMany<FilmDto>(
       'films',
       getQueryConstraint({
