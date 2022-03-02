@@ -1,8 +1,6 @@
 import { DocumentSnapshot } from 'firebase/firestore';
 import { DocumentData } from 'rxfire/firestore/interfaces';
 
-import { FilmDocument } from '../../mappers/dto/film.dto';
-
 /** Sort direction. */
 export enum SortDirection {
   Ascending = 'asc',
@@ -21,7 +19,7 @@ export enum SortField {
 export type QueryCursorId = string | null;
 
 /** Query cursor used for pagination. */
-export type QueryCursor = DocumentSnapshot<DocumentData> | '';
+export type QueryCursor<T = DocumentData> = DocumentSnapshot<T> | '';
 
 /** Sort options. */
 export interface SortOptions {
@@ -39,6 +37,13 @@ export enum PaginationDirection {
   Prev = 'prev',
 }
 
+/** Fetch options. */
+export interface FetchOptions extends FilterOptions {
+
+  /** Pagination direction. */
+  readonly paginationDirection: PaginationDirection;
+}
+
 /** Filter options. */
 export interface FilterOptions {
 
@@ -47,7 +52,4 @@ export interface FilterOptions {
 
   /** Sort options. */
   readonly sortOptions: SortOptions | null;
-
-  /** Pagination direction. */
-  readonly paginationDirection: PaginationDirection | null;
 }

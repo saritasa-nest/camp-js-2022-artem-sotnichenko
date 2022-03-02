@@ -29,11 +29,11 @@ interface PageStatus {
 
 /**
  * Get page statuses, whether they are last or/and first page.
- * @param opts Options.
+ * @param options Options.
  * @returns
  */
-export function getPageStatus(opts: GetPageStatusOptions): PageStatus {
-  if (opts.filmsLength === 0) {
+export function getPageStatus(options: GetPageStatusOptions): PageStatus {
+  if (options.filmsLength === 0) {
     return {
       isFirstPage: true,
       isLastPage: true,
@@ -43,18 +43,18 @@ export function getPageStatus(opts: GetPageStatusOptions): PageStatus {
   let isFirstPage = false;
   let isLastPage = false;
 
-  if (opts.paginationDirection === PaginationDirection.Next) {
-    if (opts.filmsLength - 1 < opts.filmsPerPage) {
+  if (options.paginationDirection === PaginationDirection.Next) {
+    if (options.filmsLength - 1 < options.filmsPerPage) {
       isLastPage = true;
     }
-    if (opts.backwardQueryCursorId === null && opts.forwardQueryCursorId === null) {
+    if (options.backwardQueryCursorId === null && options.forwardQueryCursorId === null) {
       isFirstPage = true;
     }
   } else {
-    if (opts.filmsLength - 1 < opts.filmsPerPage) {
+    if (options.filmsLength - 1 < options.filmsPerPage) {
       isFirstPage = true;
     }
-    if (opts.forwardQueryCursorId === null && opts.backwardQueryCursorId === null) {
+    if (options.forwardQueryCursorId === null && options.backwardQueryCursorId === null) {
       isLastPage = true;
     }
   }
