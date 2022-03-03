@@ -1,6 +1,7 @@
 <sw-main-layout>
   <div class="films">
     <table
+      aria-label="Films"
       class="films__table"
       [@show]="(films$ | async) ? 'visible' : 'hidden'"
       *ngIf="films$ | async; else spinner"
