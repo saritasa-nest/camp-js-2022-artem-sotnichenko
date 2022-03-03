@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Self } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { distinctUntilChanged, takeUntil } from 'rxjs';
+import { distinctUntilChanged, takeUntil, tap } from 'rxjs';
 import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmService } from 'src/app/core/services/film/film.service';
 import { PaginationDirection, SortField, SortDirection, FilterOptions } from 'src/app/core/services/film/utils/types';
@@ -65,29 +65,31 @@ export class FiltersComponent implements OnInit {
   public ngOnInit(): void {
     this.filtersForm.get('searchText')?.valueChanges
       .pipe(
-        distinctUntilChanged(),
         takeUntil(this.destroy$),
+        distinctUntilChanged(),
+        tap(searchText => {
+          if (searchText !== '') {
+            this.filtersForm.get('sortOptions')?.disable();
+          } else {
+            this.filtersForm.get('sortOptions')?.enable();
+          }
+        }),
       )
-      .subscribe(searchText => {
-      if (searchText !== '') {
-        this.filtersForm.get('sortOptions')?.disable();
-      } else {
-        this.filtersForm.get('sortOptions')?.enable();
-      }
-    });
+      .subscribe();
 
     this.filtersForm.get('sortOptions')?.valueChanges
       .pipe(
-        distinctUntilChanged(),
         takeUntil(this.destroy$),
+        distinctUntilChanged(),
+        tap(sortOptions => {
+          if (sortOptions.field !== INITIAL_SORT_FIELD || sortOptions.direction !== INITIAL_SORT_DIRECTION) {
+            this.filtersForm.get('searchText')?.disable();
+          } else {
+            this.filtersForm.get('searchText')?.enable();
+          }
+        }),
       )
-      .subscribe(sortOptions => {
-      if (sortOptions.field !== INITIAL_SORT_FIELD || sortOptions.direction !== INITIAL_SORT_DIRECTION) {
-        this.filtersForm.get('searchText')?.disable();
-      } else {
-        this.filtersForm.get('searchText')?.enable();
-      }
-    });
+      .subscribe();
   }
 
   /** Handle filters apply. */
