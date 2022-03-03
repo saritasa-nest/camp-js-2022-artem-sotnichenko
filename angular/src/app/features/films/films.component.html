@@ -1,24 +1,25 @@
 <sw-main-layout>
   <div class="films">
-    <div
+    <table
       class="films__table"
       [@show]="(films$ | async) ? 'visible' : 'hidden'"
       *ngIf="films$ | async; else spinner"
     >
-      <div class="films__head">
-        <div class="films__column films__column_title">Title</div>
-        <div class="films__column films__column_producers">Producers</div>
-        <div class="films__column films__column_director">Director</div>
-        <div class="films__column films__column_release-date">Release</div>
-      </div>
-      <sw-film-row
+      <tr class="films__head">
+        <th class="films__column films__column_title">Title</th>
+        <th class="films__column films__column_producers">Producers</th>
+        <th class="films__column films__column_director">Director</th>
+        <th class="films__column films__column_release-date">Release</th>
+      </tr>
+      <tr
+        sw-film-row
         *ngFor="let film of films$ | async; trackBy: trackFilm"
         [title]="film.title"
         [producers]="film.producers"
         [director]="film.director"
         [releaseDate]="film.releaseDate"
-      ></sw-film-row>
-    </div>
+      ></tr>
+    </table>
     <ng-template #spinner>
       <div class="films__spinner">
         <mat-spinner [diameter]="32"></mat-spinner>

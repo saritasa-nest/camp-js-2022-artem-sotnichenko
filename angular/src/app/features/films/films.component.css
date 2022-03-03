@@ -37,6 +37,7 @@
 
 .films__column {
   font-weight: 500;
+  text-align: left;
 }
 
 .films__column_title {

@@ -1,14 +1,15 @@
+/**
+ * Films table row is invalid with angular component wrapper,
+ * so I made wrapper `tr` element and hence I apply filters to `:host`
+ * @see Caniinclude https://caninclude.glitch.me/caninclude?child=tr&parent=div.
+ */
 :host {
-  display: block;
-}
-
-.film-row {
   display: flex;
   gap: var(--size-4);
   padding: var(--size-2) var(--size-4);
 }
 
-.film-row:hover {
+:host:hover {
   background: var(--color-foreground);
 }
 

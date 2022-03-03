@@ -2,7 +2,13 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 /** Films table row. */
 @Component({
-  selector: 'sw-film-row',
+
+  /**
+   * Films table row is invalid with angular component wrapper.
+   * @see Caniinclude https://caninclude.glitch.me/caninclude?child=tr&parent=div.
+   */
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'tr[sw-film-row]',
   templateUrl: './film-row.component.html',
   styleUrls: ['./film-row.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
