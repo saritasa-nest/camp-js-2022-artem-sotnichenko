@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   combineLatest,
+  concat,
   debounceTime,
   map,
   Observable,
@@ -122,7 +123,7 @@ export class FilmService {
       sortOptions,
     } = fetchOptions;
 
-    return this.getFilmQueryCursor(paginationDirection)
+    const films$ = this.getFilmQueryCursor(paginationDirection)
       .pipe(
         switchMap(queryCursor => this.fetchFilms({
           queryCursor,
@@ -131,9 +132,15 @@ export class FilmService {
           sortOptions,
         })),
         map(filmDtos => filmDtos.map(dto => this.filmMapper.fromDto(dto))),
-        tap(films => this.updatePagination(films, paginationDirection)),
-        map(films => this.parseFilmsPage(films, paginationDirection)),
       );
+
+    const updatePaginationSideEffect$ = films$.pipe(tap(films => this.updatePagination(films, paginationDirection)));
+
+    const filmsPage$ = films$.pipe(
+      map(films => this.parseFilmsPage(films, paginationDirection)),
+    );
+
+    return concat(updatePaginationSideEffect$, filmsPage$);
   }
 
   private getFilmQueryCursor(paginationDirection: PaginationDirection): Observable<QueryCursor> {
