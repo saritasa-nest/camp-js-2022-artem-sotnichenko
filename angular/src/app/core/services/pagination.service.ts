@@ -152,16 +152,11 @@ export class PaginationService {
     let backwardEntityId: EntityId = null;
 
     if (paginationDirection === PaginationDirection.Next) {
-      if (films.length < expectedCount) {
-        forwardEntityId = null;
-      } else {
+      if (films.length === expectedCount) {
         forwardEntityId = films[films.length - 1].id;
       }
       backwardEntityId = films[0].id;
-    } else if (films.length < expectedCount) {
-      forwardEntityId = null;
-      backwardEntityId = null;
-    } else {
+    } else if (films.length === expectedCount) {
       backwardEntityId = films[0].id;
       forwardEntityId = films[films.length - 1].id;
     }

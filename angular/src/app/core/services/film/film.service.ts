@@ -141,13 +141,13 @@ export class FilmService {
 
     if (sortOptions !== null) {
       constraints.push(orderBy(sortOptions.field, sortOptions.direction));
-    } else if (searchText !== null) {
-      constraints.push(
-        orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION),
-        where(SEARCH_FIELD, '>=', searchText),
-        where(SEARCH_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
-      );
     } else {
+      if (searchText !== null) {
+        constraints.push(
+          where(SEARCH_FIELD, '>=', searchText),
+          where(SEARCH_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
+        );
+      }
       constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION));
     }
 

@@ -133,13 +133,11 @@ export class FiltersComponent implements OnInit {
 
   /** Handle next page button click. */
   public onNextPage(): void {
-    // this.filmService.changePage(PaginationDirection.Next);
     this.changePage.emit(PaginationDirection.Next);
   }
 
   /** Handle previous page button click. */
   public onPrevPage(): void {
-    // this.filmService.changePage(PaginationDirection.Prev);
     this.changePage.emit(PaginationDirection.Prev);
   }
 }
