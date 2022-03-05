@@ -29,8 +29,7 @@
     <sw-filters
       (changePage)="onChangePage($event)"
       (changeFilterOptions)="onChangeFilterOptions($event)"
-      [isFirstPage]="(isFirstPage$ | async) ?? false"
-      [isLastPage]="(isLastPage$ | async) ?? false"
+      [pagesStatus]="pagesStatus$ | async"
       class="films__filters"
     ></sw-filters>
   </div>

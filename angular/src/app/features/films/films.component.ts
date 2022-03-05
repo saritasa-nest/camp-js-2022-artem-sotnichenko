@@ -2,8 +2,8 @@ import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { Film } from 'src/app/core/models/film';
 import { FilmService } from 'src/app/core/services/film/film.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { BehaviorSubject, combineLatest, ignoreElements, map, merge, mergeMap, Observable, takeUntil, tap } from 'rxjs';
-import { FilmCursor, FilterOptions, PaginationDirection } from 'src/app/core/services/film/utils/types';
+import { BehaviorSubject, combineLatest, ignoreElements, map, merge, mergeMap, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { FilmCursor, FilterOptions, PagesStatus, PaginationDirection } from 'src/app/core/services/film/utils/types';
 import { FILMS_PER_PAGE } from 'src/app/core/utils/constants';
 import { PaginationService } from 'src/app/core/services/pagination.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
@@ -35,17 +35,14 @@ export class FilmsComponent {
   /** Films fetch cursor. */
   private readonly cursor$ = new BehaviorSubject<FilmCursor | null>(null);
 
+  /** Whether it is last page of films. */
+  public readonly pagesStatus$ = new Subject<PagesStatus>();
+
   /** Cursor to fetch films backward of it. */
   private backwardCursor: FilmCursor | null = null;
 
   /** Cursor to fetch films forward of it. */
   private forwardCursor: FilmCursor | null = null;
-
-  /** Whether it is first page of films. */
-  public readonly isFirstPage$ = new BehaviorSubject<boolean>(true);
-
-  /** Whether it is last page of films. */
-  public readonly isLastPage$ = new BehaviorSubject<boolean>(true);
 
   public constructor(
     @Self() private readonly destroy$: DestroyService,
@@ -53,30 +50,29 @@ export class FilmsComponent {
     private readonly paginationService: PaginationService,
   ) {
     const defaultCursor = this.filmService.getCursor();
-    const filmsCount = this.paginationService.getFilmsCountPerPage(FILMS_PER_PAGE);
+    const filmsCount = FILMS_PER_PAGE;
 
     const currentCursor$ = this.cursor$.pipe(
       map(cursor => cursor === null ? defaultCursor : cursor),
     );
 
-    const filmsAndCursors$ = currentCursor$.pipe(
-      mergeMap(cursor => this.filmService.getFilms(filmsCount, cursor)),
+    const films$ = currentCursor$.pipe(
+      mergeMap(cursor => this.paginationService.getFilms(filmsCount, cursor)),
     );
 
-    const films$ = filmsAndCursors$.pipe(map(({ films }) => films));
-    const cursors$ = filmsAndCursors$.pipe(map(({ cursors }) => cursors));
+    const cursors$ = combineLatest([currentCursor$, films$]).pipe(
+      map(([cursor, films]) => this.paginationService.getCursors(filmsCount, films, cursor)),
+    );
 
     this.films$ = combineLatest([currentCursor$, films$]).pipe(
       map(([cursor, films]) => this.paginationService.getFilmsPage(filmsCount, films, cursor)),
     );
 
     // Side effects handling
-    const getPageButtonStatusesSideEffect$ = combineLatest([currentCursor$, films$]).pipe(
+    const setPagesStatusSideEffect$ = combineLatest([currentCursor$, films$]).pipe(
       tap(([cursor, films]) => {
-        const { isFirstPage, isLastPage } = this.paginationService.getPagesStatuses(filmsCount, films, cursor);
-
-        this.isFirstPage$.next(isFirstPage);
-        this.isLastPage$.next(isLastPage);
+        const pagesStatus = this.paginationService.getPagesStatus(filmsCount, films, cursor);
+        this.pagesStatus$.next(pagesStatus);
       }),
     );
 
@@ -88,7 +84,7 @@ export class FilmsComponent {
     );
 
     merge(
-      getPageButtonStatusesSideEffect$,
+      setPagesStatusSideEffect$,
       setCursorsSideEffect$,
     ).pipe(
       ignoreElements(),

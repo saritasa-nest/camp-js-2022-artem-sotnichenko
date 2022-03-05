@@ -1,17 +1,10 @@
 import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
 
 import { Film } from '../models/film';
 
-import { FilmCursor, PaginationDirection } from './film/utils/types';
-
-interface PagesStatuses {
-
-  /** Whether it is first page. */
-  readonly isFirstPage: boolean;
-
-  /** Whether it is last page. */
-  readonly isLastPage: boolean;
-}
+import { FilmService } from './film/film.service';
+import { EntityId, FilmCursor, PagesStatus, PaginationDirection } from './film/utils/types';
 
 /**
  * Pagination service.
@@ -21,15 +14,29 @@ interface PagesStatuses {
 })
 export class PaginationService {
 
-  public constructor() { }
+  public constructor(
+    private readonly filmService: FilmService,
+  ) { }
 
   /**
    * Get count to fetch.
-   * Encapsulate logic of pagination, so it can calculate wheter there next pages or not.
-   * @param expectedCount Expected count of films on the page.
+   * Encapsulate logic of pagination, so it can calculate wheter there next pages or not by fetching on more item.
+   * @param count Expected count of films on the page.
    */
-  public getFilmsCountPerPage(expectedCount: number): number {
-    return expectedCount + 1;
+  private getPaginationCount(count: number): number {
+    return count + 1;
+  }
+
+  /**
+   * Films array without slicing, needed to get cursors and update pages statuses.
+   * @param count Expected count of films.
+   * @param cursor Current film cursor.
+   */
+  public getFilms(count: number, cursor: FilmCursor): Observable<readonly Film[]> {
+    const paginationCount = this.getPaginationCount(count);
+    return this.filmService.getFilms(paginationCount, cursor).pipe(
+      map(films => this.getFilmsPage(paginationCount, films, cursor)),
+    );
   }
 
   /**
@@ -41,9 +48,10 @@ export class PaginationService {
    */
   public getFilmsPage(expectedCount: number, films: readonly Film[], cursor: FilmCursor): readonly Film[] {
     const { paginationDirection } = cursor;
+    const paginationCount = this.getPaginationCount(expectedCount);
 
     // Means it is last page.
-    if (films.length < expectedCount) {
+    if (films.length < paginationCount) {
       return films;
     }
 
@@ -60,29 +68,107 @@ export class PaginationService {
    * @param films Films array.
    * @param cursor Current film cursor.
    */
-  public getPagesStatuses(expectedCount: number, films: readonly Film[], cursor: FilmCursor): PagesStatuses {
+  public getPagesStatus(
+    expectedCount: number,
+    films: readonly Film[],
+    cursor: FilmCursor,
+  ): PagesStatus {
     const {
+      entityId,
       paginationDirection,
-      queryCursorId,
     } = cursor;
 
-    const count = films.length;
+    let isFirst = entityId === null;
+    let isLast = false;
 
-    let isFirstPage = false;
-    let isLastPage = false;
-
-    if (queryCursorId === null) {
-      isFirstPage = true;
-    }
-
-    if (count < expectedCount) {
+    if (films.length < expectedCount) {
       if (paginationDirection === PaginationDirection.Next) {
-        isLastPage = true;
+        isLast = true;
       } else {
-        isFirstPage = true;
+        isFirst = true;
       }
     }
 
-    return { isFirstPage, isLastPage };
+    return { isFirst, isLast };
+  }
+
+  /**
+   * Get cursor to fetch pages.
+   * @param expectedCount Expected films count.
+   * @param films Films array.
+   * @param currentCursor Current film cursor.
+   */
+  public getCursors(
+    expectedCount: number,
+    films: readonly Film[],
+    currentCursor: FilmCursor,
+  ): {
+    backward: FilmCursor | null;
+    forward: FilmCursor | null;
+  } {
+    const {
+      entityId,
+      paginationDirection,
+    } = currentCursor;
+    const paginationCount = this.getPaginationCount(expectedCount);
+    const entityIds = this.getEntitiesIds(paginationCount, films, paginationDirection);
+
+    return {
+      forward: paginationDirection === PaginationDirection.Prev && entityId === null ? null : {
+        ...currentCursor,
+        paginationDirection: PaginationDirection.Next,
+        entityId: entityIds.forward,
+      },
+      backward: paginationDirection === PaginationDirection.Next && entityId === null ? null : {
+        ...currentCursor,
+        paginationDirection: PaginationDirection.Prev,
+        entityId: entityIds.backward,
+      },
+    };
+  }
+
+  /**
+   * Get entities ids.
+   * @param expectedCount Expected count of films.
+   * @param films Films array.
+   * @param paginationDirection Pagination direction.
+   */
+  private getEntitiesIds(
+    expectedCount: number,
+    films: readonly Film[],
+    paginationDirection: PaginationDirection,
+  ): {
+    backward: EntityId;
+    forward: EntityId;
+  } {
+    if (films.length === 0) {
+      return {
+        backward: null,
+        forward: null,
+      };
+    }
+
+    let forwardEntityId: EntityId = null;
+    let backwardEntityId: EntityId = null;
+
+    if (paginationDirection === PaginationDirection.Next) {
+      if (films.length < expectedCount) {
+        forwardEntityId = null;
+      } else {
+        forwardEntityId = films[films.length - 1].id;
+      }
+      backwardEntityId = films[0].id;
+    } else if (films.length < expectedCount) {
+      forwardEntityId = null;
+      backwardEntityId = null;
+    } else {
+      backwardEntityId = films[0].id;
+      forwardEntityId = films[films.length - 1].id;
+    }
+
+    return {
+      backward: backwardEntityId,
+      forward: forwardEntityId,
+    };
   }
 }

@@ -15,11 +15,21 @@ export enum SortField {
   ReleaseDate = 'fields.release_date',
 }
 
+/** Pages status. */
+export interface PagesStatus {
+
+  /** Wheter it is first page. */
+  readonly isFirst: boolean;
+
+  /** Wheter it is last page. */
+  readonly isLast: boolean;
+}
+
 /** Film id or null. */
-export type QueryCursorId = string | null;
+export type EntityId = string | null;
 
 /** Query cursor used for pagination. */
-export type QueryCursor<T = DocumentData> = DocumentSnapshot<T> | '';
+export type QueryCursor<T = DocumentData> = DocumentSnapshot<T> | null;
 
 /** Sort options. */
 export interface SortOptions {
@@ -51,7 +61,7 @@ export interface FilterOptions {
 export interface FilmCursor extends FilterOptions {
 
   /** Query cursor id for fetching. */
-  readonly queryCursorId: QueryCursorId;
+  readonly entityId: EntityId;
 
   /** Pagination direction. */
   readonly paginationDirection: PaginationDirection;

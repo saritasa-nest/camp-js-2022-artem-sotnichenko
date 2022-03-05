@@ -43,6 +43,6 @@ export class FirestoreService {
    * @param id Document id.
    */
   public getQueryCursorById<T extends FirebaseWrapper>(collectionName: CollectionName, id: string | null): Observable<QueryCursor<T>> {
-    return id ? fromDocRef(doc(getCollection<T>(this.db, collectionName), id)).pipe(first()) : of('');
+    return id ? fromDocRef(doc(getCollection<T>(this.db, collectionName), id)).pipe(first()) : of(null);
   }
 }
