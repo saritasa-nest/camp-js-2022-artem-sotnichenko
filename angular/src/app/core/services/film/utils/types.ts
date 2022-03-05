@@ -37,13 +37,6 @@ export enum PaginationDirection {
   Prev = 'prev',
 }
 
-/** Fetch options. */
-export interface FetchOptions extends FilterOptions {
-
-  /** Pagination direction. */
-  readonly paginationDirection: PaginationDirection;
-}
-
 /** Filter options. */
 export interface FilterOptions {
 
@@ -52,4 +45,14 @@ export interface FilterOptions {
 
   /** Sort options. */
   readonly sortOptions: SortOptions | null;
+}
+
+/** Film cursor to fetch films. */
+export interface FilmCursor extends FilterOptions {
+
+  /** Query cursor id for fetching. */
+  readonly queryCursorId: QueryCursorId;
+
+  /** Pagination direction. */
+  readonly paginationDirection: PaginationDirection;
 }

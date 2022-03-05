@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Self } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Self, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs';
 import { DestroyService } from 'src/app/core/services/destroy.service';
@@ -30,6 +30,23 @@ const INITIAL_SORT_DIRECTION = SortDirection.Ascending;
   providers: [DestroyService],
 })
 export class FiltersComponent implements OnInit {
+
+  /** Whether it is first page, used for button disabling. */
+  @Input()
+  public isFirstPage = false;
+
+  /** Whether it is last page, used for button disabling. */
+  @Input()
+  public isLastPage = false;
+
+  /** Pagination change. */
+  @Output()
+  public readonly changePage = new EventEmitter<PaginationDirection>();
+
+  /** Filter options change. */
+  @Output()
+  public readonly changeFilterOptions = new EventEmitter<FilterOptions>();
+
   /** Sort field select options. */
   public readonly sortFieldOptions = (Object.entries(TO_READABLE_SORT_FIELD_MAP)).map(([value, text]) => ({
     value, text,
@@ -48,12 +65,6 @@ export class FiltersComponent implements OnInit {
       direction: this.fb.control(INITIAL_SORT_DIRECTION),
     }),
   });
-
-  /** Whether it is first page, used for button disabling. */
-  public readonly isFirstPage$ = this.filmService.isFirstPage$;
-
-  /** Whether it is last page, used for button disabling. */
-  public readonly isLastPage$ = this.filmService.isLastPage$;
 
   public constructor(
     @Self() private readonly destroy$: DestroyService,
@@ -96,9 +107,15 @@ export class FiltersComponent implements OnInit {
   public onFiltersApply(): void {
     const { searchText, sortOptions } = this.filtersForm.value as FilterOptions;
     if (searchText !== '' && searchText != null) {
-      return this.filmService.setSearchText(searchText);
+      return this.changeFilterOptions.emit({
+        searchText,
+        sortOptions: null,
+      });
     }
-    return this.filmService.setSortOptions(sortOptions);
+    return this.changeFilterOptions.emit({
+      searchText: null,
+      sortOptions,
+    });
   }
 
   /**
@@ -118,11 +135,13 @@ export class FiltersComponent implements OnInit {
 
   /** Handle next page button click. */
   public onNextPage(): void {
-    this.filmService.changePage(PaginationDirection.Next);
+    // this.filmService.changePage(PaginationDirection.Next);
+    this.changePage.emit(PaginationDirection.Next);
   }
 
   /** Handle previous page button click. */
   public onPrevPage(): void {
-    this.filmService.changePage(PaginationDirection.Prev);
+    // this.filmService.changePage(PaginationDirection.Prev);
+    this.changePage.emit(PaginationDirection.Prev);
   }
 }

@@ -26,6 +26,12 @@
         <mat-spinner [diameter]="32"></mat-spinner>
       </div>
     </ng-template>
-    <sw-filters class="films__filters"></sw-filters>
+    <sw-filters
+      (changePage)="onChangePage($event)"
+      (changeFilterOptions)="onChangeFilterOptions($event)"
+      [isFirstPage]="(isFirstPage$ | async) ?? false"
+      [isLastPage]="(isLastPage$ | async) ?? false"
+      class="films__filters"
+    ></sw-filters>
   </div>
 </sw-main-layout>

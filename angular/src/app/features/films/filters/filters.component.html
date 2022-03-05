@@ -4,7 +4,7 @@
       class="filters__button"
       type="button"
       mat-stroked-button
-      [disabled]="isFirstPage$ | async"
+      [disabled]="isFirstPage"
       (click)="onPrevPage()"
     >
       Prev
@@ -13,7 +13,7 @@
       class="filters__button"
       type="button"
       mat-stroked-button
-      [disabled]="isLastPage$ | async"
+      [disabled]="isLastPage"
       (click)="onNextPage()"
     >
       Next
