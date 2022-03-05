@@ -20,7 +20,7 @@ export class PaginationService {
 
   /**
    * Get count to fetch.
-   * Encapsulate logic of pagination, so it can calculate wheter there next pages or not by fetching on more item.
+   * Encapsulate logic of pagination, so other methods can calculate wheter there next pages or not by fetching on more item.
    * @param count Expected count of films on the page.
    */
   private getPaginationCount(count: number): number {
@@ -40,7 +40,7 @@ export class PaginationService {
   }
 
   /**
-   * Get films page.
+   * Get films page from films array.
    * Can be less than `films` because of pagination logic.
    * @param expectedCount Expected count of films.
    * @param films Films array.
@@ -63,7 +63,7 @@ export class PaginationService {
   }
 
   /**
-   * Get page buttons statuses.
+   * Get pages status.
    * @param expectedCount Expected count of films.
    * @param films Films array.
    * @param cursor Current film cursor.
@@ -93,7 +93,7 @@ export class PaginationService {
   }
 
   /**
-   * Get cursor to fetch pages.
+   * Get cursors to fetch other pages.
    * @param expectedCount Expected films count.
    * @param films Films array.
    * @param currentCursor Current film cursor.

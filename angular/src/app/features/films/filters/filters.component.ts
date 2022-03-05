@@ -2,19 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy, Self, Output, EventEmitter,
 import { FormBuilder } from '@angular/forms';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs';
 import { DestroyService } from 'src/app/core/services/destroy.service';
-import { PaginationDirection, SortField, SortDirection, FilterOptions, PagesStatus } from 'src/app/core/services/film/utils/types';
-
-export const TO_READABLE_SORT_FIELD_MAP: Readonly<Record<SortField, string>> = {
-  [SortField.Title]: 'Title',
-  [SortField.Producers]: 'Producers',
-  [SortField.Director]: 'Director',
-  [SortField.ReleaseDate]: 'Release date',
-};
-
-export const TO_READABLE_SORT_DIRECTION_MAP: Readonly<Record<SortDirection, string>> = {
-  [SortDirection.Ascending]: 'Ascending',
-  [SortDirection.Descending]: 'Descending',
-};
+import { PaginationDirection, FilterOptions, PagesStatus } from 'src/app/core/services/film/utils/types';
+import { TO_READABLE_SORT_DIRECTION_MAP, TO_READABLE_SORT_FIELD_MAP } from 'src/app/core/services/firestore/utils/maps';
+import { SortDirection, SortField } from 'src/app/core/services/firestore/utils/types';
 
 const INITIAL_SEARCH_TEXT = '';
 const INITIAL_SORT_FIELD = SortField.Title;

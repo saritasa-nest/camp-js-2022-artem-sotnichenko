@@ -35,7 +35,7 @@ export class FilmsComponent {
   /** Films fetch cursor. */
   private readonly cursor$ = new BehaviorSubject<FilmCursor | null>(null);
 
-  /** Whether it is last page of films. */
+  /** Pages status. */
   public readonly pagesStatus$ = new Subject<PagesStatus>();
 
   /** Cursor to fetch films backward of it. */

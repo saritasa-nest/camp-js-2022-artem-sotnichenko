@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
 import { endAt, limit, limitToLast, orderBy, QueryConstraint, startAt, where } from 'firebase/firestore';
-import {
-  map,
-  Observable,
-  switchMap,
-} from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 
 import { Film } from '../../models/film';
 import { FirestoreService } from '../firestore/firestore.service';
+import { SortDirection, SortField } from '../firestore/utils/types';
 import { FilmDto } from '../mappers/dto/film.dto';
 import { FilmMapper } from '../mappers/film.mapper';
 
-import { FilmCursor, PaginationDirection, QueryCursor, SortDirection, SortField, SortOptions } from './utils/types';
+import { FilmCursor, FilterOptions, PaginationDirection, QueryCursor, SortOptions } from './utils/types';
 
 type GetCursorOptions = {
   searchText: string;
@@ -24,8 +21,8 @@ type GetCursorOptions = {
   sortOptions: null;
 };
 
-/** `getQueryConstraint` options. */
-export interface GetQueryConstraintOptions {
+/** Fetch films options. */
+export interface FetchFilmsOptions extends FilterOptions {
 
   /** Items count per page. */
   readonly count: number;
@@ -33,14 +30,8 @@ export interface GetQueryConstraintOptions {
   /** Query cursor. */
   readonly queryCursor: QueryCursor;
 
-  /** Whether it fetch after or before query cursor. */
+  /** Pagination direction. */
   readonly paginationDirection: PaginationDirection;
-
-  /** Search text. */
-  readonly searchText: string | null;
-
-  /** Sort options. */
-  readonly sortOptions: SortOptions | null;
 }
 
 const INITIAL_FILTER_OPTIONS = {
@@ -50,7 +41,7 @@ const INITIAL_FILTER_OPTIONS = {
 
 const DEFAULT_SORT_FIELD = SortField.Title;
 const DEFAULT_SORT_DIRECTION = SortDirection.Ascending;
-const SEARCH_FIELD = SortField.Title;
+const DEFAULT_SEARCH_FIELD = SortField.Title;
 const FIREBASE_SEARCH_SYMBOL = '~';
 
 /** Film service. */
@@ -107,7 +98,7 @@ export class FilmService {
     );
   }
 
-  private fetchFilms(options: GetQueryConstraintOptions): Observable<readonly FilmDto[]> {
+  private fetchFilms(options: FetchFilmsOptions): Observable<readonly FilmDto[]> {
     return this.firestoreService.fetchMany<FilmDto>(
       'films',
       this.getQueryConstraints({
@@ -130,7 +121,7 @@ export class FilmService {
     paginationDirection,
     searchText,
     sortOptions,
-  }: GetQueryConstraintOptions): QueryConstraint[] {
+  }: FetchFilmsOptions): QueryConstraint[] {
     const constraints: QueryConstraint[] = [];
 
     if (paginationDirection === PaginationDirection.Next) {
@@ -144,8 +135,8 @@ export class FilmService {
     } else {
       if (searchText !== null) {
         constraints.push(
-          where(SEARCH_FIELD, '>=', searchText),
-          where(SEARCH_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
+          where(DEFAULT_SEARCH_FIELD, '>=', searchText),
+          where(DEFAULT_SEARCH_FIELD, '<=', `${searchText}${FIREBASE_SEARCH_SYMBOL}`),
         );
       }
       constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION));

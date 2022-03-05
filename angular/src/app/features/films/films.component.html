@@ -4,7 +4,7 @@
       aria-label="Films"
       class="films__table"
       [@show]="(films$ | async) ? 'visible' : 'hidden'"
-      *ngIf="films$ | async; else spinner"
+      *ngIf="films$ | async; else loading"
     >
       <tr class="films__head">
         <th class="films__column films__column_title">Title</th>
@@ -21,7 +21,7 @@
         [releaseDate]="film.releaseDate"
       ></tr>
     </table>
-    <ng-template #spinner>
+    <ng-template #loading>
       <div class="films__spinner">
         <mat-spinner [diameter]="32"></mat-spinner>
       </div>

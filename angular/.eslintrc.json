@@ -38,7 +38,7 @@
       "rules": {}
     },
     {
-      "files": ["*.dto.ts"],
+      "files": ["*.dto.ts", "*.mapper.ts"],
       "rules": {
         "@typescript-eslint/naming-convention": "off"
       }
