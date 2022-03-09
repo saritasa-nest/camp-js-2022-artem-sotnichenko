@@ -18,6 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
     canActivate: [UnauthorizedOnlyGuard],
   },
+  {
+    path: 'film',
+    loadChildren: () => import('./features/film/film.module').then(m => m.FilmModule),
+  },
 ];
 
 /** App routing. */

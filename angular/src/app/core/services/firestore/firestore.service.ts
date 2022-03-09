@@ -37,7 +37,7 @@ export class FirestoreService {
    * @param id Document id.
    */
   public fetchOne<T extends FirebaseWrapper>(collectionName: CollectionName, id: string): Observable<T> {
-    return docData(doc<T>(getCollection(this.db, collectionName), id));
+    return docData(doc<T>(getCollection(this.db, collectionName), id), { idField: 'id' });
   }
 
   /**

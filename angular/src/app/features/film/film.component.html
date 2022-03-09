@@ -1,0 +1,82 @@
+<sw-main-layout>
+  <div *ngIf="film$ | async as film; else spinner" class="film">
+    <header class="film__header">
+      <div class="film__title-wrap">
+        <a routerLink="/films" class="film__link film__link_back">
+          <mat-icon
+            class="film__icon film__icon_back"
+            inline
+            aria-hidden="false"
+            aria-label="Avatar placeholder"
+            >arrow_back</mat-icon
+          >
+        </a>
+        <h1 class="film__title">{{ film.title }}</h1>
+        <div class="film__options">
+          <button mat-button class="film__button film__button_settings">
+            <mat-icon>settings</mat-icon>
+          </button>
+          <button
+            mat-button
+            color="warn"
+            class="film__button film__button_delete"
+          >
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="film__description">{{ film.openingCrawl }}</div>
+    </header>
+    <aside class="film__container">
+      <div class="film__sidebar">
+        <div class="film__block block">
+          <h2 class="block__title">Release date</h2>
+          <div class="block__content">
+            {{ film.releaseDate | date: "mediumDate" }}
+          </div>
+        </div>
+        <div class="film__block block">
+          <h2 class="block__title">Director</h2>
+          <div class="block__content">
+            {{ film.director }}
+          </div>
+        </div>
+        <div class="film__block block">
+          <h2 class="block__title">Producers</h2>
+          <div class="block__content">
+            <div *ngFor="let producer of film.producers">
+              {{ producer }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <main class="film__content">
+        <div class="film__block block">
+          <h2 class="block__title">Characters</h2>
+          <div class="block__content block__content_ids">
+            <div
+              class="block__chip"
+              disabled
+              *ngFor="let characterId of film.characterIds"
+            >
+              {{ characterId }}
+            </div>
+          </div>
+        </div>
+        <div class="film__block block">
+          <h2 class="block__title">Planets</h2>
+          <div class="block__content block__content_ids">
+            <div class="block__chip" *ngFor="let planetId of film.planetIds">
+              {{ planetId }}
+            </div>
+          </div>
+        </div>
+      </main>
+    </aside>
+  </div>
+  <ng-template #spinner>
+    <div class="spinner">
+      <mat-spinner [diameter]="32"></mat-spinner>
+    </div>
+  </ng-template>
+</sw-main-layout>

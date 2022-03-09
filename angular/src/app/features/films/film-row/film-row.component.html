@@ -1,4 +1,6 @@
-<td class="film-row__field film-row__field_title">{{ title }}</td>
+<td class="film-row__field film-row__field_title">
+  <a class="film-row__link" routerLink="/film/{{ id }}">{{ title }}</a>
+</td>
 <td class="film-row__field film-row__field_producers">
   {{ producers.join(", ") }}
 </td>

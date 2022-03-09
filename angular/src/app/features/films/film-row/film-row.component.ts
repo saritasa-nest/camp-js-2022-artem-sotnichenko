@@ -14,6 +14,10 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilmRowComponent {
+  /** Id. */
+  @Input()
+  public id = '';
+
   /** Title. */
   @Input()
   public title = '';

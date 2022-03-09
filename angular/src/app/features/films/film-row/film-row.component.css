@@ -17,6 +17,11 @@
   flex-shrink: 0;
 }
 
+.film-row__link {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
 .film-row__field_title {
   width: var(--title-width);
   font-weight: 500;
