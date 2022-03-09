@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
-import { doc, documentId, getDocs, query, QueryConstraint, where } from 'firebase/firestore';
+import { doc, documentId, query, QueryConstraint, where } from 'firebase/firestore';
 import { docData, doc as fromDocRef } from 'rxfire/firestore';
-import { combineLatest, combineLatestAll, first, map, Observable, of } from 'rxjs';
+import { combineLatest, first, map, Observable, of } from 'rxjs';
 
 import { QueryCursor } from '../film/utils/types';
 import { FirebaseWrapper } from '../mappers/dto/firebase-wrapper.dto';

@@ -1,8 +1,7 @@
-import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, switchMap, of } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
-import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmDetailsService } from 'src/app/core/services/film-details.service';
 import { Nullish } from 'src/app/core/utils/parse-nullish';
 
