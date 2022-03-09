@@ -8,6 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 const MATERIAL_MODULES = [
   MatInputModule,
@@ -18,6 +19,7 @@ const MATERIAL_MODULES = [
   MatSelectModule,
   MatProgressSpinnerModule,
   MatChipsModule,
+  MatAutocompleteModule,
 ];
 
 /** Material imports. */

@@ -1,0 +1,6 @@
+<sw-main-layout>
+  <sw-film-form
+    [allPlanets]="(planets$ | async) ?? []"
+    [selectedPlanetIds]="selectedPlanetIds"
+  ></sw-film-form>
+</sw-main-layout>

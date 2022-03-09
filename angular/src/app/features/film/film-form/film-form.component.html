@@ -1,0 +1,60 @@
+<div class="film-form">
+  <header class="film-form__header">
+    <div class="film-form__title-wrap">
+      <mat-form-field appearance="outline" class="film-form__title">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" />
+      </mat-form-field>
+      <div class="film-form__options">
+        <button mat-button class="film-form__button film-form__button_settings">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button
+          mat-button
+          color="warn"
+          class="film-form__button film-form__button_delete"
+        >
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+    <mat-form-field appearance="outline" class="film-form__description">
+      <mat-label>Description</mat-label>
+      <textarea matInput type="text"></textarea>
+    </mat-form-field>
+  </header>
+  <aside class="film-form__container">
+    <div class="film-form__sidebar">
+      <mat-form-field appearance="outline" class="film-form__content">
+        <mat-label>Release date</mat-label>
+        <input matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="film-form__content">
+        <mat-label>Release date</mat-label>
+        <input matInput type="text" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="film-form__content">
+        <mat-label>Release date</mat-label>
+        <input matInput type="text" />
+      </mat-form-field>
+    </div>
+    <main class="film-form__content">
+      <div class="film-form__block block">
+        <h2 class="block__title">Planets</h2>
+        <div class="block__content block__content_ids">
+          {{ planets$ | async }}
+          <sw-entities-select
+            [entities]="(planets$ | async) ?? []"
+            [selectedIds]="selectedPlanetIds"
+          ></sw-entities-select>
+        </div>
+      </div>
+    </main>
+  </aside>
+</div>
+<ng-template #spinner>
+  <div class="spinner">
+    <mat-spinner [diameter]="32"></mat-spinner>
+  </div>
+</ng-template>
