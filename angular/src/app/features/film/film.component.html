@@ -57,17 +57,20 @@
             <div
               class="block__chip"
               disabled
-              *ngFor="let characterId of film.characterIds"
+              *ngFor="let characterName of characterNames$ | async"
             >
-              {{ characterId }}
+              {{ characterName }}
             </div>
           </div>
         </div>
         <div class="film__block block">
           <h2 class="block__title">Planets</h2>
           <div class="block__content block__content_ids">
-            <div class="block__chip" *ngFor="let planetId of film.planetIds">
-              {{ planetId }}
+            <div
+              class="block__chip"
+              *ngFor="let planetName of planetNames$ | async"
+            >
+              {{ planetName }}
             </div>
           </div>
         </div>

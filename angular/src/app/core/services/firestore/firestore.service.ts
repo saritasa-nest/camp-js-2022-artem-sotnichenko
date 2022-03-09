@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
-import { doc, query, QueryConstraint } from 'firebase/firestore';
+import { doc, documentId, getDocs, query, QueryConstraint, where } from 'firebase/firestore';
 import { docData, doc as fromDocRef } from 'rxfire/firestore';
-import { first, Observable, of } from 'rxjs';
+import { combineLatest, combineLatestAll, first, map, Observable, of } from 'rxjs';
 
 import { QueryCursor } from '../film/utils/types';
 import { FirebaseWrapper } from '../mappers/dto/firebase-wrapper.dto';
 
 import { CollectionName, getCollection } from './utils/get-collection-typed';
+
+const FIRESTORE_IN_FILTER_MAX = 10;
 
 /** Firestore service. */
 @Injectable({
@@ -26,9 +28,32 @@ export class FirestoreService {
    */
   public fetchMany<T extends FirebaseWrapper>(
     collectionName: CollectionName,
-    constraints: readonly QueryConstraint[],
+    constraints: readonly QueryConstraint[] = [],
   ): Observable<readonly T[]> {
     return collectionData(query<T>(getCollection(this.db, collectionName), ...constraints), { idField: 'id' });
+  }
+
+  /**
+   * Fetch entities by ids array.
+   * @param collectionName Collection name.
+   * @param ids Entities ids.
+   * @param constraints Query constraints.
+   */
+  public fetchManyByIds<T extends FirebaseWrapper>(
+    collectionName: CollectionName,
+    ids: readonly string[],
+  ): Observable<T[]> {
+    const entitiesArray = [];
+
+    for (let i = 0; i < ids.length; i += FIRESTORE_IN_FILTER_MAX) {
+      const entities$ = collectionData(query<T>(
+        getCollection(this.db, collectionName),
+        where(documentId(), 'in', ids.slice(i, i + FIRESTORE_IN_FILTER_MAX)),
+      ), { idField: 'id' });
+      entitiesArray.push(entities$);
+    }
+
+    return combineLatest(entitiesArray).pipe(map(entities => entities.flat()));
   }
 
   /**

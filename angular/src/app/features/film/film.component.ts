@@ -4,6 +4,7 @@ import { Observable, switchMap, of } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmDetailsService } from 'src/app/core/services/film-details.service';
+import { Nullish } from 'src/app/core/utils/parse-nullish';
 
 /** Film component. */
 @Component({
@@ -11,17 +12,29 @@ import { FilmDetailsService } from 'src/app/core/services/film-details.service';
   templateUrl: './film.component.html',
   styleUrls: ['./film.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DestroyService],
 })
 export class FilmComponent {
-  /** Films. */
+  /** Film. */
   public film$: Observable<Film | null> = this.getFilm();
 
+  /** Character names. */
+  public characterNames$: Observable<readonly string[] | null>;
+
+  /** Planet names. */
+  public planetNames$: Observable<readonly (string | Nullish)[] | null>;
+
   public constructor(
-    @Self() private readonly destroy$: DestroyService,
     private readonly route: ActivatedRoute,
     private readonly filmDetailsService: FilmDetailsService,
-  ) {}
+  ) {
+    this.characterNames$ = this.film$.pipe(
+      switchMap(film => this.filmDetailsService.getCharacterNames(film?.characterIds ?? [])),
+    );
+
+    this.planetNames$ = this.film$.pipe(
+      switchMap(film => this.filmDetailsService.getPlanetNames(film?.planetIds ?? [])),
+    );
+  }
 
   private getFilm(): Observable<Film | null> {
     return this.route.paramMap

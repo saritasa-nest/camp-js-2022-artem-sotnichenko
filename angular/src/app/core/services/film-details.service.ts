@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { Character } from '../models/character';
 
 import { Film } from '../models/film';
 import { Planet } from '../models/planet';
+import { Nullish } from '../utils/parse-nullish';
 
 import { FirestoreService } from './firestore/firestore.service';
 import { CharacterMapper } from './mappers/character.mapper';
@@ -35,6 +36,24 @@ export class FilmDetailsService {
     return this.firestoreService.fetchOne<FilmDto>('films', id).pipe(
       map(this.filmMapper.fromDto),
     );
+  }
+
+  /**
+   * Get planet names by ids array.
+   * @param ids Planet ids.
+   */
+  public getPlanetNames(ids: readonly string[]): Observable<readonly (string | Nullish)[]> {
+    const planetDtos = this.firestoreService.fetchManyByIds<PlanetDto>('planets', ids);
+    return planetDtos.pipe(map(dtos => dtos.map(dto => this.planetMapper.fromDto(dto).name)));
+  }
+
+  /**
+   * Get character names by ids array.
+   * @param ids Character ids.
+   */
+  public getCharacterNames(ids: readonly string[]): Observable<readonly string[]> {
+    const characterDtos = this.firestoreService.fetchManyByIds<CharacterDto>('characters', ids);
+    return characterDtos.pipe(map(dtos => dtos.map(dto => this.characterMapper.fromDto(dto).name)));
   }
 
   /** Get all planets. */
