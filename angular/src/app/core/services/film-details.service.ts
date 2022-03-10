@@ -42,7 +42,7 @@ export class FilmDetailsService {
    * Get planet names by ids array.
    * @param ids Planet ids.
    */
-  public getPlanetNames(ids: readonly string[]): Observable<readonly (string | Nullish)[]> {
+  public getPlanetNames(ids: readonly Planet['id'][]): Observable<readonly (string | Nullish)[]> {
     const planetDtos = this.firestoreService.fetchManyByIds<PlanetDto>('planets', ids);
     return planetDtos.pipe(map(dtos => dtos.map(dto => this.planetMapper.fromDto(dto).name)));
   }
@@ -51,20 +51,20 @@ export class FilmDetailsService {
    * Get character names by ids array.
    * @param ids Character ids.
    */
-  public getCharacterNames(ids: readonly string[]): Observable<readonly string[]> {
+  public getCharacterNames(ids: readonly Character['id'][]): Observable<readonly string[]> {
     const characterDtos = this.firestoreService.fetchManyByIds<CharacterDto>('characters', ids);
     return characterDtos.pipe(map(dtos => dtos.map(dto => this.characterMapper.fromDto(dto).name)));
   }
 
   /** Get all planets. */
-  public getAllPlanets(): Observable<Planet[]> {
+  public getAllPlanets(): Observable<readonly Planet[]> {
     return this.firestoreService.fetchMany<PlanetDto>('planets').pipe(
       map(planetDtos => planetDtos.map(this.planetMapper.fromDto)),
     );
   }
 
   /** Get all characters. */
-  public getAllCharacters(): Observable<Character[]> {
+  public getAllCharacters(): Observable<readonly Character[]> {
     return this.firestoreService.fetchMany<CharacterDto>('characters').pipe(
       map(characterDtos => characterDtos.map(this.characterMapper.fromDto)),
     );
