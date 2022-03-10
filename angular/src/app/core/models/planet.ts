@@ -7,7 +7,7 @@ export interface Planet {
   readonly id: string;
 
   /** The name of this planet. */
-  readonly name: string | Nullish;
+  readonly name: string;
 
   /** The diameter of this planet in kilometers. */
   readonly diameter: number | Nullish;

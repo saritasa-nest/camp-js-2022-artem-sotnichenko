@@ -18,7 +18,7 @@ export class PlanetMapper {
   public fromDto(dto: PlanetDto): Planet {
     return {
       id: dto.id,
-      name: parseToNullish(dto.fields.name),
+      name: dto.fields.name,
       diameter: parseToNullish(dto.fields.diameter, parseInt),
       rotationPeriod: parseToNullish(dto.fields.rotation_period, parseInt),
       orbitalPeriod: parseToNullish(dto.fields.orbital_period, parseInt),
@@ -38,7 +38,7 @@ export class PlanetMapper {
     return {
       id: model.id,
       fields: {
-        name: parseFromNullish(model.name),
+        name: model.name,
         diameter: parseFromNullish(model.diameter, String),
         rotation_period: parseFromNullish(model.rotationPeriod, String),
         orbital_period: parseFromNullish(model.orbitalPeriod, String),

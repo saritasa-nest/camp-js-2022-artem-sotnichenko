@@ -5,7 +5,6 @@ import { Character } from '../models/character';
 
 import { Film } from '../models/film';
 import { Planet } from '../models/planet';
-import { Nullish } from '../utils/parse-nullish';
 
 import { FirestoreService } from './firestore/firestore.service';
 import { CharacterMapper } from './mappers/character.mapper';
@@ -42,7 +41,7 @@ export class FilmDetailsService {
    * Get planet names by ids array.
    * @param ids Planet ids.
    */
-  public getPlanetNames(ids: readonly Planet['id'][]): Observable<readonly (string | Nullish)[]> {
+  public getPlanetNames(ids: readonly Planet['id'][]): Observable<readonly Planet['name'][]> {
     const planetDtos = this.firestoreService.fetchManyByIds<PlanetDto>('planets', ids);
     return planetDtos.pipe(map(dtos => dtos.map(dto => this.planetMapper.fromDto(dto).name)));
   }
@@ -51,7 +50,7 @@ export class FilmDetailsService {
    * Get character names by ids array.
    * @param ids Character ids.
    */
-  public getCharacterNames(ids: readonly Character['id'][]): Observable<readonly string[]> {
+  public getCharacterNames(ids: readonly Character['id'][]): Observable<readonly Character['name'][]> {
     const characterDtos = this.firestoreService.fetchManyByIds<CharacterDto>('characters', ids);
     return characterDtos.pipe(map(dtos => dtos.map(dto => this.characterMapper.fromDto(dto).name)));
   }
