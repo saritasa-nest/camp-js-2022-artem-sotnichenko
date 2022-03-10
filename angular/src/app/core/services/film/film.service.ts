@@ -11,14 +11,14 @@ import { FilmMapper } from '../mappers/film.mapper';
 import { FilmCursor, FilterOptions, PaginationDirection, QueryCursor, SortOptions } from './utils/types';
 
 type GetCursorOptions = {
-  searchText: string;
-  sortOptions: null;
+  readonly searchText: string;
+  readonly sortOptions: null;
 } | {
-  searchText: null;
-  sortOptions: SortOptions;
+  readonly searchText: null;
+  readonly sortOptions: SortOptions;
 } | {
-  searchText: null;
-  sortOptions: null;
+  readonly searchText: null;
+  readonly sortOptions: null;
 };
 
 /** Fetch films options. */
@@ -121,7 +121,7 @@ export class FilmService {
     paginationDirection,
     searchText,
     sortOptions,
-  }: FetchFilmsOptions): QueryConstraint[] {
+  }: FetchFilmsOptions): readonly QueryConstraint[] {
     const constraints: QueryConstraint[] = [];
 
     if (paginationDirection === PaginationDirection.Next) {

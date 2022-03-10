@@ -24,7 +24,10 @@ export class FirestoreService {
    * @param collectionName Collection name.
    * @param constraints Query constraints.
    */
-  public fetchMany<T extends FirebaseWrapper>(collectionName: CollectionName, constraints: QueryConstraint[]): Observable<T[]> {
+  public fetchMany<T extends FirebaseWrapper>(
+    collectionName: CollectionName,
+    constraints: readonly QueryConstraint[],
+  ): Observable<readonly T[]> {
     return collectionData(query<T>(getCollection(this.db, collectionName), ...constraints), { idField: 'id' });
   }
 

@@ -103,8 +103,8 @@ export class PaginationService {
     films: readonly Film[],
     currentCursor: FilmCursor,
   ): {
-    backward: FilmCursor | null;
-    forward: FilmCursor | null;
+    readonly backward: FilmCursor | null;
+    readonly forward: FilmCursor | null;
   } {
     const {
       entityId,
@@ -138,8 +138,8 @@ export class PaginationService {
     films: readonly Film[],
     paginationDirection: PaginationDirection,
   ): {
-    backward: EntityId;
-    forward: EntityId;
+    readonly backward: EntityId;
+    readonly forward: EntityId;
   } {
     if (films.length === 0) {
       return {
