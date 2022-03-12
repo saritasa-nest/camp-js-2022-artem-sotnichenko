@@ -9,7 +9,7 @@ import { FirebaseWrapper } from '../mappers/dto/firebase-wrapper.dto';
 
 import { CollectionName, getCollection } from './utils/get-collection-typed';
 
-const FIRESTORE_IN_FILTER_MAX = 10;
+const FIRESTORE_BATCH_MAX_SIZE = 10;
 
 /** Firestore service. */
 @Injectable({
@@ -42,18 +42,18 @@ export class FirestoreService {
   public fetchManyByIds<T extends FirebaseWrapper>(
     collectionName: CollectionName,
     ids: readonly string[],
-  ): Observable<T[]> {
-    const entitiesArray = [];
+  ): Observable<readonly T[]> {
+    const entitiesBatches = [];
 
-    for (let i = 0; i < ids.length; i += FIRESTORE_IN_FILTER_MAX) {
+    for (let i = 0; i < ids.length; i += FIRESTORE_BATCH_MAX_SIZE) {
       const entities$ = collectionData(query<T>(
         getCollection(this.db, collectionName),
-        where(documentId(), 'in', ids.slice(i, i + FIRESTORE_IN_FILTER_MAX)),
+        where(documentId(), 'in', ids.slice(i, i + FIRESTORE_BATCH_MAX_SIZE)),
       ), { idField: 'id' });
-      entitiesArray.push(entities$);
+      entitiesBatches.push(entities$);
     }
 
-    return combineLatest(entitiesArray).pipe(map(entities => entities.flat()));
+    return combineLatest(entitiesBatches).pipe(map(entities => entities.flat()));
   }
 
   /**

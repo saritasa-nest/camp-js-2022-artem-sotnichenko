@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthorizedOnlyGuard } from './core/guards/authorized-only.guard';
-
 import { UnauthorizedOnlyGuard } from './core/guards/unauthorized-only.guard';
 
 const routes: Routes = [

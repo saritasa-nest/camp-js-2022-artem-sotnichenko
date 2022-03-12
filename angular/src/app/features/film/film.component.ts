@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, switchMap, of } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { FilmDetailsService } from 'src/app/core/services/film-details.service';
-import { Nullish } from 'src/app/core/utils/parse-nullish';
 
 /** Film component. */
 @Component({
@@ -14,13 +13,13 @@ import { Nullish } from 'src/app/core/utils/parse-nullish';
 })
 export class FilmComponent {
   /** Film. */
-  public film$: Observable<Film | null> = this.getFilm();
+  public readonly film$: Observable<Film | null> = this.getFilm();
 
   /** Character names. */
-  public characterNames$: Observable<readonly string[] | null>;
+  public readonly characterNames$: Observable<readonly string[] | null>;
 
   /** Planet names. */
-  public planetNames$: Observable<readonly (string | Nullish)[] | null>;
+  public readonly planetNames$: Observable<readonly string[] | null>;
 
   public constructor(
     private readonly route: ActivatedRoute,

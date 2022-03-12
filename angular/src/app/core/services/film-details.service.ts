@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
 import { Character } from '../models/character';
-
 import { Film } from '../models/film';
 import { Planet } from '../models/planet';
 
@@ -42,8 +41,9 @@ export class FilmDetailsService {
    * @param ids Planet ids.
    */
   public getPlanetNames(ids: readonly Planet['id'][]): Observable<readonly Planet['name'][]> {
-    const planetDtos = this.firestoreService.fetchManyByIds<PlanetDto>('planets', ids);
-    return planetDtos.pipe(map(dtos => dtos.map(dto => this.planetMapper.fromDto(dto).name)));
+    return this.firestoreService
+      .fetchManyByIds<PlanetDto>('planets', ids)
+      .pipe(map(dtos => dtos.map(dto => this.planetMapper.fromDto(dto).name)));
   }
 
   /**
@@ -51,21 +51,8 @@ export class FilmDetailsService {
    * @param ids Character ids.
    */
   public getCharacterNames(ids: readonly Character['id'][]): Observable<readonly Character['name'][]> {
-    const characterDtos = this.firestoreService.fetchManyByIds<CharacterDto>('characters', ids);
-    return characterDtos.pipe(map(dtos => dtos.map(dto => this.characterMapper.fromDto(dto).name)));
-  }
-
-  /** Get all planets. */
-  public getAllPlanets(): Observable<readonly Planet[]> {
-    return this.firestoreService.fetchMany<PlanetDto>('planets').pipe(
-      map(planetDtos => planetDtos.map(this.planetMapper.fromDto)),
-    );
-  }
-
-  /** Get all characters. */
-  public getAllCharacters(): Observable<readonly Character[]> {
-    return this.firestoreService.fetchMany<CharacterDto>('characters').pipe(
-      map(characterDtos => characterDtos.map(this.characterMapper.fromDto)),
-    );
+    return this.firestoreService
+      .fetchManyByIds<CharacterDto>('characters', ids)
+      .pipe(map(dtos => dtos.map(dto => this.characterMapper.fromDto(dto).name)));
   }
 }

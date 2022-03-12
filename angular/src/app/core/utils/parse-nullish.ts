@@ -8,10 +8,10 @@ export function parseToNullish<T>(value: T | SwapiNullish): T | Nullish;
 export function parseToNullish<T, V>(value: T | SwapiNullish, mapperFn: (v: T) => V): V | Nullish;
 
 /**
- * Swapi can return value or "unknown" if not known or "n/a" if not exist.
+ * Swapi can return value or "unknown" string if data is not known or "n/a" if not exist.
  * @param value Value to parse.
  * @param mapperFn Mapper function to use if not nullish.
- * @returns "null" for "n/a", "undefined" for "unknown" or mapped value.
+ * @returns `null` for "n/a", `undefined` for "unknown" or mapped value.
  */
 export function parseToNullish<T, V>(value: T | SwapiNullish, mapperFn?: (v: T) => V): T | V | Nullish {
   if (value === SWAPI_UNKNOWN_STRING) {
@@ -27,10 +27,10 @@ export function parseFromNullish<T>(value: T | Nullish): T | SwapiNullish;
 export function parseFromNullish<T, V>(value: T | Nullish, mapperFn: (v: T) => V): V | SwapiNullish;
 
 /**
- * Swapi can return value or "unknown" if not known or "n/a" if not exist.
+ * Swapi can return value or "unknown" string if not known or "n/a" if not exist.
  * @param value Value to parse.
  * @param mapperFn Mapper function to use if not nullish.
- * @returns "n/a" for "null", "unknown" for "undefined" or mapped value.
+ * @returns "n/a" for `null`, "unknown" for `undefined` or mapped value.
  */
 export function parseFromNullish<T, V>(value: T | Nullish, mapperFn?: (v: T) => V): T | V | SwapiNullish {
   if (value === SWAPI_UNKNOWN) {
