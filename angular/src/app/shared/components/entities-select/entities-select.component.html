@@ -1,7 +1,11 @@
-<mat-form-field appearance="outline">
+<mat-form-field class="entities-select" appearance="outline">
+  <mat-label>{{ label }}</mat-label>
   <mat-chip-list #chipList>
-    <mat-chip *ngFor="let id of selectedIds" (removed)="remove(id)">
-      {{ id }}
+    <mat-chip
+      *ngFor="let entity of getSelectedEntities(selectedIds)"
+      (removed)="deselectEntity(entity.id)"
+    >
+      {{ entity.name }}
       <button matChipRemove>
         <mat-icon>cancel</mat-icon>
       </button>
@@ -12,12 +16,16 @@
       [formControl]="entityControl"
       [matAutocomplete]="auto"
       [matChipInputFor]="chipList"
-      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      (matChipInputTokenEnd)="add($event)"
     />
   </mat-chip-list>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    <mat-option *ngFor="let entity of entities" [value]="entity.id">
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="selectEntity($event)"
+  >
+    <mat-option
+      *ngFor="let entity of filteredEntities | async"
+      [value]="entity.id"
+    >
       {{ entity.name }}
     </mat-option>
   </mat-autocomplete>

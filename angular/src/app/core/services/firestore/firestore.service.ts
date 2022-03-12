@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
-import { doc, documentId, query, QueryConstraint, where } from 'firebase/firestore';
+import { addDoc, doc, documentId, query, QueryConstraint, where } from 'firebase/firestore';
 import { docData, doc as fromDocRef } from 'rxfire/firestore';
-import { combineLatest, first, map, Observable, of } from 'rxjs';
+import { DocumentData } from 'rxfire/firestore/interfaces';
+import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 
 import { QueryCursor } from '../film/utils/types';
 import { FirebaseWrapper } from '../mappers/dto/firebase-wrapper.dto';
+
+import { deleteUndefinedShallow } from './utils/delete-undefined';
 
 import { CollectionName, getCollection } from './utils/get-collection-typed';
 
@@ -20,6 +23,24 @@ export class FirestoreService {
   public constructor(
     private readonly db: Firestore,
   ) {}
+
+  /**
+   * Create entity.
+   * @param collectionName Collection name.
+   * @param data An Object containing the data for the new document.
+   * @returns Reference of object from store.
+   */
+  public create<T extends DocumentData>(
+    collectionName: CollectionName,
+    data: T,
+  ): Observable<T> {
+    return from(addDoc(
+      getCollection<T>(this.db, collectionName),
+      deleteUndefinedShallow<T>(data),
+    )).pipe(
+      switchMap(docRef => docData(docRef, { idField: 'id' })),
+    );
+  }
 
   /**
    * Get a stream of documents narrowed by array of constraints.

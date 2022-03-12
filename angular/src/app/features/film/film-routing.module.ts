@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { CreateComponent } from './create/create.component';
 
 import { FilmComponent } from './film-details/film.component';
-import { FilmFormComponent } from './film-form/film-form.component';
 
 const routes: Routes = [
   { path: 'create', component: CreateComponent, pathMatch: 'full' },

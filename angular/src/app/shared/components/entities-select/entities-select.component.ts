@@ -1,82 +1,110 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { map, Observable, of, startWith } from 'rxjs';
 
 interface Entity {
-  id: string;
-  name: string;
+
+  /** Entity id. */
+  readonly id: string;
+
+  /** Entity name. */
+  readonly name: string;
 }
 
+/** Entity multi select. */
 @Component({
   selector: 'sw-entities-select',
   templateUrl: './entities-select.component.html',
   styleUrls: ['./entities-select.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EntitiesSelectComponent {
+export class EntitiesSelectComponent implements OnInit {
+  /** Field label. */
+  @Input()
+  public label = '';
+
+  /** All entities. */
   @Input()
   public entities: readonly Entity[] = [];
 
+  /** Filtered entities, used in autocomplete options dropdown. */
+  @Input()
+  public filteredEntities: Observable<readonly Entity[]> = of([]);
+
+  /** Selected entities ids. */
   @Input()
   public selectedIds: Entity['id'][] = [];
 
-  public readonly separatorKeysCodes: readonly number[] = [ENTER, COMMA];
+  /** Emits when options selected. */
+  @Output()
+  public readonly changed = new EventEmitter<readonly Entity['id'][]>();
 
-  public entityControl = new FormControl();
+  /** Entity input control. */
+  public readonly entityControl = new FormControl();
 
-  public e = this.entities.toString();
+  /** Entity input ref. */
+  @ViewChild('entityInput')
+  public readonly entityInput?: ElementRef<HTMLInputElement>;
 
-  public constructor() {
-    console.log(this.entities);
+  public constructor() {}
+
+  /** @inheritdoc */
+  public ngOnInit(): void {
+    this.filteredEntities = this.entityControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filterOptions(value)),
+    );
   }
 
   /**
-   * Add entity.
-   * @param event Mat chip input event.
+   * Get selected entities from ids.
+   * @param ids Selected entities ids.
    */
-  public add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our fruit
-    if (value) {
-      this.selectedIds.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput?.clear();
-
-    this.entityControl.setValue(null);
+  public getSelectedEntities(ids: readonly Entity['id'][]): readonly Entity[] {
+    return ids.map(id => this.entities
+      .find(entity => entity.id === id))
+      .filter((entity): entity is Entity => entity !== undefined);
   }
 
   /**
-   * Remove entity.
+   * Remove entity from selected.
    * @param entityId Entity id.
    */
-  public remove(entityId: string): void {
+  public deselectEntity(entityId: Entity['id']): void {
     const index = this.selectedIds.indexOf(entityId);
 
     if (index >= 0) {
       this.selectedIds.splice(index, 1);
+      this.emitChange();
     }
   }
 
   /**
-   * Selected.
+   * Select option.
    * @param event Event.
    */
-  public selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedIds.push(event.option.viewValue);
+  public selectEntity(event: MatAutocompleteSelectedEvent): void {
+    this.selectedIds.push(event.option.value);
 
-    // this.fruitInput.nativeElement.value = '';
+    if (this.entityInput) {
+      this.entityInput.nativeElement.value = '';
+    }
     this.entityControl.setValue(null);
+    this.emitChange();
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  private emitChange(): void {
+    this.changed.emit(this.selectedIds);
+  }
 
-    // return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
-    return this.selectedIds;
+  private filterOptions(entityId: Entity['id'] | null): readonly Entity[] {
+    if (entityId === null) {
+      return this.entities;
+    }
+
+    return this.entities.filter(entity =>
+      entity.name.toLowerCase().includes(entityId.toLowerCase()) &&
+      !this.selectedIds.includes(entity.id));
   }
 }

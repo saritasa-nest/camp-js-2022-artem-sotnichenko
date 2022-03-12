@@ -1,58 +1,80 @@
-<div class="film-form">
+<form [formGroup]="filmForm" (ngSubmit)="onFilmSubmit()" class="film-form">
   <header class="film-form__header">
     <div class="film-form__title-wrap">
       <mat-form-field appearance="outline" class="film-form__title">
         <mat-label>Title</mat-label>
-        <input matInput type="text" />
+        <input matInput type="text" formControlName="title" name="title" />
       </mat-form-field>
       <div class="film-form__options">
-        <button mat-button class="film-form__button film-form__button_settings">
-          <mat-icon>settings</mat-icon>
-        </button>
         <button
-          mat-button
-          color="warn"
-          class="film-form__button film-form__button_delete"
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="film-form__button"
         >
-          <mat-icon>delete_outline</mat-icon>
+          Save
         </button>
       </div>
     </div>
     <mat-form-field appearance="outline" class="film-form__description">
-      <mat-label>Description</mat-label>
-      <textarea matInput type="text"></textarea>
+      <mat-label>Opening crawl</mat-label>
+      <textarea
+        matInput
+        type="text"
+        formControlName="openingCrawl"
+        name="openingCrawl"
+      ></textarea>
     </mat-form-field>
   </header>
   <aside class="film-form__container">
     <div class="film-form__sidebar">
       <mat-form-field appearance="outline" class="film-form__content">
         <mat-label>Release date</mat-label>
-        <input matInput type="text" />
+        <input
+          matInput
+          type="date"
+          formControlName="releaseDate"
+          name="releaseDate"
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="film-form__content">
-        <mat-label>Release date</mat-label>
-        <input matInput type="text" />
+        <mat-label>Director</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="director"
+          name="director"
+        />
       </mat-form-field>
       <mat-form-field appearance="outline" class="film-form__content">
-        <mat-label>Release date</mat-label>
-        <input matInput type="text" />
+        <mat-label>Producers</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="producers"
+          name="producers"
+        />
       </mat-form-field>
     </div>
     <main class="film-form__content">
-      <div class="film-form__block block">
-        <h2 class="block__title">Planets</h2>
-        <div class="block__content block__content_ids">
-          {{ planets$ | async }}
-          <sw-entities-select
-            [entities]="(planets$ | async) ?? []"
-            [selectedIds]="selectedPlanetIds"
-          ></sw-entities-select>
-        </div>
-      </div>
+      <sw-entities-select
+        class="film-form__select"
+        label="Characters"
+        (changed)="onCharactersChange($event)"
+        [entities]="allCharacters"
+        [selectedIds]="selectedCharacterIds"
+      ></sw-entities-select>
+      <sw-entities-select
+        class="film-form__select"
+        label="Planets"
+        (changed)="onPlanetsChange($event)"
+        [entities]="allPlanets"
+        [selectedIds]="selectedPlanetIds"
+      ></sw-entities-select>
     </main>
   </aside>
-</div>
+</form>
 <ng-template #spinner>
   <div class="spinner">
     <mat-spinner [diameter]="32"></mat-spinner>

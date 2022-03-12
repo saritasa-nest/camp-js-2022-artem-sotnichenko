@@ -1,26 +1,39 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { filter, map } from 'rxjs';
-import { Planet } from 'src/app/core/models/planet';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Film } from 'src/app/core/models/film';
 import { FilmDetailsService } from 'src/app/core/services/film-details.service';
+import { FilmManagementService } from 'src/app/core/services/film-management.service';
 
+/** Film create component. */
 @Component({
   selector: 'sw-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent {
 
+  /** All planets. */
   public readonly planets$ = this.filmDetailsService.getAllPlanets();
 
-  public readonly selectedPlanetIds = ['a'];
+  /** Selected planets. */
+  public readonly selectedPlanetIds = [];
+
+  /** All characters. */
+  public readonly characters$ = this.filmDetailsService.getAllCharacters();
+
+  /** Selected characters. */
+  public readonly selectedCharacterIds = [];
 
   public constructor(
     private readonly filmDetailsService: FilmDetailsService,
+    private readonly filmManagementService: FilmManagementService,
   ) { }
 
-  ngOnInit(): void {
-    this.planets$.subscribe(p => console.log(p));
+  /**
+   * Handle submit.
+   * @param film Film.
+   */
+  public onSubmit(film: Film): void {
+    this.filmManagementService.create(film);
   }
-
 }
