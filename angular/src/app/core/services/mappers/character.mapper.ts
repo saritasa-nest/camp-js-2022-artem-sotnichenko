@@ -12,7 +12,10 @@ import { CharacterGenderDto } from './dto/character/gender.dto';
  * Maps gender dto to model.
  * @param dto Gender dto.
  */
-function mapGenderFromDto(dto: CharacterGenderDto): CharacterGender | Nullish {
+function mapGenderFromDto(dto: CharacterGenderDto): Nullish | CharacterGender {
+  if (dto == null) {
+    return parseToNullish(dto);
+  }
   switch (dto.toLowerCase()) {
     case 'male':
       return CharacterGender.Male;
@@ -38,7 +41,7 @@ export class CharacterMapper {
       name: dto.fields.name,
       birthYear: dto.fields.birth_year,
       eyeColors: splitByComma(dto.fields.eye_color),
-      gender: parseToNullish(mapGenderFromDto(dto.fields.gender)),
+      gender: mapGenderFromDto(dto.fields.gender),
       hairColors: splitByComma(dto.fields.hair_color),
       height: parseToNullish(dto.fields.height, parseInt),
       mass: parseToNullish(dto.fields.mass, parseInt),
