@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap, of } from 'rxjs';
+import { Observable, switchMap, EMPTY, shareReplay } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { FilmDetailsService } from 'src/app/core/services/film-details.service';
 
@@ -39,8 +39,9 @@ export class FilmComponent {
       .pipe(
         switchMap(paramMap => {
           const id = paramMap.get('id');
-          return id !== null ? this.filmDetailsService.getFilm(id) : of(null);
+          return id !== null ? this.filmDetailsService.getFilm(id) : EMPTY;
         }),
+        shareReplay({ refCount: true, bufferSize: 1 }),
       );
   }
 }
