@@ -1,0 +1,8 @@
+<td class="film-row__field film-row__field_title">{{ title }}</td>
+<td class="film-row__field film-row__field_producers">
+  {{ producers.join(", ") }}
+</td>
+<td class="film-row__field film-row__field_director">{{ director }}</td>
+<td class="film-row__field film-row__field_release-date">
+  {{ releaseDate | date: "mediumDate" }}
+</td>

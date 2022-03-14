@@ -1,1 +1,36 @@
-<sw-main-layout><p>films works!</p> </sw-main-layout>
+<sw-main-layout>
+  <div class="films">
+    <table
+      aria-label="Films"
+      class="films__table"
+      [@show]="(films$ | async) ? 'visible' : 'hidden'"
+      *ngIf="films$ | async; else loading"
+    >
+      <tr class="films__head">
+        <th class="films__column films__column_title">Title</th>
+        <th class="films__column films__column_producers">Producers</th>
+        <th class="films__column films__column_director">Director</th>
+        <th class="films__column films__column_release-date">Release</th>
+      </tr>
+      <tr
+        sw-film-row
+        *ngFor="let film of films$ | async; trackBy: trackFilm"
+        [title]="film.title"
+        [producers]="film.producers"
+        [director]="film.director"
+        [releaseDate]="film.releaseDate"
+      ></tr>
+    </table>
+    <ng-template #loading>
+      <div class="films__spinner">
+        <mat-spinner [diameter]="32"></mat-spinner>
+      </div>
+    </ng-template>
+    <sw-filters
+      (changePage)="onChangePage($event)"
+      (changeFilterOptions)="onChangeFilterOptions($event)"
+      [pagesStatus]="pagesStatus$ | async"
+      class="films__filters"
+    ></sw-filters>
+  </div>
+</sw-main-layout>

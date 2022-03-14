@@ -1,0 +1,75 @@
+<div class="filters">
+  <div class="filters__buttons">
+    <button
+      class="filters__button"
+      type="button"
+      mat-stroked-button
+      [disabled]="pagesStatus?.isFirst ?? true"
+      (click)="onPrevPage()"
+    >
+      Prev
+    </button>
+    <button
+      class="filters__button"
+      type="button"
+      mat-stroked-button
+      [disabled]="pagesStatus?.isLast ?? true"
+      (click)="onNextPage()"
+    >
+      Next
+    </button>
+  </div>
+  <form
+    [formGroup]="filtersForm"
+    (ngSubmit)="onFiltersApply()"
+    class="filters__options"
+  >
+    <mat-form-field appearance="outline">
+      <mat-label>Search</mat-label>
+      <input
+        matInput
+        placeholder="e.g. Star Wars"
+        type="text"
+        formControlName="searchText"
+        name="search"
+      />
+    </mat-form-field>
+    <div class="filters__sort" formGroupName="sortOptions">
+      <mat-form-field appearance="outline">
+        <mat-label>Sort field</mat-label>
+        <mat-select formControlName="field">
+          <mat-option
+            *ngFor="let option of sortFieldOptions"
+            [value]="option.value"
+          >
+            {{ option.text }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Sort direction</mat-label>
+        <mat-select formControlName="direction">
+          <mat-option
+            *ngFor="let option of sortDirectionOptions"
+            [value]="option.value"
+          >
+            {{ option.text }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="filters__buttons">
+      <button class="filters__button" type="submit" mat-stroked-button>
+        Apply filters
+      </button>
+      <button
+        class="filters__button"
+        type="reset"
+        mat-button
+        (click)="onFiltersReset($event)"
+      >
+        Reset
+      </button>
+    </div>
+  </form>
+</div>

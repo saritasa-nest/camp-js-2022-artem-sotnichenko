@@ -38,6 +38,9 @@ const EXPORTED_DECLARATIONS = [
   ],
   exports: [
     MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
     ...EXPORTED_DECLARATIONS,
   ],
 })

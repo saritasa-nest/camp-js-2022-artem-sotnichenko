@@ -1,3 +1,58 @@
 :host {
   display: block;
+  --title-width: 200px;
+  --producers-width: 200px;
+  --director-width: 120px;
+  --release-date-width: 88px;
+}
+
+.films {
+  display: flex;
+  gap: var(--size-4);
+  align-items: start;
+}
+
+.films__spinner {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+.films__table {
+  display: flex;
+  flex-direction: column;
+  border: var(--border);
+  padding-bottom: var(--size-2);
+  border-radius: var(--rounded-md);
+  flex-grow: 1;
+}
+
+.films__head {
+  display: flex;
+  gap: var(--size-4);
+  padding: var(--size-3) var(--size-4);
+  border-bottom: var(--border);
+}
+
+.films__column {
+  font-weight: 500;
+  text-align: left;
+}
+
+.films__column_title {
+  width: var(--title-width);
+  flex-grow: 1;
+}
+
+.films__column_producers {
+  width: var(--producers-width);
+}
+
+.films__column_director {
+  width: var(--director-width);
+}
+
+.films__column_release-date {
+  width: var(--release-date-width);
 }

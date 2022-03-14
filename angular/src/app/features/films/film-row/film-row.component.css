@@ -1,0 +1,36 @@
+/**
+ * Films table row is invalid with angular component wrapper,
+ * so I made wrapper `tr` element and hence I apply filters to `:host`
+ * @see Caniinclude https://caninclude.glitch.me/caninclude?child=tr&parent=div.
+ */
+:host {
+  display: flex;
+  gap: var(--size-4);
+  padding: var(--size-2) var(--size-4);
+}
+
+:host:hover {
+  background: var(--color-foreground);
+}
+
+.film-row__field {
+  flex-shrink: 0;
+}
+
+.film-row__field_title {
+  width: var(--title-width);
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.film-row__field_producers {
+  width: var(--producers-width);
+}
+
+.film-row__field_director {
+  width: var(--director-width);
+}
+
+.film-row__field_release-date {
+  width: var(--release-date-width);
+}
