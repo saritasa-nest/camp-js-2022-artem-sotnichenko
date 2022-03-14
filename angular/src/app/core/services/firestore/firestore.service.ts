@@ -29,7 +29,7 @@ export class FirestoreService {
   public fetchMany<T extends FirebaseWrapper>(
     collectionName: CollectionName,
     constraints: readonly QueryConstraint[] = [],
-  ): Observable<readonly T[]> {
+  ): Observable<T[]> {
     return collectionData(query<T>(getCollection(this.db, collectionName), ...constraints), { idField: 'id' });
   }
 
@@ -42,7 +42,7 @@ export class FirestoreService {
   public fetchManyByIds<T extends FirebaseWrapper>(
     collectionName: CollectionName,
     ids: readonly string[],
-  ): Observable<readonly T[]> {
+  ): Observable<T[]> {
     const entitiesBatches = [];
 
     for (let i = 0; i < ids.length; i += FIRESTORE_BATCH_MAX_SIZE) {

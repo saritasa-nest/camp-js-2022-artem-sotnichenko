@@ -40,7 +40,7 @@ export class FilmDetailsService {
    * Get planet names by ids array.
    * @param ids Planet ids.
    */
-  public getPlanetNames(ids: readonly Planet['id'][]): Observable<readonly Planet['name'][]> {
+  public getPlanetNames(ids: readonly Planet['id'][]): Observable<Planet['name'][]> {
     return this.firestoreService
       .fetchManyByIds<PlanetDto>('planets', ids)
       .pipe(map(dtos => dtos.map(dto => this.planetMapper.fromDto(dto).name)));
@@ -50,7 +50,7 @@ export class FilmDetailsService {
    * Get character names by ids array.
    * @param ids Character ids.
    */
-  public getCharacterNames(ids: readonly Character['id'][]): Observable<readonly Character['name'][]> {
+  public getCharacterNames(ids: readonly Character['id'][]): Observable<Character['name'][]> {
     return this.firestoreService
       .fetchManyByIds<CharacterDto>('characters', ids)
       .pipe(map(dtos => dtos.map(dto => this.characterMapper.fromDto(dto).name)));

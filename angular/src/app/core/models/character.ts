@@ -15,7 +15,7 @@ export interface Character {
   readonly birthYear: string;
 
   /** The eye color of this person. Will be "unknown" if not known or "n/a" if the person does not have an eye. */
-  readonly eyeColors: string[];
+  readonly eyeColors: readonly string[];
 
   /** The gender of this person. Either "Male", "Female" or "unknown", "n/a" if the person does not have a gender. */
   readonly gender: string | Nullish;

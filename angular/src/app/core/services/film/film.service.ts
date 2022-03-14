@@ -75,7 +75,7 @@ export class FilmService {
    * @param count Films count.
    * @param cursor Cursor to fetch with.
    */
-  public getFilms(count: number, cursor: FilmCursor): Observable<readonly Film[]> {
+  public getFilms(count: number, cursor: FilmCursor): Observable<Film[]> {
     const {
       entityId,
       paginationDirection,
@@ -98,7 +98,7 @@ export class FilmService {
     );
   }
 
-  private fetchFilms(options: FetchFilmsOptions): Observable<readonly FilmDto[]> {
+  private fetchFilms(options: FetchFilmsOptions): Observable<FilmDto[]> {
     return this.firestoreService.fetchMany<FilmDto>(
       'films',
       this.getQueryConstraints({
