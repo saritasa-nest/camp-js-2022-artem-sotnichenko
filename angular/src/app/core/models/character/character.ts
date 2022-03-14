@@ -1,4 +1,6 @@
-import { Nullish } from '../utils/parse-nullish';
+import { Nullish } from '../../utils/parse-nullish';
+
+import { CharacterGender } from './gender';
 
 /** Character model. */
 export interface Character {
@@ -18,7 +20,7 @@ export interface Character {
   readonly eyeColors: readonly string[];
 
   /** The gender of this person. Either "Male", "Female" or "unknown", "n/a" if the person does not have a gender. */
-  readonly gender: string | Nullish;
+  readonly gender: CharacterGender | Nullish;
 
   /** The hair color of this person. Will be "unknown" if not known or "n/a" if the person does not have hair. */
   readonly hairColors: readonly string[];

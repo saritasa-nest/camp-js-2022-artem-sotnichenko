@@ -1,10 +1,26 @@
 import { Injectable } from '@angular/core';
 
-import { Character } from '../../models/character';
-import { parseFromNullish, parseToNullish } from '../../utils/parse-nullish';
+import { Character } from '../../models/character/character';
+import { CharacterGender } from '../../models/character/gender';
+import { Nullish, parseFromNullish, parseToNullish } from '../../utils/parse-nullish';
 import { splitByComma } from '../../utils/split-by-comma';
 
 import { CharacterDto } from './dto/character.dto';
+
+/**
+ * Maps gender dto to model.
+ * @param dto Gender dto.
+ */
+function mapGenderFromDto(dto: string): CharacterGender | Nullish {
+  switch (dto.toLowerCase()) {
+    case 'male':
+      return CharacterGender.Male;
+    case 'female':
+      return CharacterGender.Female;
+    default:
+      return null;
+  }
+}
 
 /**
  * Mapper for user entities.
@@ -21,7 +37,7 @@ export class CharacterMapper {
       name: dto.fields.name,
       birthYear: dto.fields.birth_year,
       eyeColors: splitByComma(dto.fields.eye_color),
-      gender: parseToNullish(dto.fields.gender),
+      gender: parseToNullish(mapGenderFromDto(dto.fields.gender)),
       hairColors: splitByComma(dto.fields.hair_color),
       height: parseToNullish(dto.fields.height, parseInt),
       mass: parseToNullish(dto.fields.mass, parseInt),
