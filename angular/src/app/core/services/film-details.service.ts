@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
-import { Character } from '../models/character';
+import { Character } from '../models/character/character';
 import { Film } from '../models/film';
 import { Planet } from '../models/planet';
 
 import { FirestoreService } from './firestore/firestore.service';
 import { CharacterMapper } from './mappers/character.mapper';
-import { CharacterDto } from './mappers/dto/character.dto';
+import { CharacterDto } from './mappers/dto/character/character.dto';
 import { FilmDto } from './mappers/dto/film.dto';
 import { PlanetDto } from './mappers/dto/planet.dto';
 import { FilmMapper } from './mappers/film.mapper';
