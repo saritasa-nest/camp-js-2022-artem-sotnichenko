@@ -30,7 +30,7 @@ export class FilmDetailsService {
    * Get one film by id.
    * @param id Film id.
    */
-  public getFilm(id: FilmDto['id']): Observable<Film> {
+  public getFilm(id: Film['id']): Observable<Film> {
     return this.firestoreService.fetchOne<FilmDto>('films', id).pipe(
       map(this.filmMapper.fromDto),
     );
