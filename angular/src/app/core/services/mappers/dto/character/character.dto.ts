@@ -1,4 +1,6 @@
-import { FirebaseWrapper } from './firebase-wrapper.dto';
+import { FirebaseWrapper } from '../firebase-wrapper.dto';
+
+import { CharacterGenderDto } from './gender.dto';
 
 /** Character data that stored in firestore. */
 export interface CharacterDocument {
@@ -18,7 +20,7 @@ export interface CharacterDocument {
     readonly eye_color: string;
 
     /** The gender of this person. Either "Male", "Female" or "unknown", "n/a" if the person does not have a gender. */
-    readonly gender: string;
+    readonly gender: CharacterGenderDto;
 
     /** An array of the hair color of this person. Will be "unknown" if not known or "n/a" if the person does not have hair. */
     readonly hair_color: string;

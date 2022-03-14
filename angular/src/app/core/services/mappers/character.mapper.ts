@@ -5,13 +5,14 @@ import { CharacterGender } from '../../models/character/gender';
 import { Nullish, parseFromNullish, parseToNullish } from '../../utils/parse-nullish';
 import { splitByComma } from '../../utils/split-by-comma';
 
-import { CharacterDto } from './dto/character.dto';
+import { CharacterDto } from './dto/character/character.dto';
+import { CharacterGenderDto } from './dto/character/gender.dto';
 
 /**
  * Maps gender dto to model.
  * @param dto Gender dto.
  */
-function mapGenderFromDto(dto: string): CharacterGender | Nullish {
+function mapGenderFromDto(dto: CharacterGenderDto): CharacterGender | Nullish {
   switch (dto.toLowerCase()) {
     case 'male':
       return CharacterGender.Male;
