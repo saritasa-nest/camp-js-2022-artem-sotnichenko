@@ -2,7 +2,9 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, switchMap, EMPTY, shareReplay } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
-import { FilmDetailsService } from 'src/app/core/services/film-details.service';
+import { CharacterService } from 'src/app/core/services/character.service';
+import { FilmService } from 'src/app/core/services/film/film.service';
+import { PlanetService } from 'src/app/core/services/planet.service';
 
 /** Film component. */
 @Component({
@@ -23,14 +25,16 @@ export class FilmComponent {
 
   public constructor(
     private readonly route: ActivatedRoute,
-    private readonly filmDetailsService: FilmDetailsService,
+    private readonly filmService: FilmService,
+    private readonly characterService: CharacterService,
+    private readonly planetService: PlanetService,
   ) {
     this.characterNames$ = this.film$.pipe(
-      switchMap(film => this.filmDetailsService.getCharacterNames(film?.characterIds ?? [])),
+      switchMap(film => this.characterService.getCharacterNames(film?.characterIds ?? [])),
     );
 
     this.planetNames$ = this.film$.pipe(
-      switchMap(film => this.filmDetailsService.getPlanetNames(film?.planetIds ?? [])),
+      switchMap(film => this.planetService.getPlanetNames(film?.planetIds ?? [])),
     );
   }
 
@@ -39,7 +43,7 @@ export class FilmComponent {
       .pipe(
         switchMap(paramMap => {
           const id = paramMap.get('id');
-          return id !== null ? this.filmDetailsService.getFilm(id) : EMPTY;
+          return id !== null ? this.filmService.getFilm(id) : EMPTY;
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
       );

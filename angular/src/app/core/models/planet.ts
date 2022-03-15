@@ -33,6 +33,6 @@ export interface Planet {
   /** The percentage of the planet surface that is naturally occurring water or bodies of water. */
   readonly surfaceWater: string | Nullish;
 
-  /** The terrain of this planet. Comma separated if diverse. */
+  /** Array of the diverse terrain of this planet. */
   readonly terrain: readonly string[] | Nullish;
 }

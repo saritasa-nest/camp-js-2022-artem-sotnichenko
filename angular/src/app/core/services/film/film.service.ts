@@ -53,7 +53,17 @@ export class FilmService {
   public constructor(
     private readonly filmMapper: FilmMapper,
     private readonly firestoreService: FirestoreService,
-  ) {}
+  ) { }
+
+  /**
+   * Get one film by id.
+   * @param id Film id.
+   */
+  public getFilm(id: Film['id']): Observable<Film> {
+    return this.firestoreService.fetchOne<FilmDto>('films', id).pipe(
+      map(this.filmMapper.fromDto),
+    );
+  }
 
   /**
    * Get cursor.
