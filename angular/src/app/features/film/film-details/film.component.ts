@@ -1,11 +1,10 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap, shareReplay, map } from 'rxjs';
+import { Observable, switchMap, map } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { CharacterService } from 'src/app/core/services/character.service';
-import { FilmService } from 'src/app/core/services/film/film.service';
+import { FilmManagementService } from 'src/app/core/services/film-management.service';
 import { PlanetService } from 'src/app/core/services/planet.service';
-import { assertNotNullish } from 'src/app/core/utils/assert-not-null';
 
 /** Film component. */
 @Component({
@@ -26,18 +25,11 @@ export class FilmComponent {
 
   public constructor(
     route: ActivatedRoute,
-    filmService: FilmService,
+    filmManagementService: FilmManagementService,
     characterService: CharacterService,
     planetService: PlanetService,
   ) {
-    this.film$ = route.paramMap.pipe(
-      switchMap(paramMap => {
-        const id = paramMap.get('id');
-        assertNotNullish(id, 'There is no film id. This is probably route issue.');
-        return filmService.getFilm(id);
-      }),
-      shareReplay({ refCount: true, bufferSize: 1 }),
-    );
+    this.film$ = filmManagementService.getFilm(route.paramMap);
 
     this.characterNames$ = this.film$.pipe(
       switchMap(film => characterService.getCharacters(film.characterIds)

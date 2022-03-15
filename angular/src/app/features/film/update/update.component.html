@@ -1,0 +1,16 @@
+<sw-main-layout>
+  <sw-film-form
+    *ngIf="film$ | async; else spinner"
+    [film]="film$ | async"
+    [allPlanets]="(planets$ | async) ?? []"
+    [allCharacters]="(characters$ | async) ?? []"
+    (submitted)="onSubmit($event)"
+    (canceled)="onCancel()"
+    submitText="Update"
+  ></sw-film-form>
+  <ng-template #spinner>
+    <div class="spinner">
+      <mat-spinner [diameter]="64"></mat-spinner>
+    </div>
+  </ng-template>
+</sw-main-layout>

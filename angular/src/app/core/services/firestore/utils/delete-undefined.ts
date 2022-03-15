@@ -3,7 +3,7 @@
  * Don't work deeply.
  * @param data Data object.
  */
-export function deleteUndefinedShallow<T>(data: Partial<T>): T {
+export function deleteUndefinedShallow<T>(data: T): T {
   const newData: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(data)) {
     if (value !== undefined) {

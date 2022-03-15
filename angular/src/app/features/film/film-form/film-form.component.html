@@ -7,12 +7,22 @@
       </mat-form-field>
       <div class="film-form__options">
         <button
+          *ngIf="isCancelVisible"
+          mat-button
+          type="button"
+          class="film-form__button"
+          (click)="onCancel()"
+        >
+          {{ cancelText }}
+        </button>
+        <button
+          *ngIf="isSubmitVisible"
           mat-flat-button
           color="primary"
           type="submit"
           class="film-form__button"
         >
-          Save
+          {{ submitText }}
         </button>
       </div>
     </div>
@@ -63,20 +73,15 @@
         label="Characters"
         (changed)="onCharactersChange($event)"
         [entities]="allCharacters"
-        [selectedIds]="selectedCharacterIds"
+        [selectedIds]="(selectedCharacterIds$ | async) ?? []"
       ></sw-entities-select>
       <sw-entities-select
         class="film-form__select"
         label="Planets"
         (changed)="onPlanetsChange($event)"
         [entities]="allPlanets"
-        [selectedIds]="selectedPlanetIds"
+        [selectedIds]="(selectedPlanetIds$ | async) ?? []"
       ></sw-entities-select>
     </main>
   </aside>
 </form>
-<ng-template #spinner>
-  <div class="spinner">
-    <mat-spinner [diameter]="32"></mat-spinner>
-  </div>
-</ng-template>

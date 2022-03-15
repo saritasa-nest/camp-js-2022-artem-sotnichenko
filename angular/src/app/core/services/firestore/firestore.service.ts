@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
-import { addDoc, doc, documentId, query, QueryConstraint, where } from 'firebase/firestore';
+import { addDoc, doc, documentId, DocumentReference, query, QueryConstraint, UpdateData, updateDoc, where } from 'firebase/firestore';
 import { docData, doc as fromDocRef } from 'rxfire/firestore';
 import { DocumentData } from 'rxfire/firestore/interfaces';
 import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
@@ -30,20 +30,35 @@ export class FirestoreService {
    * @param data An Object containing the data for the new document.
    * @returns Reference of object from store.
    */
-  public create<T extends DocumentData>(
+  public create<T>(
     collectionName: CollectionName,
-    data: T,
+    data: unknown,
   ): Observable<T> {
-    return from(addDoc(
-      getCollection<T>(this.db, collectionName),
-      deleteUndefinedShallow<T>(data),
-    )).pipe(
-      switchMap(docRef => docData(docRef, { idField: 'id' })),
+    return from(
+      addDoc(getCollection(this.db, collectionName), data),
+    ).pipe(
+      switchMap(d => docData(d as DocumentReference<T>, { idField: 'id' })),
     );
   }
 
   /**
-   * Get a stream of documents narrowed by array of constraints.
+   * Update entity.
+   * @param collectionName Collection name.
+   * @param id Entity id.
+   * @param data An Object containing the data for the new document.
+   * @returns Reference of object from store.
+   */
+  public update<T extends DocumentData>(
+    collectionName: CollectionName,
+    id: string,
+    data: UpdateData<T>,
+  ): Observable<void> {
+    const docRef = doc<T>(getCollection<T>(this.db, collectionName), id);
+    return from(updateDoc(docRef, deleteUndefinedShallow<UpdateData<T>>(data)));
+  }
+
+  /**
+  * Get a stream of documents narrowed by array of constraints.
    * @param collectionName Collection name.
    * @param constraints Query constraints.
    */

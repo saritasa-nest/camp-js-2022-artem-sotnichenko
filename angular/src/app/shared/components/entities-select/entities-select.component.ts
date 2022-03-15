@@ -34,7 +34,7 @@ export class EntitiesSelectComponent implements OnInit {
 
   /** Selected entities ids. */
   @Input()
-  public selectedIds: Entity['id'][] = [];
+  public selectedIds: readonly Entity['id'][] = [];
 
   /** Emits when options selected. */
   @Output()
@@ -75,7 +75,7 @@ export class EntitiesSelectComponent implements OnInit {
     const index = this.selectedIds.indexOf(entityId);
 
     if (index >= 0) {
-      this.selectedIds.splice(index, 1);
+      this.selectedIds = this.selectedIds.slice(index, 1);
       this.emitChange();
     }
   }
@@ -85,7 +85,7 @@ export class EntitiesSelectComponent implements OnInit {
    * @param event Event.
    */
   public selectEntity(event: MatAutocompleteSelectedEvent): void {
-    this.selectedIds.push(event.option.value);
+    this.selectedIds = [...this.selectedIds, event.option.value];
 
     if (this.entityInput) {
       this.entityInput.nativeElement.value = '';

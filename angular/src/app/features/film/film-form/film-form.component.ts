@@ -1,8 +1,12 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { formatDate } from '@angular/common';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Self } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { map, ReplaySubject, takeUntil, tap } from 'rxjs';
 import { Character } from 'src/app/core/models/character';
 import { Film } from 'src/app/core/models/film';
+import { FilmForm } from 'src/app/core/models/film-form';
 import { Planet } from 'src/app/core/models/planet';
+import { DestroyService } from 'src/app/core/services/destroy.service';
 
 /** Film form. */
 @Component({
@@ -10,46 +14,91 @@ import { Planet } from 'src/app/core/models/planet';
   templateUrl: './film-form.component.html',
   styleUrls: ['./film-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DestroyService],
 })
 export class FilmFormComponent {
+  /** Submit button text. */
+  @Input()
+  public submitText = 'Submit';
+
+  /** Whether is submit button visible. */
+  @Input()
+  public isSubmitVisible = true;
+
+  /** Cancel button text. */
+  @Input()
+  public cancelText = 'Cancel';
+
+  /** Whether is cancel button visible. */
+  @Input()
+  public isCancelVisible = true;
+
   /** Film. */
   @Input()
-  public film?: Film;
+  public set film(film: FilmForm | null) {
+    if (film != null) {
+      this.film$.next(film);
+    }
+  }
 
-  /** Selected planet ids. */
-  @Input()
-  public selectedPlanetIds: Planet['id'][] = [];
+  /** Film. */
+  public readonly film$ = new ReplaySubject<FilmForm>();
 
+  // public film: Film | null = null;
   /** Selected planets. */
   @Input()
   public allPlanets: readonly Planet[] = [];
-
-  /** Selected character ids. */
-  @Input()
-  public selectedCharacterIds: Character['id'][] = [];
 
   /** All characters. */
   @Input()
   public allCharacters: readonly Character[] = [];
 
+  /** Selected planet ids. */
+  @Input()
+  public selectedPlanetIds$ = this.film$.pipe(map(film => film.planetIds));
+
+  /** Selected character ids. */
+  @Input()
+  public selectedCharacterIds$ = this.film$.pipe(map(film => film.characterIds));
+
   /** Submitted event. */
   @Output()
-  public submitted = new EventEmitter<Film>();
+  public readonly submitted = new EventEmitter<FilmForm>();
+
+  /** Canceled event. */
+  @Output()
+  public readonly canceled = new EventEmitter<void>();
 
   /** Filters form. */
-  public readonly filmForm = this.fb.group({
-    title: ['', [Validators.required]],
-    openingCrawl: ['', [Validators.required]],
-    releaseDate: ['', [Validators.required]],
-    director: ['', [Validators.required]],
-    producers: ['', [Validators.required]],
-    characterIds: [[]],
-    planetIds: [[]],
-  });
+  public filmForm: FormGroup = this.getFilmForm();
 
   public constructor(
+    @Self() private readonly destroy$: DestroyService,
     private readonly fb: FormBuilder,
-  ) {}
+  ) {
+    this.film$.pipe(
+      tap(film => {
+        this.filmForm = this.getFilmForm(film);
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+  }
+
+  /**
+   * Get film reactive form.
+   * @param film Film.
+   */
+  public getFilmForm(film?: FilmForm): FormGroup {
+    return this.fb.group({
+      title: [film?.title ?? '', [Validators.required]],
+      openingCrawl: [film?.openingCrawl ?? '', [Validators.required]],
+      releaseDate: [formatDate(this.film?.releaseDate ?? new Date(), 'yyyy-MM-dd', 'en'), [Validators.required]],
+      director: [film?.director ?? '', [Validators.required]],
+      producers: [film?.producers ?? '', [Validators.required]],
+      characterIds: [film?.characterIds ?? []],
+      planetIds: [film?.planetIds ?? []],
+    });
+  }
 
   /** Handle form submit. */
   public onFilmSubmit(): void {
@@ -61,12 +110,17 @@ export class FilmFormComponent {
           openingCrawl: film.openingCrawl.trim(),
           releaseDate: new Date(film.releaseDate),
           director: film.director.trim(),
-          producers: film.producers.split(','),
+          producers: typeof film.producers === 'string' ? film.producers.split(',') : film.producers,
           characterIds: film.characterIds,
           planetIds: film.planetIds,
         } as Film);
       }
     }
+  }
+
+  /** Handle cancel. */
+  public onCancel(): void {
+    this.canceled.emit();
   }
 
   /**

@@ -7,10 +7,11 @@ import { FilmRoutingModule } from './film-routing.module';
 import { FilmComponent } from './film-details/film.component';
 import { FilmFormComponent } from './film-form/film-form.component';
 import { CreateComponent } from './create/create.component';
+import { UpdateComponent } from './update/update.component';
 
 /** Film module. */
 @NgModule({
-  declarations: [FilmComponent, FilmFormComponent, CreateComponent],
+  declarations: [FilmComponent, FilmFormComponent, CreateComponent, UpdateComponent],
   imports: [
     CommonModule,
     FilmRoutingModule,

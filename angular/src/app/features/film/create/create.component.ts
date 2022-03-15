@@ -1,7 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Film } from 'src/app/core/models/film';
-import { FilmDetailsService } from 'src/app/core/services/film-details.service';
+import { FilmForm } from 'src/app/core/models/film-form';
+import { CharacterService } from 'src/app/core/services/character.service';
 import { FilmManagementService } from 'src/app/core/services/film-management.service';
+import { PlanetService } from 'src/app/core/services/planet.service';
 
 /** Film create component. */
 @Component({
@@ -13,27 +14,28 @@ import { FilmManagementService } from 'src/app/core/services/film-management.ser
 export class CreateComponent {
 
   /** All planets. */
-  public readonly planets$ = this.filmDetailsService.getAllPlanets();
+  public readonly planets$ = this.planetService.getAllPlanets();
 
   /** Selected planets. */
   public readonly selectedPlanetIds = [];
 
   /** All characters. */
-  public readonly characters$ = this.filmDetailsService.getAllCharacters();
+  public readonly characters$ = this.characterService.getAllCharacters();
 
   /** Selected characters. */
   public readonly selectedCharacterIds = [];
 
   public constructor(
-    private readonly filmDetailsService: FilmDetailsService,
+    private readonly characterService: CharacterService,
+    private readonly planetService: PlanetService,
     private readonly filmManagementService: FilmManagementService,
   ) { }
 
   /**
    * Handle submit.
-   * @param film Film.
+   * @param filmForm Film.
    */
-  public onSubmit(film: Film): void {
-    this.filmManagementService.create(film);
+  public onSubmit(filmForm: FilmForm): void {
+    this.filmManagementService.create(filmForm);
   }
 }

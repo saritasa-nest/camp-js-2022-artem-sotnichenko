@@ -29,7 +29,7 @@
 .film-form__options {
   margin-left: auto;
   display: flex;
-  gap: var(--size-2);
+  gap: var(--size-4);
 }
 
 .film-form__container {
