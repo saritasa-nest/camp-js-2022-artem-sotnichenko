@@ -18,10 +18,10 @@ export class FilmComponent {
   public readonly film$: Observable<Film> = this.getFilm();
 
   /** Character names. */
-  public readonly characterNames$: Observable<readonly string[] | null>;
+  public readonly characterNames$: Observable<readonly string[]>;
 
   /** Planet names. */
-  public readonly planetNames$: Observable<readonly string[] | null>;
+  public readonly planetNames$: Observable<readonly string[]>;
 
   public constructor(
     private readonly route: ActivatedRoute,
@@ -30,11 +30,11 @@ export class FilmComponent {
     private readonly planetService: PlanetService,
   ) {
     this.characterNames$ = this.film$.pipe(
-      switchMap(film => this.characterService.getCharacterNames(film?.characterIds ?? [])),
+      switchMap(film => this.characterService.getCharacterNames(film.characterIds)),
     );
 
     this.planetNames$ = this.film$.pipe(
-      switchMap(film => this.planetService.getPlanetNames(film?.planetIds ?? [])),
+      switchMap(film => this.planetService.getPlanetNames(film.planetIds)),
     );
   }
 
