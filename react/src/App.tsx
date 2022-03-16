@@ -8,11 +8,9 @@ import { store } from './store';
 export const App: React.VFC = () => (
   <Provider store={store}>
     <BrowserRouter>
-      <div>
-        <Suspense fallback={<div>Brrr... here should be your loader component</div>}>
-          <RootRouter />
-        </Suspense>
-      </div>
+      <Suspense fallback={<div>Brrr... here should be your loader component</div>}>
+        <RootRouter />
+      </Suspense>
     </BrowserRouter>
   </Provider>
 );
