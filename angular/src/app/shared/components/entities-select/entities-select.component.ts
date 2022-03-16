@@ -72,12 +72,8 @@ export class EntitiesSelectComponent implements OnInit {
    * @param entityId Entity id.
    */
   public deselectEntity(entityId: Entity['id']): void {
-    const index = this.selectedIds.indexOf(entityId);
-
-    if (index >= 0) {
-      this.selectedIds = this.selectedIds.slice(index, 1);
-      this.emitChange();
-    }
+    this.selectedIds = this.selectedIds.filter(id => id !== entityId);
+    this.emitChange();
   }
 
   /**

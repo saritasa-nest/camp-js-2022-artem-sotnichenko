@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
-import { addDoc, doc, documentId, DocumentReference, query, QueryConstraint, UpdateData, updateDoc, where } from 'firebase/firestore';
+import { addDoc, deleteDoc, doc, documentId, DocumentReference, query, QueryConstraint, UpdateData, updateDoc, where } from 'firebase/firestore';
 import { docData, doc as fromDocRef } from 'rxfire/firestore';
-import { DocumentData } from 'rxfire/firestore/interfaces';
 import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 
 import { QueryCursor } from '../film/utils/types';
 import { FirebaseWrapper } from '../mappers/dto/firebase-wrapper.dto';
-
-import { deleteUndefinedShallow } from './utils/delete-undefined';
 
 import { CollectionName, getCollection } from './utils/get-collection-typed';
 
@@ -48,13 +45,25 @@ export class FirestoreService {
    * @param data An Object containing the data for the new document.
    * @returns Reference of object from store.
    */
-  public update<T extends DocumentData>(
+  public update(
     collectionName: CollectionName,
     id: string,
-    data: UpdateData<T>,
+    data: UpdateData<unknown>,
   ): Observable<void> {
-    const docRef = doc<T>(getCollection<T>(this.db, collectionName), id);
-    return from(updateDoc(docRef, deleteUndefinedShallow<UpdateData<T>>(data)));
+    const docRef = doc(getCollection(this.db, collectionName), id);
+    return from(updateDoc(docRef, data));
+  }
+
+  /**
+   * Delete entity.
+   * @param collectionName Collection name.
+   * @param id Entity id.
+   */
+  public delete(
+    collectionName: CollectionName,
+    id: string,
+  ): Observable<void> {
+    return from(deleteDoc(doc(getCollection(this.db, collectionName), id)));
   }
 
   /**

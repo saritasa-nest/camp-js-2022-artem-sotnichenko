@@ -56,10 +56,17 @@ export class FilmManagementService {
    * Create film.
    * @param id Film id.
    * @param film Film object.
-   * @returns Film data that have been added into store.
    */
   public update(id: Film['id'], film: FilmForm): Observable<void> {
     return this.firestoreService
       .update('films', id, this.filmFormMapper.toDto(film));
+  }
+
+  /**
+   * Delete film.
+   * @param id Film id.
+   */
+  public delete(id: Film['id']): Observable<void> {
+    return this.firestoreService.delete('films', id);
   }
 }

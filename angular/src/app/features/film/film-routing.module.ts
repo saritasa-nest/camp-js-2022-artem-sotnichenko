@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CreateComponent } from './create/create.component';
 
-import { FilmComponent } from './film-details/film.component';
+import { FilmComponent } from './details/film.component';
 import { UpdateComponent } from './update/update.component';
 
 const routes: Routes = [

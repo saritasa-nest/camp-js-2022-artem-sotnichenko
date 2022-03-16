@@ -16,9 +16,10 @@
             class="film__button film__button_settings"
             title="Settings"
           >
-            <mat-icon>settings</mat-icon>
+            <mat-icon>edit</mat-icon>
           </a>
           <button
+            (click)="onDelete()"
             type="button"
             mat-button
             color="warn"

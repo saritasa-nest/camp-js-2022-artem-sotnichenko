@@ -1,10 +1,13 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap, map } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Observable, switchMap, take, tap } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { FilmManagementService } from 'src/app/core/services/film-management.service';
 import { PlanetService } from 'src/app/core/services/planet.service';
+
+import { DeleteDialogComponent, DeleteDialogData, DeleteDialogResult } from '../delete-dialog/delete-dialog.component';
 
 /** Film component. */
 @Component({
@@ -25,9 +28,11 @@ export class FilmComponent {
 
   public constructor(
     route: ActivatedRoute,
-    filmManagementService: FilmManagementService,
     characterService: CharacterService,
     planetService: PlanetService,
+    private readonly filmManagementService: FilmManagementService,
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
   ) {
     this.film$ = filmManagementService.getFilm(route.paramMap);
 
@@ -40,5 +45,28 @@ export class FilmComponent {
       switchMap(film => planetService.getPlanets(film.planetIds)
         .pipe(map(planets => planets.map(planet => planet.name)))),
     );
+  }
+
+  /** Handle delete. */
+  public onDelete(): void {
+    this.film$.pipe(
+      take(1),
+      switchMap(film => {
+        const dialogRef = this.dialog.open<DeleteDialogComponent, DeleteDialogData, DeleteDialogResult>(
+          DeleteDialogComponent,
+          { data: { filmName: film.title } },
+        );
+
+        return dialogRef.afterClosed().pipe(
+          tap(canDelete => {
+            if (canDelete) {
+              this.filmManagementService.delete(film.id).pipe(
+                tap(() => this.router.navigate(['/'])),
+              );
+            }
+          }),
+        );
+      }),
+    ).subscribe();
   }
 }
