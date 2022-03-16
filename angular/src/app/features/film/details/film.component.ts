@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable, switchMap, take, tap } from 'rxjs';
+import { filter, map, Observable, switchMap, take, tap } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { FilmManagementService } from 'src/app/core/services/film-management.service';
@@ -58,12 +58,10 @@ export class FilmComponent {
         );
 
         return dialogRef.afterClosed().pipe(
-          tap(canDelete => {
-            if (canDelete) {
-              this.filmManagementService.delete(film.id).pipe(
-                tap(() => this.router.navigate(['/'])),
-              );
-            }
+          filter(canDelete => canDelete === true),
+          switchMap(() => this.filmManagementService.delete(film.id)),
+          tap(() => {
+            this.router.navigate(['/']);
           }),
         );
       }),
