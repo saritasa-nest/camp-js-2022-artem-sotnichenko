@@ -1,9 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Observable, switchMap, take, tap } from 'rxjs';
+import { filter, map, Observable, switchMap, take, takeUntil, tap } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { CharacterService } from 'src/app/core/services/character.service';
+import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmManagementService } from 'src/app/core/services/film-management.service';
 import { PlanetService } from 'src/app/core/services/planet.service';
 
@@ -15,6 +16,7 @@ import { DeleteDialogComponent, DeleteDialogData, DeleteDialogResult } from '../
   templateUrl: './film.component.html',
   styleUrls: ['./film.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DestroyService],
 })
 export class FilmComponent {
   /** Film. */
@@ -33,6 +35,7 @@ export class FilmComponent {
     private readonly filmManagementService: FilmManagementService,
     private readonly router: Router,
     private readonly dialog: MatDialog,
+    @Self() private readonly destroy$: DestroyService,
   ) {
     this.film$ = filmManagementService.getFilm(route.paramMap);
 
@@ -50,6 +53,7 @@ export class FilmComponent {
   /** Handle delete. */
   public onDelete(): void {
     this.film$.pipe(
+      takeUntil(this.destroy$),
       take(1),
       switchMap(film => {
         const dialogRef = this.dialog.open<DeleteDialogComponent, DeleteDialogData, DeleteDialogResult>(
