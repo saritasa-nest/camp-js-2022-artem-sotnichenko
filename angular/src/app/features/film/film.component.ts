@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap, EMPTY, shareReplay } from 'rxjs';
+import { Observable, switchMap, shareReplay, map, filter } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { FilmService } from 'src/app/core/services/film/film.service';
@@ -15,7 +15,7 @@ import { PlanetService } from 'src/app/core/services/planet.service';
 })
 export class FilmComponent {
   /** Film. */
-  public readonly film$: Observable<Film | null> = this.getFilm();
+  public readonly film$: Observable<Film> = this.getFilm();
 
   /** Character names. */
   public readonly characterNames$: Observable<readonly string[] | null>;
@@ -38,13 +38,12 @@ export class FilmComponent {
     );
   }
 
-  private getFilm(): Observable<Film | null> {
+  private getFilm(): Observable<Film> {
     return this.route.paramMap
       .pipe(
-        switchMap(paramMap => {
-          const id = paramMap.get('id');
-          return id !== null ? this.filmService.getFilm(id) : EMPTY;
-        }),
+        map(paramMap => paramMap.get('id')),
+        filter((id): id is string => id != null),
+        switchMap(id => this.filmService.getFilm(id)),
         shareReplay({ refCount: true, bufferSize: 1 }),
       );
   }
