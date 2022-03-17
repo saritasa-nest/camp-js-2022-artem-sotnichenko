@@ -24,7 +24,8 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "stylelint": "npx stylelint 'src/**/*.css'"
   },
   "browserslist": {
     "production": [
