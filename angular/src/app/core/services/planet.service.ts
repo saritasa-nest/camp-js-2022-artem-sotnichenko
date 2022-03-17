@@ -19,14 +19,6 @@ export class PlanetService {
   ) { }
 
   /**
-   * Get planet names by ids array.
-   * @param ids Planet ids.
-   */
-  public getPlanetNames(ids: readonly Planet['id'][]): Observable<Planet['name'][]> {
-    return this.getPlanets(ids).pipe(map(planets => planets.map(planet => planet.name)));
-  }
-
-  /**
    * Get planets by ids array.
    * @param ids Planet ids.
    */

@@ -19,14 +19,6 @@ export class CharacterService {
   ) { }
 
   /**
-   * Get character names by ids array.
-   * @param ids Character ids.
-   */
-  public getCharacterNames(ids: readonly Character['id'][]): Observable<Character['name'][]> {
-    return this.getCharacters(ids).pipe(map(characters => characters.map(character => character.name)));
-  }
-
-  /**
    * Get characters by ids array.
    * @param ids Character ids.
    */
