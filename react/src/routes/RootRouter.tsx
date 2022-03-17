@@ -1,3 +1,4 @@
+import { VFC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import { authRoutes } from 'src/features/auth/routes';
 import { filmsRoutes } from 'src/features/films/routes';
@@ -17,4 +18,4 @@ const routes: RouteObject[] = [
   },
 ];
 
-export const RootRouter: React.VFC = () => useRoutes(routes);
+export const RootRouter: VFC = () => useRoutes(routes);

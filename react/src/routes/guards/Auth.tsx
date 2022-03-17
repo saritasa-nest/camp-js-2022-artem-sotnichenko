@@ -17,7 +17,7 @@ export const AuthGuard: VFC = () => {
       dispatch(setLoading(false));
     });
     return unsubscribe;
-  }, []);
+  }, [dispatch]);
 
   if (isLoading) {
     return <LinearProgress />;

@@ -10,13 +10,11 @@ const AuthPageComponent: VFC = () => {
 
   return (
     <Stack
-      sx={{
-        width: '100%',
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 2,
-      }}
+      width="100%"
+      height="100%"
+      alignItems="center"
+      justifyContent="center"
+      gap={2}
     >
       <Typography
         component="h2"

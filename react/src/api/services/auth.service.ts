@@ -40,16 +40,9 @@ export namespace AuthService {
 
   /**
    * Subscription on user login.
-   * @param fn Callback that runs when user logs in.
+   * @param cb Callback that runs when user logs in.
    */
-  export function subscribeToAuthChange(fn: (user: User | null) => unknown): Unsubscribe {
-    return onAuthStateChanged(auth, user => fn(mapNullableUser(user)));
-  }
-
-  /**
-   * Get currently logged in user.
-   */
-  export function getUser(): User | null {
-    return mapNullableUser(auth.currentUser);
+  export function subscribeToAuthChange(cb: (user: User | null) => unknown): Unsubscribe {
+    return onAuthStateChanged(auth, user => cb(mapNullableUser(user)));
   }
 }
