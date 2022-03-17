@@ -3,12 +3,7 @@
     <header class="film__header">
       <div class="film__title-wrap">
         <a routerLink="/films" class="film__link film__link_back">
-          <mat-icon
-            class="film__icon film__icon_back"
-            inline
-            aria-hidden="false"
-            aria-label="Avatar placeholder"
-          >
+          <mat-icon class="film__icon film__icon_back" inline title="Go back">
             arrow_back
           </mat-icon>
         </a>
@@ -18,6 +13,7 @@
             type="button"
             mat-button
             class="film__button film__button_settings"
+            title="Settings"
           >
             <mat-icon>settings</mat-icon>
           </button>
@@ -26,12 +22,13 @@
             mat-button
             color="warn"
             class="film__button film__button_delete"
+            title="Delete"
           >
             <mat-icon>delete_outline</mat-icon>
           </button>
         </div>
       </div>
-      <div class="film__description">{{ film.openingCrawl }}</div>
+      <p class="film__description">{{ film.openingCrawl }}</p>
     </header>
     <aside class="film__container">
       <div class="film__sidebar">
