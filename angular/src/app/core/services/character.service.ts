@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
-import { Character } from '../models/character/character';
+import { Character } from '../models/character';
 
 import { FirestoreService } from './firestore/firestore.service';
-import { CharacterDto } from './mappers/dto/character/character.dto';
+import { CharacterDto } from './mappers/dto/character.dto';
 import { CharacterMapper } from './mappers/character.mapper';
 
 /** Character service. */
