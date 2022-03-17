@@ -8,16 +8,7 @@ import {
 } from 'firebase/auth';
 import { User } from 'src/models/user';
 import { FirebaseService } from './firebase.service';
-import { UserDto } from '../dtos/user.dto';
 import { UserMapper } from '../mappers/user.mapper';
-
-/**
- * Mapper for nullable user.
- * @param userDto User DTO.
- */
-function mapNullableUser(userDto: UserDto | null): User | null {
-  return userDto != null ? UserMapper.fromDto(userDto) : null;
-}
 
 export namespace AuthService {
   export const auth = getAuth(FirebaseService.app);
@@ -40,9 +31,9 @@ export namespace AuthService {
 
   /**
    * Subscription on user login.
-   * @param cb Callback that runs when user logs in.
+   * @param callback Callback that runs when user logs in.
    */
-  export function subscribeToAuthChange(cb: (user: User | null) => unknown): Unsubscribe {
-    return onAuthStateChanged(auth, user => cb(mapNullableUser(user)));
+  export function subscribeToAuthChange(callback: (user: User | null) => unknown): Unsubscribe {
+    return onAuthStateChanged(auth, userDto => callback(userDto !== null ? UserMapper.fromDto(userDto) : null));
   }
 }

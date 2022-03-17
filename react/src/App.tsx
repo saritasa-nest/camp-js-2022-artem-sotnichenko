@@ -1,16 +1,16 @@
 import { Suspense, VFC } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import { LinearProgress } from '@mui/material';
-import { store } from './store';
 import { RootRouter } from './routes/RootRouter';
+import { store } from './store';
 
 export const App: VFC = () => (
-  <BrowserRouter>
-    <Provider store={store}>
+  <Provider store={store}>
+    <BrowserRouter>
       <Suspense fallback={<LinearProgress />}>
         <RootRouter />
       </Suspense>
-    </Provider>
-  </BrowserRouter>
+    </BrowserRouter>
+  </Provider>
 );
