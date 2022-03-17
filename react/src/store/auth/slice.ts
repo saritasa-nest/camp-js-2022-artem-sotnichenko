@@ -15,5 +15,4 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
-export const { setLoading } = authSlice.actions;
+export const { setUser, setLoading } = authSlice.actions;
