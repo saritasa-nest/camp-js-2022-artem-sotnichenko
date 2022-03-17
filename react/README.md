@@ -19,6 +19,16 @@ src
 └── utils
 ```
 
+## Feature file structure
+
+```
+Feature
+├── components
+├── pages
+├── hooks/shared
+└── routes.tsx
+```
+
 ## Component file structure
 
 ```
