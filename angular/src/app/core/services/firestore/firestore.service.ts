@@ -22,11 +22,11 @@ export class FirestoreService {
   ) {}
 
   /**
-   * Fetch entities.
+   * Get a stream of documents narrowed by array of constraints.
    * @param collectionName Collection name.
    * @param constraints Query constraints.
    */
-  public fetchMany<T extends FirebaseWrapper>(
+  public getMany<T extends FirebaseWrapper>(
     collectionName: CollectionName,
     constraints: readonly QueryConstraint[] = [],
   ): Observable<T[]> {
@@ -34,12 +34,12 @@ export class FirestoreService {
   }
 
   /**
-   * Fetch entities by ids array.
+   * Get a stream of documents queried by array of ids.
    * @param collectionName Collection name.
    * @param ids Entities ids.
    * @param constraints Query constraints.
    */
-  public fetchManyByIds<T extends FirebaseWrapper>(
+  public getManyByIds<T extends FirebaseWrapper>(
     collectionName: CollectionName,
     ids: readonly string[],
   ): Observable<T[]> {
@@ -57,11 +57,11 @@ export class FirestoreService {
   }
 
   /**
-   * Fetch one entity.
+   * Get a stream of a document.
    * @param collectionName Collection  name.
    * @param id Document id.
    */
-  public fetchOne<T extends FirebaseWrapper>(collectionName: CollectionName, id: string): Observable<T> {
+  public getOneById<T extends FirebaseWrapper>(collectionName: CollectionName, id: string): Observable<T> {
     return docData(doc<T>(getCollection(this.db, collectionName), id), { idField: 'id' });
   }
 

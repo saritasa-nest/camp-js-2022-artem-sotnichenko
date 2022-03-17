@@ -24,7 +24,7 @@ export class CharacterService {
    */
   public getCharacters(ids: readonly Character['id'][]): Observable<Character[]> {
     return this.firestoreService
-      .fetchManyByIds<CharacterDto>('characters', ids)
+      .getManyByIds<CharacterDto>('characters', ids)
       .pipe(map(dtos => dtos.map(dto => this.characterMapper.fromDto(dto))));
   }
 }

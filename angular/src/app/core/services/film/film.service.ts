@@ -60,7 +60,7 @@ export class FilmService {
    * @param id Film id.
    */
   public getFilm(id: Film['id']): Observable<Film> {
-    return this.firestoreService.fetchOne<FilmDto>('films', id).pipe(
+    return this.firestoreService.getOneById<FilmDto>('films', id).pipe(
       map(this.filmMapper.fromDto),
     );
   }
@@ -109,7 +109,7 @@ export class FilmService {
   }
 
   private fetchFilms(options: FetchFilmsOptions): Observable<FilmDto[]> {
-    return this.firestoreService.fetchMany<FilmDto>(
+    return this.firestoreService.getMany<FilmDto>(
       'films',
       this.getQueryConstraints({
         count: options.count,

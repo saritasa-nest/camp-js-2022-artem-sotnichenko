@@ -24,7 +24,7 @@ export class PlanetService {
    */
   public getPlanets(ids: readonly Planet['id'][]): Observable<Planet[]> {
     return this.firestoreService
-      .fetchManyByIds<PlanetDto>('planets', ids)
+      .getManyByIds<PlanetDto>('planets', ids)
       .pipe(map(dtos => dtos.map(dto => this.planetMapper.fromDto(dto))));
   }
 }
