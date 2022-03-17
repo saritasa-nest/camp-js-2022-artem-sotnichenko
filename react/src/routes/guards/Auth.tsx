@@ -7,7 +7,7 @@ import { selectLoading } from 'src/store/auth/selectors';
 import { setLoading, setUser } from 'src/store/auth/slice';
 
 /** Show loading while first auth state is loading. */
-export const AuthGuard: VFC = () => {
+export const AuthLoadingGuard: VFC = () => {
   const isLoading = useAppSelector(selectLoading);
   const dispatch = useAppDispatch();
 

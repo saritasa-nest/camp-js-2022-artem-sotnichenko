@@ -1,12 +1,15 @@
-import { memo, VFC } from 'react';
+import { memo, useCallback, VFC } from 'react';
 import {
   Button, Stack, Typography,
 } from '@mui/material';
 import { Google } from '@mui/icons-material';
-import { AuthService } from 'src/api/services/auth.service';
+import { signInWithGoogle } from 'src/store/auth/dispatchers';
+import { useAppDispatch } from 'src/store';
 
 const AuthPageComponent: VFC = () => {
-  const handleGoogleClick = AuthService.signInWithGoogle;
+  const dispatch = useAppDispatch();
+
+  const handleGoogleSignInClick = useCallback(() => dispatch(signInWithGoogle()), []);
 
   return (
     <Stack
@@ -24,7 +27,7 @@ const AuthPageComponent: VFC = () => {
         Sign in with socials
       </Typography>
       <Button
-        onClick={handleGoogleClick}
+        onClick={handleGoogleSignInClick}
         startIcon={<Google />}
         variant="outlined"
       >
