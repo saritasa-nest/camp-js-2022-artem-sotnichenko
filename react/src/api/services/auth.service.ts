@@ -1,20 +1,55 @@
 import {
-  GoogleAuthProvider, getAuth, signInWithPopup, User,
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  onAuthStateChanged,
+  Unsubscribe,
+  signOut as signOutFromFirebase,
 } from 'firebase/auth';
+import { User } from 'src/models/user';
 import { FirebaseService } from './firebase.service';
+import { UserDto } from '../dtos/user.dto';
+import { UserMapper } from '../mappers/user.mapper';
+
+/**
+ * Mapper for nullable user.
+ * @param userDto User DTO.
+ */
+function mapNullableUser(userDto: UserDto | null): User | null {
+  return userDto != null ? UserMapper.fromDto(userDto) : null;
+}
 
 export namespace AuthService {
-  const auth = getAuth(FirebaseService.app);
+  export const auth = getAuth(FirebaseService.app);
 
   const provider = new GoogleAuthProvider();
 
   /**
    * Shows pop up with google sign in.
    */
-  export async function signInWithGoogle(): Promise<User> {
-    const userCredential = await signInWithPopup(auth, provider);
-    const { user } = userCredential;
+  export async function signInWithGoogle(): Promise<void> {
+    await signInWithPopup(auth, provider);
+  }
 
-    return user;
+  /**
+   * Sign out.
+   */
+  export async function signOut(): Promise<void> {
+    await signOutFromFirebase(auth);
+  }
+
+  /**
+   * Subscription on user login.
+   * @param fn Callback that runs when user logs in.
+   */
+  export function subscribeToAuthChange(fn: (user: User | null) => unknown): Unsubscribe {
+    return onAuthStateChanged(auth, user => fn(mapNullableUser(user)));
+  }
+
+  /**
+   * Get currently logged in user.
+   */
+  export function getUser(): User | null {
+    return mapNullableUser(auth.currentUser);
   }
 }

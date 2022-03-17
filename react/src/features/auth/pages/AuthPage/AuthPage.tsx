@@ -6,10 +6,7 @@ import { Google } from '@mui/icons-material';
 import { AuthService } from 'src/api/services/auth.service';
 
 const AuthPageComponent: VFC = () => {
-  const handleGoogleClick = (): void => {
-    console.log('google clicked');
-    AuthService.signInWithGoogle();
-  };
+  const handleGoogleClick = AuthService.signInWithGoogle;
 
   return (
     <Stack

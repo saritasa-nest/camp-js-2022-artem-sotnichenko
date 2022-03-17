@@ -1,16 +1,29 @@
-import { Suspense } from 'react';
-import { Provider } from 'react-redux';
+import { Suspense, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { AuthService } from './api/services/auth.service';
 
 import { RootRouter } from './routes/RootRouter';
-import { store } from './store';
+import { removeUser, saveUser } from './store/user/slice';
 
-export const App: React.VFC = () => (
-  <Provider store={store}>
+export const App: React.VFC = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    AuthService.subscribeToAuthChange(user => {
+      if (user) {
+        dispatch(saveUser(user));
+      } else {
+        dispatch(removeUser());
+      }
+    });
+  });
+
+  return (
     <BrowserRouter>
       <Suspense fallback={<div>Brrr... here should be your loader component</div>}>
         <RootRouter />
       </Suspense>
     </BrowserRouter>
-  </Provider>
-);
+  );
+};
