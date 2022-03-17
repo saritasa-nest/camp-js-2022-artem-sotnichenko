@@ -6,7 +6,10 @@ import { useAppDispatch, useAppSelector } from 'src/store';
 import { selectLoading } from 'src/store/auth/selectors';
 import { setLoading, setUser } from 'src/store/auth/slice';
 
-/** Show loading while first auth state is loading. */
+/**
+ * Show loading component while auth in a loading state.
+ * Need for other auth-related guards to work properly without route flickering.
+ */
 export const AuthLoadingGuard: VFC = () => {
   const isLoading = useAppSelector(selectLoading);
   const dispatch = useAppDispatch();

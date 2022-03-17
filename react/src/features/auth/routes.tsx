@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
-import { UnauthorizedOnlyGuard } from 'src/routes/guards/UnauthorizedOnly';
+import { UnauthorizedOnlyGuard } from 'src/routes/guards/UnauthorizedOnlyGuard';
 
 const AuthPage = lazy(() => import('./pages/AuthPage').then(module => ({ default: module.AuthPage })));
 

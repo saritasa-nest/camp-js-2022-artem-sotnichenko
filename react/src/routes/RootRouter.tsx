@@ -2,7 +2,7 @@ import { VFC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import { authRoutes } from 'src/features/auth/routes';
 import { filmsRoutes } from 'src/features/films/routes';
-import { AuthLoadingGuard } from './guards/Auth';
+import { AuthLoadingGuard } from './guards/AuthLoadingGuard';
 
 const routes: RouteObject[] = [
   {
