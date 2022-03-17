@@ -6,7 +6,7 @@ import { authSlice } from './auth/slice';
 
 export const store = configureStore({
   reducer: {
-    user: authSlice.reducer,
+    auth: authSlice.reducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({
     // We need to disable this check to allow ES6 classes in Redux.
