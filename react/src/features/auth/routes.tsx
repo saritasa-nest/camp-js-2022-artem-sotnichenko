@@ -1,15 +1,21 @@
 import { lazy } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
+import { UnauthorizedOnlyGuard } from 'src/routes/guards/UnauthorizedOnly';
 
 const AuthPage = lazy(() => import('./pages/AuthPage').then(module => ({ default: module.AuthPage })));
 
 export const authRoutes: RouteObject[] = [
   {
-    path: 'auth',
-    element: <AuthPage />,
-  },
-  {
-    path: '*',
-    element: <Navigate to="auth" />,
+    element: <UnauthorizedOnlyGuard />,
+    children: [
+      {
+        path: 'auth',
+        element: <AuthPage />,
+      },
+      {
+        path: '*',
+        element: <Navigate to="auth" />,
+      },
+    ],
   },
 ];

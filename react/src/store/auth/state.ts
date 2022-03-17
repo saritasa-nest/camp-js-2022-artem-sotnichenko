@@ -1,10 +1,10 @@
 import { User } from 'src/models/user';
 
 /**
- * User state.
+ * Auth state.
  */
-export interface UserState {
-  /** User. */
+export interface AuthState {
+  /** Auth. */
   readonly user: User | null;
 
   /** Error. */
@@ -14,7 +14,7 @@ export interface UserState {
   readonly loading: boolean;
 }
 
-export const initialState: UserState = {
+export const initialState: AuthState = {
   user: null,
   loading: false,
 };

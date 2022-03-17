@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from 'src/models/user';
 import { initialState } from './state';
 
-export const userSlice = createSlice({
-  name: 'user',
+export const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
     saveUser(state, action: PayloadAction<User>) {
@@ -15,5 +15,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { saveUser } = userSlice.actions;
-export const { removeUser } = userSlice.actions;
+export const { saveUser } = authSlice.actions;
+export const { removeUser } = authSlice.actions;

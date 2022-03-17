@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthService } from './api/services/auth.service';
 
 import { RootRouter } from './routes/RootRouter';
-import { removeUser, saveUser } from './store/user/slice';
+import { removeUser, saveUser } from './store/auth/slice';
 
 export const App: React.VFC = () => {
   const dispatch = useDispatch();
