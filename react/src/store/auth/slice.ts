@@ -6,14 +6,14 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    saveUser(state, action: PayloadAction<User>) {
+    setUser(state, action: PayloadAction<User | null>) {
       state.user = action.payload;
     },
-    removeUser(state) {
-      state.user = null;
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.loading = action.payload;
     },
   },
 });
 
-export const { saveUser } = authSlice.actions;
-export const { removeUser } = authSlice.actions;
+export const { setUser } = authSlice.actions;
+export const { setLoading } = authSlice.actions;

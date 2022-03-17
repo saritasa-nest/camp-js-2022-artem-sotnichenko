@@ -16,5 +16,5 @@ export interface AuthState {
 
 export const initialState: AuthState = {
   user: null,
-  loading: false,
+  loading: true,
 };
