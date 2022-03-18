@@ -1,9 +1,11 @@
 import { Location } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, takeUntil, tap } from 'rxjs';
+import { Observable, take, takeUntil, tap } from 'rxjs';
+import { Character } from 'src/app/core/models/character';
 import { Film } from 'src/app/core/models/film';
 import { FilmForm } from 'src/app/core/models/film-form';
+import { Planet } from 'src/app/core/models/planet';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmManagementService } from 'src/app/core/services/film-management.service';
@@ -19,41 +21,39 @@ import { PlanetService } from 'src/app/core/services/planet.service';
 })
 export class UpdateComponent {
   /** Film. */
-  public readonly film$: Observable<Film> = this.filmManagementService.getFilm(this.route.paramMap);
+  public readonly film$: Observable<Film>;
 
   /** All planets. */
-  public readonly planets$ = this.planetService.getAllPlanets();
+  public readonly planets$: Observable<readonly Planet[]>;
 
   /** All characters. */
-  public readonly characters$ = this.characterService.getAllCharacters();
-
-  /** Film id. */
-  public filmId: Film['id'] | null = null;
+  public readonly characters$: Observable<readonly Character[]>;
 
   public constructor(
     @Self() private readonly destroy$: DestroyService,
     private readonly location: Location,
-    private readonly route: ActivatedRoute,
     private readonly filmManagementService: FilmManagementService,
-    private readonly characterService: CharacterService,
-    private readonly planetService: PlanetService,
+    route: ActivatedRoute,
+    characterService: CharacterService,
+    planetService: PlanetService,
   ) {
-    this.film$.pipe(
-      tap(film => {
-        this.filmId = film.id;
-      }),
-      takeUntil(this.destroy$),
-    ).subscribe();
+    this.film$ = filmManagementService.getFilmByParamMap(route.paramMap);
+    this.characters$ = characterService.getAllCharacters();
+    this.planets$ = planetService.getAllPlanets();
   }
 
   /**
    * Handle submit.
-   * @param film Film.
+   * @param filmForm Film.
    */
-  public onSubmit(film: FilmForm): void {
-    if (this.filmId) {
-      this.filmManagementService.update(this.filmId, film);
-    }
+  public onSubmit(filmForm: FilmForm): void {
+    this.film$.pipe(
+      takeUntil(this.destroy$),
+      take(1),
+      tap(film => {
+        this.filmManagementService.update(film.id, filmForm);
+      }),
+    ).subscribe();
   }
 
   /**

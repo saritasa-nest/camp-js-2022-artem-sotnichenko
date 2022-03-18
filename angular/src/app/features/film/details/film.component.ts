@@ -37,7 +37,7 @@ export class FilmComponent {
     private readonly dialog: MatDialog,
     @Self() private readonly destroy$: DestroyService,
   ) {
-    this.film$ = filmManagementService.getFilm(route.paramMap);
+    this.film$ = filmManagementService.getFilmByParamMap(route.paramMap);
 
     this.characterNames$ = this.film$.pipe(
       switchMap(film => characterService.getCharacters(film.characterIds)

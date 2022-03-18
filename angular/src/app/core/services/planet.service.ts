@@ -29,7 +29,7 @@ export class PlanetService {
   }
 
   /** Get all planets. */
-  public getAllPlanets(): Observable<readonly Planet[]> {
+  public getAllPlanets(): Observable<Planet[]> {
     return this.firestoreService.getMany<PlanetDto>('planets').pipe(
       map(planetDtos => planetDtos.map(this.planetMapper.fromDto)),
     );

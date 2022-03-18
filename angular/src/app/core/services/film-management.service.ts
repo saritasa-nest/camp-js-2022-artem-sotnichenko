@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ParamMap } from '@angular/router';
-import { filter, map, Observable, shareReplay, switchMap } from 'rxjs';
+import { map, Observable, shareReplay, switchMap } from 'rxjs';
 
 import { Film } from '../models/film';
 import { FilmForm } from '../models/film-form';
@@ -30,7 +30,7 @@ export class FilmManagementService {
    * Get film.
    * @param paramMap$ Route param map.
    */
-  public getFilm(paramMap$: Observable<ParamMap>): Observable<Film> {
+  public getFilmByParamMap(paramMap$: Observable<ParamMap>): Observable<Film> {
     return paramMap$.pipe(
       switchMap(paramMap => {
         const id = paramMap.get('id');
