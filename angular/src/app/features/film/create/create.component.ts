@@ -1,5 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Character } from 'src/app/core/models/character';
 import { FilmForm } from 'src/app/core/models/film-form';
+import { Planet } from 'src/app/core/models/planet';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { FilmManagementService } from 'src/app/core/services/film-management.service';
 import { PlanetService } from 'src/app/core/services/planet.service';
@@ -14,16 +17,19 @@ import { PlanetService } from 'src/app/core/services/planet.service';
 export class CreateComponent {
 
   /** All planets. */
-  public readonly planets$ = this.planetService.getAllPlanets();
+  public readonly planets$: Observable<readonly Planet[]>;
 
   /** All characters. */
-  public readonly characters$ = this.characterService.getAllCharacters();
+  public readonly characters$: Observable<readonly Character[]>;
 
   public constructor(
-    private readonly characterService: CharacterService,
-    private readonly planetService: PlanetService,
+    characterService: CharacterService,
+    planetService: PlanetService,
     private readonly filmManagementService: FilmManagementService,
-  ) { }
+  ) {
+    this.planets$ = planetService.getAllPlanets();
+    this.characters$ = characterService.getAllCharacters();
+  }
 
   /**
    * Handle submit.
