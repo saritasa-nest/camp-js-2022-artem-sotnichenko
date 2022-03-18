@@ -54,11 +54,11 @@ export class FilmFormComponent {
 
   /** Submitted event. */
   @Output()
-  public readonly submitted = new EventEmitter<FilmForm>();
+  public readonly filmSubmit = new EventEmitter<FilmForm>();
 
   /** Canceled event. */
   @Output()
-  public readonly canceled = new EventEmitter<void>();
+  public readonly filmCancel = new EventEmitter<void>();
 
   /** Film. */
   public readonly film$ = new ReplaySubject<FilmForm>();
@@ -105,7 +105,7 @@ export class FilmFormComponent {
     if (this.filmForm.valid) {
       const film = this.filmForm?.value;
       if (film != null) {
-        this.submitted.emit({
+        this.filmSubmit.emit({
           title: film.title.trim(),
           openingCrawl: film.openingCrawl.trim(),
           releaseDate: new Date(film.releaseDate),
@@ -120,7 +120,7 @@ export class FilmFormComponent {
 
   /** Handle cancel. */
   public onCancel(): void {
-    this.canceled.emit();
+    this.filmCancel.emit();
   }
 
   /**

@@ -4,8 +4,8 @@
     [film]="film$ | async"
     [allPlanets]="(planets$ | async) ?? []"
     [allCharacters]="(characters$ | async) ?? []"
-    (submitted)="onSubmit($event)"
-    (canceled)="onCancel()"
+    (filmSubmit)="onSubmit($event)"
+    (filmCancel)="onCancel()"
     submitText="Update"
   ></sw-film-form>
   <ng-template #spinner>
