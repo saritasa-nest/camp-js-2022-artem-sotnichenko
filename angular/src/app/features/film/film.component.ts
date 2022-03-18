@@ -7,6 +7,7 @@ import { Planet } from 'src/app/core/models/planet';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { FilmService } from 'src/app/core/services/film/film.service';
 import { PlanetService } from 'src/app/core/services/planet.service';
+import { assertNotNullish } from 'src/app/core/utils/assert-not-null';
 
 /** Film component. */
 @Component({
@@ -35,7 +36,11 @@ export class FilmComponent {
   private getFilm(): Observable<Film> {
     return this.route.paramMap
       .pipe(
-        switchMap(paramMap => this.filmService.getFilm(paramMap.get('id') as string)),
+        switchMap(paramMap => {
+          const id = paramMap.get('id');
+          assertNotNullish(id, 'There is no film id. This is probably route issue.');
+          return this.filmService.getFilm(id);
+       }),
         shareReplay({ refCount: true, bufferSize: 1 }),
       );
   }
