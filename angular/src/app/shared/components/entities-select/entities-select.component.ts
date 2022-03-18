@@ -86,6 +86,15 @@ export class EntitiesSelectComponent {
     this.emitChange();
   }
 
+  /**
+   * Entity track function for ngFor.
+   * @param index Index in array.
+   * @param entity Entity.
+   */
+  public trackEntity(index: number, entity: Entity): Entity['id'] {
+    return entity.id;
+  }
+
   private emitChange(): void {
     this.changed.emit(this.selectedIds);
   }
