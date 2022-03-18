@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { map, Observable, of, startWith } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
 
 interface Entity {
 
@@ -37,7 +37,7 @@ export class EntitiesSelectComponent {
   public readonly changed = new EventEmitter<readonly Entity['id'][]>();
 
   /** Filtered entities, used in autocomplete options dropdown. */
-  public readonly filteredEntities$: Observable<readonly Entity[]> = of([]);
+  public readonly filteredEntities$: Observable<readonly Entity[]>;
 
   /** Entity input control. */
   public readonly entityControl = new FormControl();

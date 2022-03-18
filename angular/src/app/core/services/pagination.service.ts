@@ -4,7 +4,7 @@ import { map, Observable } from 'rxjs';
 import { Film } from '../models/film';
 
 import { FilmsService } from './films/films.service';
-import { EntityId, FilmCursor, PagesStatus, PaginationDirection } from './film/utils/types';
+import { EntityId, FilmCursor, PagesStatus, PaginationDirection } from './films/utils/types';
 
 /**
  * Pagination service.

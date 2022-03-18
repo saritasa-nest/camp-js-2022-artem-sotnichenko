@@ -4,7 +4,7 @@ import { addDoc, deleteDoc, doc, documentId, DocumentReference, query, QueryCons
 import { docData, doc as fromDocRef } from 'rxfire/firestore';
 import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 
-import { QueryCursor } from '../film/utils/types';
+import { QueryCursor } from '../films/utils/types';
 import { FirebaseWrapper } from '../mappers/dto/firebase-wrapper.dto';
 
 import { CollectionName, getCollection } from './utils/get-collection-typed';
