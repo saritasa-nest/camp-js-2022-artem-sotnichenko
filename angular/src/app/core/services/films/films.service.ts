@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { endAt, limit, limitToLast, orderBy, QueryConstraint, startAt, where } from 'firebase/firestore';
+import { endAt, endBefore, limit, limitToLast, orderBy, QueryConstraint, startAfter, startAt, where } from 'firebase/firestore';
 import { map, Observable, switchMap } from 'rxjs';
 
 import { Film } from '../../models/film';
@@ -32,6 +32,9 @@ export interface FetchFilmsOptions extends FilterOptions {
 
   /** Pagination direction. */
   readonly paginationDirection: PaginationDirection;
+
+  /** Whether to include queryCursor when fetching. */
+  readonly include: boolean;
 }
 
 const INITIAL_FILTER_OPTIONS = {
@@ -67,6 +70,7 @@ export class FilmsService {
       paginationDirection: PaginationDirection.Next,
       searchText,
       sortOptions,
+      include: true,
     };
   }
 
@@ -81,6 +85,7 @@ export class FilmsService {
       paginationDirection,
       searchText,
       sortOptions,
+      include,
     } = cursor;
 
     return this.firestoreService.getQueryCursorById(
@@ -93,6 +98,7 @@ export class FilmsService {
         paginationDirection,
         searchText,
         sortOptions,
+        include,
       })),
       map(filmDtos => filmDtos.map(dto => this.filmMapper.fromDto(dto))),
     );
@@ -101,13 +107,7 @@ export class FilmsService {
   private fetchFilms(options: FetchFilmsOptions): Observable<FilmDto[]> {
     return this.firestoreService.getMany<FilmDto>(
       'films',
-      this.getQueryConstraints({
-        count: options.count,
-        queryCursor: options.queryCursor,
-        paginationDirection: options.paginationDirection,
-        searchText: options.searchText,
-        sortOptions: options.sortOptions,
-      }),
+      this.getQueryConstraints(options),
     );
   }
 
@@ -121,6 +121,7 @@ export class FilmsService {
     paginationDirection,
     searchText,
     sortOptions,
+    include,
   }: FetchFilmsOptions): readonly QueryConstraint[] {
     const constraints: QueryConstraint[] = [];
 
@@ -144,9 +145,9 @@ export class FilmsService {
 
     if (queryCursor !== null) {
       if (paginationDirection === PaginationDirection.Next) {
-        constraints.push(startAt(queryCursor));
+        constraints.push(include ? startAt(queryCursor) : startAfter(queryCursor));
       } else {
-        constraints.push(endAt(queryCursor));
+        constraints.push(include ? endAt(queryCursor) : endBefore(queryCursor));
       }
     }
 

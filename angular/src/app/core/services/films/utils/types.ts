@@ -6,10 +6,10 @@ import { SortDirection, SortField } from '../../firestore/utils/types';
 /** Pages status. */
 export interface PagesStatus {
 
-  /** Wheter it is first page. */
+  /** Whether it is first page. */
   readonly isFirst: boolean;
 
-  /** Wheter it is last page. */
+  /** Whether it is last page. */
   readonly isLast: boolean;
 }
 
@@ -53,4 +53,7 @@ export interface FilmCursor extends FilterOptions {
 
   /** Pagination direction. */
   readonly paginationDirection: PaginationDirection;
+
+  /** Whether to include film that entityId points at when fetching. */
+  readonly include: boolean;
 }

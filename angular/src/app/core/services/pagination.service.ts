@@ -20,7 +20,7 @@ export class PaginationService {
 
   /**
    * Get count to fetch.
-   * Encapsulate logic of pagination, so other methods can calculate wheter there next pages or not by fetching on more item.
+   * Encapsulate logic of pagination, so other methods can calculate whether there next pages or not by fetching on more item.
    * @param count Expected count of films on the page.
    */
   private getPaginationCount(count: number): number {
@@ -81,7 +81,7 @@ export class PaginationService {
     let isFirst = entityId === null;
     let isLast = false;
 
-    if (films.length < expectedCount) {
+    if (films.length <= expectedCount) {
       if (paginationDirection === PaginationDirection.Next) {
         isLast = true;
       } else {
@@ -113,16 +113,21 @@ export class PaginationService {
     const paginationCount = this.getPaginationCount(expectedCount);
     const entityIds = this.getEntitiesIds(paginationCount, films, paginationDirection);
 
+    const isForwardNull = paginationDirection === PaginationDirection.Prev && entityId === null || entityIds.forward === null;
+    const isBackwardNull = paginationDirection === PaginationDirection.Next && entityId === null || entityIds.backward === null;
+
     return {
-      forward: paginationDirection === PaginationDirection.Prev && entityId === null ? null : {
+      forward: isForwardNull ? null : {
         ...currentCursor,
         paginationDirection: PaginationDirection.Next,
         entityId: entityIds.forward,
+        include: currentCursor.paginationDirection !== PaginationDirection.Prev,
       },
-      backward: paginationDirection === PaginationDirection.Next && entityId === null ? null : {
+      backward: isBackwardNull ? null : {
         ...currentCursor,
         paginationDirection: PaginationDirection.Prev,
         entityId: entityIds.backward,
+        include: currentCursor.paginationDirection !== PaginationDirection.Next,
       },
     };
   }
@@ -156,8 +161,10 @@ export class PaginationService {
         forwardEntityId = films[films.length - 1].id;
       }
       backwardEntityId = films[0].id;
-    } else if (films.length === expectedCount) {
-      backwardEntityId = films[0].id;
+    } else {
+      if (films.length === expectedCount) {
+        backwardEntityId = films[0].id;
+      }
       forwardEntityId = films[films.length - 1].id;
     }
 
