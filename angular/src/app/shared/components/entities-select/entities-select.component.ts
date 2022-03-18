@@ -28,10 +28,6 @@ export class EntitiesSelectComponent implements OnInit {
   @Input()
   public entities: readonly Entity[] = [];
 
-  /** Filtered entities, used in autocomplete options dropdown. */
-  @Input()
-  public filteredEntities: Observable<readonly Entity[]> = of([]);
-
   /** Selected entities ids. */
   @Input()
   public selectedIds: readonly Entity['id'][] = [];
@@ -39,6 +35,9 @@ export class EntitiesSelectComponent implements OnInit {
   /** Emits when options selected. */
   @Output()
   public readonly changed = new EventEmitter<readonly Entity['id'][]>();
+
+  /** Filtered entities, used in autocomplete options dropdown. */
+  public filteredEntities: Observable<readonly Entity[]> = of([]);
 
   /** Entity input control. */
   public readonly entityControl = new FormControl();

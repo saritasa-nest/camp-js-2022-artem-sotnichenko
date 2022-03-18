@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 /** Delete dialog data. */
 export interface DeleteDialogData {
@@ -19,7 +19,6 @@ export type DeleteDialogResult = boolean;
 })
 export class DeleteDialogComponent {
   public constructor(
-    public readonly dialogRef: MatDialogRef<DeleteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public readonly data: DeleteDialogData,
   ) {}
 }

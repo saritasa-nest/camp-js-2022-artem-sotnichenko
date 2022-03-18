@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable, takeUntil, tap } from 'rxjs';
+import { Observable, takeUntil, tap } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { FilmForm } from 'src/app/core/models/film-form';
 import { CharacterService } from 'src/app/core/services/character.service';
@@ -26,12 +26,6 @@ export class UpdateComponent {
 
   /** All characters. */
   public readonly characters$ = this.characterService.getAllCharacters();
-
-  /** Selected planets. */
-  public readonly selectedPlanetIds$ = this.film$.pipe(map(film => film.planetIds));
-
-  /** Selected characters. */
-  public readonly selectedCharacterIds$ = this.film$.pipe(map(film => film.characterIds));
 
   /** Film id. */
   public filmId: Film['id'] | null = null;

@@ -33,16 +33,16 @@ export class FilmFormComponent {
   @Input()
   public isCancelVisible = true;
 
-  /** Film. */
+  /**
+   * Film.
+   * Transforming film from prop into stream, so data that depends on film properly updating.
+   */
   @Input()
   public set film(film: FilmForm | null) {
     if (film != null) {
       this.film$.next(film);
     }
   }
-
-  /** Film. */
-  public readonly film$ = new ReplaySubject<FilmForm>();
 
   // public film: Film | null = null;
   /** Selected planets. */
@@ -53,14 +53,6 @@ export class FilmFormComponent {
   @Input()
   public allCharacters: readonly Character[] = [];
 
-  /** Selected planet ids. */
-  @Input()
-  public selectedPlanetIds$ = this.film$.pipe(map(film => film.planetIds));
-
-  /** Selected character ids. */
-  @Input()
-  public selectedCharacterIds$ = this.film$.pipe(map(film => film.characterIds));
-
   /** Submitted event. */
   @Output()
   public readonly submitted = new EventEmitter<FilmForm>();
@@ -68,6 +60,15 @@ export class FilmFormComponent {
   /** Canceled event. */
   @Output()
   public readonly canceled = new EventEmitter<void>();
+
+  /** Film. */
+  public readonly film$ = new ReplaySubject<FilmForm>();
+
+  /** Selected planet ids. */
+  public readonly selectedPlanetIds$ = this.film$.pipe(map(film => film.planetIds));
+
+  /** Selected character ids. */
+  public readonly selectedCharacterIds$ = this.film$.pipe(map(film => film.characterIds));
 
   /** Filters form. */
   public filmForm: FormGroup = this.getFilmForm();

@@ -16,14 +16,8 @@ export class CreateComponent {
   /** All planets. */
   public readonly planets$ = this.planetService.getAllPlanets();
 
-  /** Selected planets. */
-  public readonly selectedPlanetIds = [];
-
   /** All characters. */
   public readonly characters$ = this.characterService.getAllCharacters();
-
-  /** Selected characters. */
-  public readonly selectedCharacterIds = [];
 
   public constructor(
     private readonly characterService: CharacterService,
