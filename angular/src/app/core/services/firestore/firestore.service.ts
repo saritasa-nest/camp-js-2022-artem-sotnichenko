@@ -34,7 +34,7 @@ export class FirestoreService {
     return from(
       addDoc(getCollection(this.db, collectionName), data),
     ).pipe(
-      switchMap(d => docData(d as DocumentReference<T>, { idField: 'id' })),
+      switchMap(docRef => docData(docRef as DocumentReference<T>, { idField: 'id' })),
     );
   }
 
@@ -67,7 +67,7 @@ export class FirestoreService {
   }
 
   /**
-  * Get a stream of documents narrowed by array of constraints.
+   * Get a stream of documents narrowed by array of constraints.
    * @param collectionName Collection name.
    * @param constraints Query constraints.
    */
