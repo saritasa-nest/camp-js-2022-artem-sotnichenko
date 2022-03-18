@@ -15,6 +15,7 @@
       <tr
         sw-film-row
         *ngFor="let film of films$ | async; trackBy: trackFilm"
+        [id]="film.id"
         [title]="film.title"
         [producers]="film.producers"
         [director]="film.director"

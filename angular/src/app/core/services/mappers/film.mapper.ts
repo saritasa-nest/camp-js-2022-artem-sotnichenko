@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Film } from '../../models/film';
+import { splitByComma } from '../../utils/split-by-comma';
 
 import { FilmDto } from './dto/film.dto';
 
@@ -18,7 +19,7 @@ export class FilmMapper {
       id: dto.id,
       title: dto.fields.title,
       director: dto.fields.director,
-      producers: dto.fields.producer.split(',').map(str => str.trim()),
+      producers: splitByComma(dto.fields.producer),
       openingCrawl: dto.fields.opening_crawl,
       releaseDate: new Date(dto.fields.release_date),
       characterIds: dto.fields.characters,

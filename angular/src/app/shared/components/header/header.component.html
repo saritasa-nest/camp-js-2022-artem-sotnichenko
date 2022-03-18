@@ -1,5 +1,7 @@
 <header class="header">
-  <sw-logo></sw-logo>
+  <a class="header__logo-link" routerLink="/films">
+    <sw-logo></sw-logo>
+  </a>
   <div class="header__user-block">
     <ng-container *ngIf="isAuthorized$ | async; else signInLink">
       <sw-profile></sw-profile>

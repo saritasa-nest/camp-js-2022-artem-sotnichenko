@@ -32,7 +32,7 @@ export class PaginationService {
    * @param count Expected count of films.
    * @param cursor Current film cursor.
    */
-  public getFilms(count: number, cursor: FilmCursor): Observable<readonly Film[]> {
+  public getFilms(count: number, cursor: FilmCursor): Observable<Film[]> {
     const paginationCount = this.getPaginationCount(count);
     return this.filmService.getFilms(paginationCount, cursor).pipe(
       map(films => this.getFilmsPage(paginationCount, films, cursor)),
@@ -46,13 +46,13 @@ export class PaginationService {
    * @param films Films array.
    * @param cursor Current film cursor.
    */
-  public getFilmsPage(expectedCount: number, films: readonly Film[], cursor: FilmCursor): readonly Film[] {
+  public getFilmsPage(expectedCount: number, films: readonly Film[], cursor: FilmCursor): Film[] {
     const { paginationDirection } = cursor;
     const paginationCount = this.getPaginationCount(expectedCount);
 
     // Means it is last page.
     if (films.length < paginationCount) {
-      return films;
+      return [...films];
     }
 
     // Otherwise slicing element depending on direction.

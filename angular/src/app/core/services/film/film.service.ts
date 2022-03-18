@@ -53,7 +53,17 @@ export class FilmService {
   public constructor(
     private readonly filmMapper: FilmMapper,
     private readonly firestoreService: FirestoreService,
-  ) {}
+  ) { }
+
+  /**
+   * Get one film by id.
+   * @param id Film id.
+   */
+  public getFilm(id: Film['id']): Observable<Film> {
+    return this.firestoreService.getOneById<FilmDto>('films', id).pipe(
+      map(this.filmMapper.fromDto),
+    );
+  }
 
   /**
    * Get cursor.
@@ -75,7 +85,7 @@ export class FilmService {
    * @param count Films count.
    * @param cursor Cursor to fetch with.
    */
-  public getFilms(count: number, cursor: FilmCursor): Observable<readonly Film[]> {
+  public getFilms(count: number, cursor: FilmCursor): Observable<Film[]> {
     const {
       entityId,
       paginationDirection,
@@ -98,8 +108,8 @@ export class FilmService {
     );
   }
 
-  private fetchFilms(options: FetchFilmsOptions): Observable<readonly FilmDto[]> {
-    return this.firestoreService.fetchMany<FilmDto>(
+  private fetchFilms(options: FetchFilmsOptions): Observable<FilmDto[]> {
+    return this.firestoreService.getMany<FilmDto>(
       'films',
       this.getQueryConstraints({
         count: options.count,
