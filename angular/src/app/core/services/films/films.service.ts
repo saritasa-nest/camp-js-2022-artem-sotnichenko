@@ -125,12 +125,6 @@ export class FilmsService {
   }: FetchFilmsOptions): readonly QueryConstraint[] {
     const constraints: QueryConstraint[] = [];
 
-    if (paginationDirection === PaginationDirection.Next) {
-      constraints.push(limit(count));
-    } else {
-      constraints.push(limitToLast(count));
-    }
-
     if (sortOptions !== null) {
       constraints.push(orderBy(sortOptions.field, sortOptions.direction));
     } else {
@@ -143,10 +137,14 @@ export class FilmsService {
       constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION));
     }
 
-    if (queryCursor !== null) {
-      if (paginationDirection === PaginationDirection.Next) {
+    if (paginationDirection === PaginationDirection.Next) {
+      constraints.push(limit(count));
+      if (queryCursor !== null) {
         constraints.push(include ? startAt(queryCursor) : startAfter(queryCursor));
-      } else {
+      }
+    } else {
+      constraints.push(limitToLast(count));
+      if (queryCursor !== null) {
         constraints.push(include ? endAt(queryCursor) : endBefore(queryCursor));
       }
     }
