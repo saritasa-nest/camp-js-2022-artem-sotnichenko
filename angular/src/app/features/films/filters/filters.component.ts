@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Self, Output, EventEmitter,
 import { FormBuilder } from '@angular/forms';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs';
 import { DestroyService } from 'src/app/core/services/destroy.service';
-import { PaginationDirection, FilterOptions, PagesStatus } from 'src/app/core/services/film/utils/types';
+import { PaginationDirection, FilterOptions, PagesStatus } from 'src/app/core/services/films/utils/types';
 import { TO_READABLE_SORT_DIRECTION_MAP, TO_READABLE_SORT_FIELD_MAP } from 'src/app/core/services/firestore/utils/maps';
 import { SortDirection, SortField } from 'src/app/core/services/firestore/utils/types';
 

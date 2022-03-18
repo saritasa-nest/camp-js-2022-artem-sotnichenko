@@ -23,7 +23,7 @@
     (optionSelected)="selectEntity($event)"
   >
     <mat-option
-      *ngFor="let entity of filteredEntities | async"
+      *ngFor="let entity of filteredEntities$ | async"
       [value]="entity.id"
     >
       {{ entity.name }}

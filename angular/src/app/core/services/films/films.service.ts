@@ -48,22 +48,12 @@ const FIREBASE_SEARCH_SYMBOL = '~';
 @Injectable({
   providedIn: 'root',
 })
-export class FilmService {
+export class FilmsService {
 
   public constructor(
     private readonly filmMapper: FilmMapper,
     private readonly firestoreService: FirestoreService,
   ) { }
-
-  /**
-   * Get one film by id.
-   * @param id Film id.
-   */
-  public getFilm(id: Film['id']): Observable<Film> {
-    return this.firestoreService.getOneById<FilmDto>('films', id).pipe(
-      map(this.filmMapper.fromDto),
-    );
-  }
 
   /**
    * Get cursor.

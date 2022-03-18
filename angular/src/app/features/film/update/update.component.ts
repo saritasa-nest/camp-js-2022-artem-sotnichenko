@@ -1,15 +1,16 @@
 import { Location } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, take, takeUntil, tap } from 'rxjs';
+import { Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
 import { Character } from 'src/app/core/models/character';
 import { Film } from 'src/app/core/models/film';
 import { FilmForm } from 'src/app/core/models/film-form';
 import { Planet } from 'src/app/core/models/planet';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
-import { FilmManagementService } from 'src/app/core/services/film-management.service';
+import { FilmService } from 'src/app/core/services/film.service';
 import { PlanetService } from 'src/app/core/services/planet.service';
+import { assertNotNullish } from 'src/app/core/utils/assert-not-null';
 
 /** Film update component. */
 @Component({
@@ -32,12 +33,19 @@ export class UpdateComponent {
   public constructor(
     @Self() private readonly destroy$: DestroyService,
     private readonly location: Location,
-    private readonly filmManagementService: FilmManagementService,
+    private readonly filmService: FilmService,
     route: ActivatedRoute,
     characterService: CharacterService,
     planetService: PlanetService,
   ) {
-    this.film$ = filmManagementService.getFilmByParamMap(route.paramMap);
+    this.film$ = route.paramMap.pipe(
+      switchMap(paramMap => {
+        const id = paramMap.get('id');
+        assertNotNullish(id, 'There is no film id. This is probably route issue.');
+        return this.filmService.getFilm(id);
+      }),
+      shareReplay({ refCount: true, bufferSize: 1 }),
+    );
     this.characters$ = characterService.getAllCharacters();
     this.planets$ = planetService.getAllPlanets();
   }
@@ -51,7 +59,7 @@ export class UpdateComponent {
       takeUntil(this.destroy$),
       take(1),
       tap(film => {
-        this.filmManagementService.update(film.id, filmForm);
+        this.filmService.update(film.id, filmForm);
       }),
     ).subscribe();
   }

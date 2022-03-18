@@ -44,7 +44,6 @@ export class FilmFormComponent {
     }
   }
 
-  // public film: Film | null = null;
   /** Selected planets. */
   @Input()
   public allPlanets: readonly Planet[] = [];

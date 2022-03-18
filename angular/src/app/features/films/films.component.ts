@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { Film } from 'src/app/core/models/film';
-import { FilmService } from 'src/app/core/services/film/film.service';
+import { FilmsService } from 'src/app/core/services/films/films.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { BehaviorSubject, combineLatest, ignoreElements, map, merge, mergeMap, Observable, Subject, takeUntil, tap } from 'rxjs';
-import { FilmCursor, FilterOptions, PagesStatus, PaginationDirection } from 'src/app/core/services/film/utils/types';
+import { FilmCursor, FilterOptions, PagesStatus, PaginationDirection } from 'src/app/core/services/films/utils/types';
 import { FILMS_PER_PAGE } from 'src/app/core/utils/constants';
 import { PaginationService } from 'src/app/core/services/pagination.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
@@ -45,11 +45,11 @@ export class FilmsComponent {
   private forwardCursor: FilmCursor | null = null;
 
   public constructor(
+    paginationService: PaginationService,
     @Self() private readonly destroy$: DestroyService,
-    private readonly filmService: FilmService,
-    private readonly paginationService: PaginationService,
+    private readonly filmsService: FilmsService,
   ) {
-    const defaultCursor = this.filmService.getCursor();
+    const defaultCursor = this.filmsService.getCursor();
     const filmsCount = FILMS_PER_PAGE;
 
     const currentCursor$ = this.cursor$.pipe(
@@ -57,21 +57,21 @@ export class FilmsComponent {
     );
 
     const films$ = currentCursor$.pipe(
-      mergeMap(cursor => this.paginationService.getFilms(filmsCount, cursor)),
+      mergeMap(cursor => paginationService.getFilms(filmsCount, cursor)),
     );
 
     const cursors$ = combineLatest([currentCursor$, films$]).pipe(
-      map(([cursor, films]) => this.paginationService.getCursors(filmsCount, films, cursor)),
+      map(([cursor, films]) => paginationService.getCursors(filmsCount, films, cursor)),
     );
 
     this.films$ = combineLatest([currentCursor$, films$]).pipe(
-      map(([cursor, films]) => this.paginationService.getFilmsPage(filmsCount, films, cursor)),
+      map(([cursor, films]) => paginationService.getFilmsPage(filmsCount, films, cursor)),
     );
 
     // Side effects handling
     const setPagesStatusSideEffect$ = combineLatest([currentCursor$, films$]).pipe(
       tap(([cursor, films]) => {
-        const pagesStatus = this.paginationService.getPagesStatus(filmsCount, films, cursor);
+        const pagesStatus = paginationService.getPagesStatus(filmsCount, films, cursor);
         this.pagesStatus$.next(pagesStatus);
       }),
     );
@@ -113,12 +113,12 @@ export class FilmsComponent {
     const { searchText, sortOptions } = filterOptions;
 
     if (sortOptions !== null) {
-      this.cursor$.next(this.filmService.getCursor({
+      this.cursor$.next(this.filmsService.getCursor({
         searchText: null,
         sortOptions,
       }));
     } else {
-      this.cursor$.next(this.filmService.getCursor({
+      this.cursor$.next(this.filmsService.getCursor({
         searchText,
         sortOptions: null,
       }));

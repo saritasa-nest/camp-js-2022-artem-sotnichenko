@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { map, Observable, of, startWith } from 'rxjs';
@@ -19,7 +19,7 @@ interface Entity {
   styleUrls: ['./entities-select.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EntitiesSelectComponent implements OnInit {
+export class EntitiesSelectComponent {
   /** Field label. */
   @Input()
   public label = '';
@@ -37,7 +37,7 @@ export class EntitiesSelectComponent implements OnInit {
   public readonly changed = new EventEmitter<readonly Entity['id'][]>();
 
   /** Filtered entities, used in autocomplete options dropdown. */
-  public filteredEntities: Observable<readonly Entity[]> = of([]);
+  public readonly filteredEntities$: Observable<readonly Entity[]> = of([]);
 
   /** Entity input control. */
   public readonly entityControl = new FormControl();
@@ -46,11 +46,8 @@ export class EntitiesSelectComponent implements OnInit {
   @ViewChild('entityInput')
   public readonly entityInput?: ElementRef<HTMLInputElement>;
 
-  public constructor() {}
-
-  /** @inheritdoc */
-  public ngOnInit(): void {
-    this.filteredEntities = this.entityControl.valueChanges.pipe(
+  public constructor() {
+    this.filteredEntities$ = this.entityControl.valueChanges.pipe(
       startWith(''),
       map(value => this.filterOptions(value)),
     );

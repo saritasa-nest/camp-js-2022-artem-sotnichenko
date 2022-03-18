@@ -3,7 +3,7 @@ import { map, Observable } from 'rxjs';
 
 import { Film } from '../models/film';
 
-import { FilmService } from './film/film.service';
+import { FilmsService } from './films/films.service';
 import { EntityId, FilmCursor, PagesStatus, PaginationDirection } from './film/utils/types';
 
 /**
@@ -15,7 +15,7 @@ import { EntityId, FilmCursor, PagesStatus, PaginationDirection } from './film/u
 export class PaginationService {
 
   public constructor(
-    private readonly filmService: FilmService,
+    private readonly filmsService: FilmsService,
   ) { }
 
   /**
@@ -34,7 +34,7 @@ export class PaginationService {
    */
   public getFilms(count: number, cursor: FilmCursor): Observable<Film[]> {
     const paginationCount = this.getPaginationCount(count);
-    return this.filmService.getFilms(paginationCount, cursor).pipe(
+    return this.filmsService.getFilms(paginationCount, cursor).pipe(
       map(films => this.getFilmsPage(paginationCount, films, cursor)),
     );
   }

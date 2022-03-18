@@ -4,7 +4,7 @@ import { Character } from 'src/app/core/models/character';
 import { FilmForm } from 'src/app/core/models/film-form';
 import { Planet } from 'src/app/core/models/planet';
 import { CharacterService } from 'src/app/core/services/character.service';
-import { FilmManagementService } from 'src/app/core/services/film-management.service';
+import { FilmService } from 'src/app/core/services/film.service';
 import { PlanetService } from 'src/app/core/services/planet.service';
 
 /** Film create component. */
@@ -25,7 +25,7 @@ export class CreateComponent {
   public constructor(
     characterService: CharacterService,
     planetService: PlanetService,
-    private readonly filmManagementService: FilmManagementService,
+    private readonly filmService: FilmService,
   ) {
     this.planets$ = planetService.getAllPlanets();
     this.characters$ = characterService.getAllCharacters();
@@ -36,6 +36,6 @@ export class CreateComponent {
    * @param filmForm Film.
    */
   public onSubmit(filmForm: FilmForm): void {
-    this.filmManagementService.create(filmForm);
+    this.filmService.create(filmForm);
   }
 }

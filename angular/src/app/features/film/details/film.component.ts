@@ -1,12 +1,13 @@
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Observable, switchMap, take, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
-import { FilmManagementService } from 'src/app/core/services/film-management.service';
+import { FilmService } from 'src/app/core/services/film.service';
 import { PlanetService } from 'src/app/core/services/planet.service';
+import { assertNotNullish } from 'src/app/core/utils/assert-not-null';
 
 import { DeleteDialogComponent, DeleteDialogData, DeleteDialogResult } from '../delete-dialog/delete-dialog.component';
 
@@ -32,12 +33,19 @@ export class FilmComponent {
     route: ActivatedRoute,
     characterService: CharacterService,
     planetService: PlanetService,
-    private readonly filmManagementService: FilmManagementService,
+    private readonly filmService: FilmService,
     private readonly router: Router,
     private readonly dialog: MatDialog,
     @Self() private readonly destroy$: DestroyService,
   ) {
-    this.film$ = filmManagementService.getFilmByParamMap(route.paramMap);
+    this.film$ = route.paramMap.pipe(
+      switchMap(paramMap => {
+        const id = paramMap.get('id');
+        assertNotNullish(id, 'There is no film id. This is probably route issue.');
+        return this.filmService.getFilm(id);
+      }),
+      shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     this.characterNames$ = this.film$.pipe(
       switchMap(film => characterService.getCharacters(film.characterIds)
@@ -63,7 +71,7 @@ export class FilmComponent {
 
         return dialogRef.afterClosed().pipe(
           filter(canDelete => canDelete === true),
-          switchMap(() => this.filmManagementService.delete(film.id)),
+          switchMap(() => this.filmService.delete(film.id)),
           tap(() => {
             this.router.navigate(['/']);
           }),

@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ParamMap } from '@angular/router';
-import { map, Observable, shareReplay, switchMap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { Film } from '../models/film';
 import { FilmForm } from '../models/film-form';
-import { assertNotNullish } from '../utils/assert-not-null';
 
-import { FilmService } from './film/film.service';
+import { FilmsService } from './films/films.service';
 
 import { FirestoreService } from './firestore/firestore.service';
 import { FilmDto } from './mappers/dto/film.dto';
@@ -17,27 +15,22 @@ import { FilmMapper } from './mappers/film.mapper';
 @Injectable({
   providedIn: 'root',
 })
-export class FilmManagementService {
+export class FilmService {
 
   public constructor(
-    private readonly filmService: FilmService,
+    private readonly filmsService: FilmsService,
     private readonly filmMapper: FilmMapper,
     private readonly filmFormMapper: FilmFormMapper,
     private readonly firestoreService: FirestoreService,
   ) { }
 
   /**
-   * Get film.
-   * @param paramMap$ Route param map.
+   * Get one film by id.
+   * @param id Film id.
    */
-  public getFilmByParamMap(paramMap$: Observable<ParamMap>): Observable<Film> {
-    return paramMap$.pipe(
-      switchMap(paramMap => {
-        const id = paramMap.get('id');
-        assertNotNullish(id, 'There is no film id. This is probably route issue.');
-        return this.filmService.getFilm(id);
-      }),
-      shareReplay({ refCount: true, bufferSize: 1 }),
+  public getFilm(id: Film['id']): Observable<Film> {
+    return this.firestoreService.getOneById<FilmDto>('films', id).pipe(
+      map(this.filmMapper.fromDto),
     );
   }
 
