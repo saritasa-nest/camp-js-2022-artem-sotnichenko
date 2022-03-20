@@ -1,0 +1,6 @@
+.film-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-8);
+  width: 100%;
+}
