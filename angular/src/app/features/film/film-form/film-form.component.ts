@@ -19,19 +19,19 @@ import { DestroyService } from 'src/app/core/services/destroy.service';
 export class FilmFormComponent {
   /** Submit button text. */
   @Input()
-  public submitText = 'Submit';
+  public submitButtonText = 'Submit';
 
   /** Whether is submit button visible. */
   @Input()
-  public isSubmitVisible = true;
+  public isSubmitButtonVisible = true;
 
   /** Cancel button text. */
   @Input()
-  public cancelText = 'Cancel';
+  public cancelButtonText = 'Cancel';
 
   /** Whether is cancel button visible. */
   @Input()
-  public isCancelVisible = true;
+  public isCancelButtonVisible = true;
 
   /**
    * Film.
@@ -44,19 +44,19 @@ export class FilmFormComponent {
     }
   }
 
-  /** Selected planets. */
+  /** All planets, used in autocomplete of entities select. */
   @Input()
   public allPlanets: readonly Planet[] = [];
 
-  /** All characters. */
+  /** All characters, used in autocomplete of entities select. */
   @Input()
   public allCharacters: readonly Character[] = [];
 
-  /** Submitted event. */
+  /** Submit event handler. */
   @Output()
   public readonly filmSubmit = new EventEmitter<FilmForm>();
 
-  /** Canceled event. */
+  /** Cancel event handler. */
   @Output()
   public readonly filmCancel = new EventEmitter<void>();
 
@@ -94,7 +94,7 @@ export class FilmFormComponent {
       openingCrawl: [film?.openingCrawl ?? '', [Validators.required]],
       releaseDate: [formatDate(this.film?.releaseDate ?? new Date(), 'yyyy-MM-dd', 'en'), [Validators.required]],
       director: [film?.director ?? '', [Validators.required]],
-      producers: [film?.producers ?? '', [Validators.required]],
+      producers: [film?.producers.join(',') ?? '', [Validators.required]],
       characterIds: [film?.characterIds ?? []],
       planetIds: [film?.planetIds ?? []],
     });
@@ -104,16 +104,17 @@ export class FilmFormComponent {
   public onFilmSubmit(): void {
     if (this.filmForm.valid) {
       const film = this.filmForm?.value;
+      console.log(film);
       if (film != null) {
         this.filmSubmit.emit({
           title: film.title.trim(),
           openingCrawl: film.openingCrawl.trim(),
           releaseDate: new Date(film.releaseDate),
           director: film.director.trim(),
-          producers: typeof film.producers === 'string' ? film.producers.split(',') : film.producers,
+          producers: film.producers.split(','),
           characterIds: film.characterIds,
           planetIds: film.planetIds,
-        } as Film);
+        } as FilmForm);
       }
     }
   }

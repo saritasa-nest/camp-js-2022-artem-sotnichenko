@@ -7,22 +7,22 @@
       </mat-form-field>
       <div class="film-form__options">
         <button
-          *ngIf="isCancelVisible"
+          *ngIf="isCancelButtonVisible"
           mat-button
           type="button"
           class="film-form__button"
           (click)="onCancel()"
         >
-          {{ cancelText }}
+          {{ cancelButtonText }}
         </button>
         <button
-          *ngIf="isSubmitVisible"
+          *ngIf="isSubmitButtonVisible"
           mat-flat-button
           color="primary"
           type="submit"
           class="film-form__button"
         >
-          {{ submitText }}
+          {{ submitButtonText }}
         </button>
       </div>
     </div>

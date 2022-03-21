@@ -1,9 +1,11 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, take, takeUntil, tap } from 'rxjs';
 import { Character } from 'src/app/core/models/character';
 import { FilmForm } from 'src/app/core/models/film-form';
 import { Planet } from 'src/app/core/models/planet';
 import { CharacterService } from 'src/app/core/services/character.service';
+import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmService } from 'src/app/core/services/film.service';
 import { PlanetService } from 'src/app/core/services/planet.service';
 
@@ -13,6 +15,7 @@ import { PlanetService } from 'src/app/core/services/planet.service';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DestroyService],
 })
 export class CreateComponent {
 
@@ -26,6 +29,8 @@ export class CreateComponent {
     characterService: CharacterService,
     planetService: PlanetService,
     private readonly filmService: FilmService,
+    @Self() private readonly destroy$: DestroyService,
+    private readonly router: Router,
   ) {
     this.planets$ = planetService.getAllPlanets();
     this.characters$ = characterService.getAllCharacters();
@@ -36,6 +41,14 @@ export class CreateComponent {
    * @param filmForm Film.
    */
   public onSubmit(filmForm: FilmForm): void {
-    this.filmService.create(filmForm);
+    // "Navigation triggered outside Angular zone, did you forget to call 'ngZone.run()'?"
+    const newFilm$ = this.filmService.create(filmForm);
+    newFilm$.pipe(
+      takeUntil(this.destroy$),
+      take(1),
+      tap(film => {
+        this.router.navigate(['/', 'film', film.id]);
+      }),
+    ).subscribe();
   }
 }

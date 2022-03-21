@@ -3,7 +3,7 @@
     [allPlanets]="(planets$ | async) ?? []"
     [allCharacters]="(characters$ | async) ?? []"
     (filmSubmit)="onSubmit($event)"
-    submitText="Create"
-    [isCancelVisible]="false"
+    submitButtonText="Create"
+    [isCancelButtonVisible]="false"
   ></sw-film-form>
 </sw-main-layout>

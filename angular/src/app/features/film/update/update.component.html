@@ -6,7 +6,8 @@
     [allCharacters]="(characters$ | async) ?? []"
     (filmSubmit)="onSubmit($event)"
     (filmCancel)="onCancel()"
-    submitText="Update"
+    submitButtonText="Update"
+    cancelButtonText="Back"
   ></sw-film-form>
   <ng-template #spinner>
     <div class="spinner">
