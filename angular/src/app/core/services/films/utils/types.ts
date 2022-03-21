@@ -55,5 +55,5 @@ export interface FilmCursor extends FilterOptions {
   readonly paginationDirection: PaginationDirection;
 
   /** Whether to include film that entityId points at when fetching. */
-  readonly include: boolean;
+  readonly shouldInclude: boolean;
 }

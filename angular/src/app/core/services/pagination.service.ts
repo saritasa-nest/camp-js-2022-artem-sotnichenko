@@ -121,13 +121,13 @@ export class PaginationService {
         ...currentCursor,
         paginationDirection: PaginationDirection.Next,
         entityId: entityIds.forward,
-        include: currentCursor.paginationDirection !== PaginationDirection.Prev,
+        shouldInclude: currentCursor.paginationDirection !== PaginationDirection.Prev,
       },
       backward: isBackwardNull ? null : {
         ...currentCursor,
         paginationDirection: PaginationDirection.Prev,
         entityId: entityIds.backward,
-        include: currentCursor.paginationDirection !== PaginationDirection.Next,
+        shouldInclude: currentCursor.paginationDirection !== PaginationDirection.Next,
       },
     };
   }

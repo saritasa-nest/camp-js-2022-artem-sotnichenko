@@ -34,7 +34,7 @@ export interface FetchFilmsOptions extends FilterOptions {
   readonly paginationDirection: PaginationDirection;
 
   /** Whether to include queryCursor when fetching. */
-  readonly include: boolean;
+  readonly shouldInclude: boolean;
 }
 
 const INITIAL_FILTER_OPTIONS = {
@@ -70,7 +70,7 @@ export class FilmsService {
       paginationDirection: PaginationDirection.Next,
       searchText,
       sortOptions,
-      include: true,
+      shouldInclude: true,
     };
   }
 
@@ -85,7 +85,7 @@ export class FilmsService {
       paginationDirection,
       searchText,
       sortOptions,
-      include,
+      shouldInclude: include,
     } = cursor;
 
     return this.firestoreService.getQueryCursorById(
@@ -98,7 +98,7 @@ export class FilmsService {
         paginationDirection,
         searchText,
         sortOptions,
-        include,
+        shouldInclude: include,
       })),
       map(filmDtos => filmDtos.map(dto => this.filmMapper.fromDto(dto))),
     );
@@ -121,7 +121,7 @@ export class FilmsService {
     paginationDirection,
     searchText,
     sortOptions,
-    include,
+    shouldInclude,
   }: FetchFilmsOptions): readonly QueryConstraint[] {
     const constraints: QueryConstraint[] = [];
 
@@ -140,12 +140,12 @@ export class FilmsService {
     if (paginationDirection === PaginationDirection.Next) {
       constraints.push(limit(count));
       if (queryCursor !== null) {
-        constraints.push(include ? startAt(queryCursor) : startAfter(queryCursor));
+        constraints.push(shouldInclude ? startAt(queryCursor) : startAfter(queryCursor));
       }
     } else {
       constraints.push(limitToLast(count));
       if (queryCursor !== null) {
-        constraints.push(include ? endAt(queryCursor) : endBefore(queryCursor));
+        constraints.push(shouldInclude ? endAt(queryCursor) : endBefore(queryCursor));
       }
     }
 
