@@ -135,7 +135,7 @@ export class FilmFormComponent implements OnInit {
   public onFilmSubmit(): void {
     if (this.filmForm.valid) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const film = this.filmForm!.value;
+      const film = this.filmForm.value;
       this.filmSubmit.emit({
         title: film.title.trim(),
         openingCrawl: film.openingCrawl.trim(),
