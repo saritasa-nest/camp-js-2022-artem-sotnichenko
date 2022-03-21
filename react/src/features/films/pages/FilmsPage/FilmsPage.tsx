@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import { fetchFilms, fetchFilmsMore } from 'src/store/film/dispatchers';
-import { selectFilms, selectFilter } from 'src/store/film/selectors';
+import { selectAllFilms, selectFilter } from 'src/store/film/selectors';
 import {
   Sort, Search,
 } from '@mui/icons-material';
@@ -25,7 +25,7 @@ import useIntersectionObserver from '../../hooks/use-intersection-observer';
 const FilmsPageComponent: VFC = () => {
   const dispatch = useAppDispatch();
 
-  const films = useAppSelector(selectFilms);
+  const films = useAppSelector(selectAllFilms);
   const filter = useAppSelector(selectFilter);
 
   useEffect(() => {

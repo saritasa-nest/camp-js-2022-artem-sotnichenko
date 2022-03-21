@@ -1,10 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSlice, PayloadAction,
+} from '@reduxjs/toolkit';
 import { FilmService, SortDirection, SortField } from 'src/api/services/film.service';
 import {
   fetchFilms,
   fetchFilmsMore,
 } from './dispatchers';
-import { initialState } from './state';
+import {
+  filmsAdapter, InitialState, initialState,
+} from './state';
 
 export const filmSlice = createSlice({
   name: 'film',
@@ -38,30 +42,36 @@ export const filmSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchFilms.pending, state => {
-        state.loading = true;
+        state.status = 'loading';
       })
       .addCase(fetchFilms.fulfilled, (state, action) => {
-        state.films = action.payload;
-        state.loading = false;
+        const films = action.payload;
+        filmsAdapter.setAll(state as InitialState, films);
+        state.fetchAfterId = films.at(-1)?.id ?? null;
+
+        state.status = 'succeeded';
       })
       .addCase(fetchFilms.rejected, (state, action) => {
         if (action.error.message) {
           state.error = action.error.message;
         }
-        state.loading = false;
+        state.status = 'failed';
       })
       .addCase(fetchFilmsMore.pending, state => {
-        state.loading = true;
+        state.status = 'loading';
       })
       .addCase(fetchFilmsMore.fulfilled, (state, action) => {
-        state.films = [...state.films, ...action.payload];
-        state.loading = false;
+        const films = action.payload;
+        filmsAdapter.upsertMany(state as InitialState, films);
+        state.fetchAfterId = films.at(-1)?.id ?? null;
+
+        state.status = 'succeeded';
       })
       .addCase(fetchFilmsMore.rejected, (state, action) => {
         if (action.error.message) {
           state.error = action.error.message;
         }
-        state.loading = false;
+        state.status = 'failed';
       });
   },
 });

@@ -15,9 +15,11 @@ export const fetchFilmsMore = createAsyncThunk(
   'film/fetchFilmsMore',
   (_, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
-    const { films } = state.film;
-    const fetchAfter = films[films.length - 1].id;
 
-    return FilmService.fetchFilms({ count: 5, fetchAfter, filter: state.film.filter });
+    return FilmService.fetchFilms({
+      count: 5,
+      fetchAfter: state.film.fetchAfterId ?? undefined,
+      filter: state.film.filter,
+    });
   },
 );
