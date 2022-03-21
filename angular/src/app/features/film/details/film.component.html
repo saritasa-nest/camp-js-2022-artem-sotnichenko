@@ -10,7 +10,7 @@
         <h1 class="film__title">{{ film.title }}</h1>
         <div class="film__options">
           <a
-            [routerLink]="['/', 'film', 'update', film.id]"
+            [routerLink]="['/film/update', film.id]"
             type="button"
             mat-button
             class="film__button film__button_settings"

@@ -51,7 +51,7 @@ export class CreateComponent {
       takeUntil(this.destroy$),
       take(1),
     ).subscribe({
-      next: film => this.router.navigate(['/', 'film', film.id]),
+      next: film => this.router.navigate(['/film', film.id]),
     });
   }
 }
