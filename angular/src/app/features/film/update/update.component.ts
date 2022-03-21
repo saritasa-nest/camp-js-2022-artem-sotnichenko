@@ -2,14 +2,10 @@ import { Location } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
-import { Character } from 'src/app/core/models/character';
 import { Film } from 'src/app/core/models/film';
 import { FilmForm } from 'src/app/core/models/film-form';
-import { Planet } from 'src/app/core/models/planet';
-import { CharacterService } from 'src/app/core/services/character.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmService } from 'src/app/core/services/film.service';
-import { PlanetService } from 'src/app/core/services/planet.service';
 import { assertNotNullish } from 'src/app/core/utils/assert-not-null';
 
 /** Film update component. */

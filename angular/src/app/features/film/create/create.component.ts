@@ -1,13 +1,9 @@
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, take, takeUntil, tap } from 'rxjs';
-import { Character } from 'src/app/core/models/character';
+import { take, takeUntil } from 'rxjs';
 import { FilmForm } from 'src/app/core/models/film-form';
-import { Planet } from 'src/app/core/models/planet';
-import { CharacterService } from 'src/app/core/services/character.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
 import { FilmService } from 'src/app/core/services/film.service';
-import { PlanetService } from 'src/app/core/services/planet.service';
 
 /** Film create component. */
 @Component({

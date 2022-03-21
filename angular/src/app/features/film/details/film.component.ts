@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, shareReplay, switchMap, take, takeUntil } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';

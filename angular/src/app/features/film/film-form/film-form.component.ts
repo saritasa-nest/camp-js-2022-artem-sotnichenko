@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Self, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ignoreElements, map, merge, Observable, ReplaySubject, take, takeUntil, tap } from 'rxjs';
+import { ignoreElements, map, merge, Observable, ReplaySubject, takeUntil, tap } from 'rxjs';
 import { Character } from 'src/app/core/models/character';
 import { FilmForm } from 'src/app/core/models/film-form';
 import { Planet } from 'src/app/core/models/planet';
