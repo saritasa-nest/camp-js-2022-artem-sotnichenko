@@ -41,14 +41,17 @@ export class CreateComponent {
    * @param filmForm Film.
    */
   public onSubmit(filmForm: FilmForm): void {
-    // "Navigation triggered outside Angular zone, did you forget to call 'ngZone.run()'?"
+    /*
+     * Getting "Navigation triggered outside Angular zone, did you forget to call 'ngZone.run()'?" warning,
+     * when adding pipe directly to create return.
+     * Decided to use a variable to explicitly subscribe in angular zone.
+     */
     const newFilm$ = this.filmService.create(filmForm);
     newFilm$.pipe(
       takeUntil(this.destroy$),
       take(1),
-      tap(film => {
-        this.router.navigate(['/', 'film', film.id]);
-      }),
-    ).subscribe();
+    ).subscribe({
+      next: film => this.router.navigate(['/', 'film', film.id]),
+    });
   }
 }

@@ -56,11 +56,11 @@ export class UpdateComponent {
    */
   public onSubmit(filmForm: FilmForm): void {
     this.film$.pipe(
-      takeUntil(this.destroy$),
-      take(1),
       tap(film => {
+        take(1),
         this.filmService.update(film.id, filmForm);
       }),
+      takeUntil(this.destroy$),
     ).subscribe();
   }
 

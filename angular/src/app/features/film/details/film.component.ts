@@ -61,8 +61,6 @@ export class FilmComponent {
   /** Handle delete. */
   public onDelete(): void {
     this.film$.pipe(
-      takeUntil(this.destroy$),
-      take(1),
       switchMap(film => {
         const dialogRef = this.dialog.open<DeleteDialogComponent, DeleteDialogData, DeleteDialogResult>(
           DeleteDialogComponent,
@@ -72,11 +70,12 @@ export class FilmComponent {
         return dialogRef.afterClosed().pipe(
           filter(canDelete => canDelete === true),
           switchMap(() => this.filmService.delete(film.id)),
-          tap(() => {
-            this.router.navigate(['/']);
-          }),
         );
       }),
-    ).subscribe();
+      take(1),
+      takeUntil(this.destroy$),
+    ).subscribe({
+      next: () => this.router.navigate(['/']),
+    });
   }
 }

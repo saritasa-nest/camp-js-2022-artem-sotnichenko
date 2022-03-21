@@ -60,7 +60,6 @@ export class FiltersComponent implements OnInit {
   public ngOnInit(): void {
     this.filtersForm.get('searchText')?.valueChanges
       .pipe(
-        takeUntil(this.destroy$),
         distinctUntilChanged(),
         tap(searchText => {
           if (searchText !== '') {
@@ -69,12 +68,12 @@ export class FiltersComponent implements OnInit {
             this.filtersForm.get('sortOptions')?.enable();
           }
         }),
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
     this.filtersForm.get('sortOptions')?.valueChanges
       .pipe(
-        takeUntil(this.destroy$),
         distinctUntilChanged(),
         tap(sortOptions => {
           if (sortOptions.field !== INITIAL_SORT_FIELD || sortOptions.direction !== INITIAL_SORT_DIRECTION) {
@@ -83,6 +82,7 @@ export class FiltersComponent implements OnInit {
             this.filtersForm.get('searchText')?.enable();
           }
         }),
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
