@@ -3,19 +3,19 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import {
-  ChangeEvent,
   memo, ReactElement, useEffect, useRef, useState, VFC,
 } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import { fetchFilms, fetchFilmsMore } from 'src/store/film/dispatchers';
-import { selectAllFilms, selectFilter } from 'src/store/film/selectors';
+import { fetchFilmsOnTop } from 'src/store/film/dispatchers';
+import { selectAllFilms, selectStatus } from 'src/store/film/selectors';
 import {
   Sort, Search,
 } from '@mui/icons-material';
-import { setSearchText, setSortDirection, setSortField } from 'src/store/film/slice';
 import {
+  FilmService,
   SortDirection, SortField,
 } from 'src/api/services/film.service';
+import { clearFilms } from 'src/store/film/slice';
 import { FilmList } from '../../components/FilmList';
 
 import cls from './FilmPage.module.css';
@@ -26,51 +26,54 @@ const FilmsPageComponent: VFC = () => {
   const dispatch = useAppDispatch();
 
   const films = useAppSelector(selectAllFilms);
-  const filter = useAppSelector(selectFilter);
-
-  useEffect(() => {
-    dispatch(fetchFilms());
-  }, [dispatch, filter]);
-
-  const fetchMore = (): void => { dispatch(fetchFilmsMore()); };
 
   const [filterType, setFilterType] = useState<'search' | 'sort' | null>(null);
+  const [searchText, setSearchText] = useState('');
+  const [sortField, setSortField] = useState(SortField.Title);
+  const [sortDirection, setSortDirection] = useState(SortDirection.Ascending);
 
-  const searchText = 'searchText' in filter ? filter.searchText : '';
-  const handleSearchTextChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
-    dispatch(setSearchText(e.target.value));
-  };
-
-  const sortField = 'sortField' in filter ? filter.sortField : SortField.Title;
-  const handleSortFieldChange = (field: SortField): void => { dispatch(setSortField(field)); };
-
-  const sortDirection = 'sortDirection' in filter ? filter.sortDirection : SortDirection.Ascending;
-  const handleSortDirectionChange = (field: SortDirection): void => { dispatch(setSortDirection(field)); };
-
-  const isFilterBlockVisible = filterType != null;
-  const getFilterBlock = (): ReactElement | null => {
+  /**
+   * Get filter to fetch films with.
+   */
+  function getFilter(): FilmService.Filter | undefined {
     if (filterType === 'search') {
-      return (
-        <OutlinedInput
-          className={cls['search-input']}
-          placeholder="Search"
-          value={searchText}
-          onChange={e => handleSearchTextChange(e)}
-        />
-      );
+      return { searchText };
     }
     if (filterType === 'sort') {
-      return (
-        <FilterSort
-          selectedSortField={sortField}
-          selectedSortDirection={sortDirection}
-          onSortFieldChange={field => handleSortFieldChange(field)}
-          onSortDirectionChange={direction => handleSortDirectionChange(direction)}
-        />
-      );
+      return { sortField, sortDirection };
     }
-    return null;
-  };
+    return undefined;
+  }
+
+  const currentFilter = getFilter();
+  const currentFetchAfterId = films.at(-1)?.id ?? undefined;
+
+  const endOfListRef = useRef<HTMLDivElement | null>(null);
+  const intersectionObserverEntry = useIntersectionObserver(endOfListRef, {});
+
+  const isBottomVisible = intersectionObserverEntry?.isIntersecting ?? false;
+
+  const filmStatus = useAppSelector(selectStatus);
+
+  /**
+   * TODO: Add clear on filter change.
+   */
+  // useEffect(() => {
+  //   console.log(currentFilter);
+  //   if (films.length !== 0 && filmStatus !== 'loading') {
+  //     dispatch(clearFilms());
+  //   }
+  // }, [filterType]);
+
+  useEffect(() => {
+    if ((filmStatus === 'idle' || isBottomVisible) && filmStatus !== 'loading') {
+      dispatch(fetchFilmsOnTop({
+        count: 5,
+        filter: currentFilter,
+        fetchAfter: currentFetchAfterId,
+      }));
+    }
+  }, [dispatch, isBottomVisible, filmStatus]);
 
   /** Handle sort button click. */
   function handleSortClick(): void {
@@ -81,14 +84,32 @@ const FilmsPageComponent: VFC = () => {
     setFilterType(filterType === 'search' ? null : 'search');
   }
 
-  const endOfListRef = useRef<HTMLDivElement | null>(null);
-  const intersectionObserverEntry = useIntersectionObserver(endOfListRef, {});
+  const isFilterBlockVisible = filterType != null;
 
-  useEffect(() => {
-    if (films.length !== 0 && intersectionObserverEntry?.isIntersecting) {
-      fetchMore();
+  /** Shows one of filters. */
+  function getFilterBlock(): ReactElement | null {
+    if (filterType === 'search') {
+      return (
+        <OutlinedInput
+          className={cls['search-input']}
+          placeholder="Search"
+          value={searchText}
+          onChange={e => setSearchText(e.target.value)}
+        />
+      );
     }
-  }, [intersectionObserverEntry]);
+    if (filterType === 'sort') {
+      return (
+        <FilterSort
+          selectedSortField={sortField}
+          selectedSortDirection={sortDirection}
+          onSortFieldChange={field => setSortField(field)}
+          onSortDirectionChange={direction => setSortDirection(direction)}
+        />
+      );
+    }
+    return null;
+  }
 
   return (
     <div className={cls.films}>

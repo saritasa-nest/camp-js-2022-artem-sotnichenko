@@ -45,12 +45,12 @@ const FilterSortComponent: VFC<Props> = ({
   }
   /**
    * Handle sort field change.
-   * @param e Change event.
+   * @param event Change event.
    */
-  function handleSortFieldChange(e: SelectChangeEvent<unknown>): void {
+  function handleSortFieldChange(event: SelectChangeEvent<unknown>): void {
     // dispatch(setSort(e.target.value));
-    if (typeof e.target.value === 'string') {
-      const newSortField = e.target.value as SortField;
+    if (typeof event.target.value === 'string') {
+      const newSortField = event.target.value as SortField;
       setSortField(newSortField);
       onSortFieldChange(newSortField);
     }

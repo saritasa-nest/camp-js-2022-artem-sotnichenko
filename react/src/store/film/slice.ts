@@ -1,85 +1,51 @@
 import {
-  createSlice, PayloadAction,
+  CaseReducer,
+  createSlice,
 } from '@reduxjs/toolkit';
-import { FilmService, SortDirection, SortField } from 'src/api/services/film.service';
 import {
   fetchFilms,
-  fetchFilmsMore,
+  fetchFilmsOnTop,
 } from './dispatchers';
 import {
   filmsAdapter, InitialState, initialState,
 } from './state';
 
-export const filmSlice = createSlice({
-  name: 'film',
+const loadingReducer: CaseReducer<InitialState> = state => {
+  state.status = 'loading';
+};
+
+const rejectionReducer: CaseReducer<InitialState> = (state, action) => {
+  if (action.error.message) {
+    state.error = action.error.message;
+  }
+  state.status = 'failed';
+};
+
+export const filmsSlice = createSlice({
+  name: 'films',
   initialState,
   reducers: {
-    setSearchText(state, action: PayloadAction<FilmService.FilterSearch['searchText']>) {
-      state.filter = { searchText: action.payload };
-    },
-    setSort(state, action: PayloadAction<FilmService.FilterSort>) {
-      state.filter = action.payload;
-    },
-    setSortField(state, action: PayloadAction<FilmService.FilterSort['sortField']>) {
-      state.filter = {
-        sortField: action.payload,
-        sortDirection: 'sortDirection' in state.filter ? state.filter.sortDirection : SortDirection.Ascending,
-      };
-    },
-    setSortDirection(state, action: PayloadAction<FilmService.FilterSort['sortDirection']>) {
-      state.filter = {
-        sortField: 'sortField' in state.filter ? state.filter.sortField : SortField.Title,
-        sortDirection: action.payload,
-      };
-    },
-    clearFilter(state) {
-      state.filter = {
-        sortField: SortField.Title,
-        sortDirection: SortDirection.Ascending,
-      };
+    clearFilms(state) {
+      filmsAdapter.removeAll(state as InitialState);
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchFilms.pending, state => {
-        state.status = 'loading';
-      })
+      .addCase(fetchFilms.pending, loadingReducer)
       .addCase(fetchFilms.fulfilled, (state, action) => {
-        const films = action.payload;
-        filmsAdapter.setAll(state as InitialState, films);
-        state.fetchAfterId = films.at(-1)?.id ?? null;
-
+        filmsAdapter.setAll(state as InitialState, action.payload);
         state.status = 'succeeded';
       })
-      .addCase(fetchFilms.rejected, (state, action) => {
-        if (action.error.message) {
-          state.error = action.error.message;
-        }
-        state.status = 'failed';
-      })
-      .addCase(fetchFilmsMore.pending, state => {
-        state.status = 'loading';
-      })
-      .addCase(fetchFilmsMore.fulfilled, (state, action) => {
-        const films = action.payload;
-        filmsAdapter.upsertMany(state as InitialState, films);
-        state.fetchAfterId = films.at(-1)?.id ?? null;
-
+      .addCase(fetchFilms.rejected, rejectionReducer)
+      .addCase(fetchFilmsOnTop.pending, loadingReducer)
+      .addCase(fetchFilmsOnTop.fulfilled, (state, action) => {
+        filmsAdapter.upsertMany(state as InitialState, action.payload);
         state.status = 'succeeded';
       })
-      .addCase(fetchFilmsMore.rejected, (state, action) => {
-        if (action.error.message) {
-          state.error = action.error.message;
-        }
-        state.status = 'failed';
-      });
+      .addCase(fetchFilmsOnTop.rejected, rejectionReducer);
   },
 });
 
 export const {
-  setSearchText,
-  setSort,
-  setSortField,
-  setSortDirection,
-  clearFilter,
-} = filmSlice.actions;
+  clearFilms,
+} = filmsSlice.actions;
