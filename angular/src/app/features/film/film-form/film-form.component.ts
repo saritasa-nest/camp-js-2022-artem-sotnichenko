@@ -3,7 +3,6 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Self }
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map, ReplaySubject, takeUntil, tap } from 'rxjs';
 import { Character } from 'src/app/core/models/character';
-import { Film } from 'src/app/core/models/film';
 import { FilmForm } from 'src/app/core/models/film-form';
 import { Planet } from 'src/app/core/models/planet';
 import { DestroyService } from 'src/app/core/services/destroy.service';
@@ -104,7 +103,6 @@ export class FilmFormComponent {
   public onFilmSubmit(): void {
     if (this.filmForm.valid) {
       const film = this.filmForm?.value;
-      console.log(film);
       if (film != null) {
         this.filmSubmit.emit({
           title: film.title.trim(),
