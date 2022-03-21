@@ -9,7 +9,7 @@ import { useAppDispatch } from 'src/store';
 const AuthPageComponent: VFC = () => {
   const dispatch = useAppDispatch();
 
-  const handleGoogleSignInClick = useCallback(() => dispatch(signInWithGoogle()), []);
+  const handleGoogleSignInClick = useCallback(() => dispatch(signInWithGoogle()), [dispatch]);
 
   return (
     <Stack
