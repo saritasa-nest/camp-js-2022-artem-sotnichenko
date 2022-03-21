@@ -2,7 +2,10 @@
   <mat-label>{{ label }}</mat-label>
   <mat-chip-list #chipList>
     <mat-chip
-      *ngFor="let entity of getSelectedEntities(selectedIds)"
+      *ngFor="
+        let entity of getSelectedEntities(selectedIds);
+        trackBy: trackEntity
+      "
       (removed)="deselectEntity(entity.id)"
     >
       {{ entity.name }}
@@ -13,7 +16,7 @@
     <input
       placeholder="New entity..."
       #entityInput
-      [formControl]="entityControl"
+      [formControl]="entityInputControl"
       [matAutocomplete]="auto"
       [matChipInputFor]="chipList"
     />

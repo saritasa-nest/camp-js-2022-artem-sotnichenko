@@ -28,7 +28,7 @@ export class EntitiesSelectComponent {
   @Input()
   public entities: readonly Entity[] = [];
 
-  /** Selected entities ids. */
+  /** Selected entities ids, shown as a chips. */
   @Input()
   public selectedIds: readonly Entity['id'][] = [];
 
@@ -40,16 +40,16 @@ export class EntitiesSelectComponent {
   public readonly filteredEntities$: Observable<readonly Entity[]>;
 
   /** Entity input control. */
-  public readonly entityControl = new FormControl();
+  public readonly entityInputControl = new FormControl();
 
   /** Entity input ref. */
   @ViewChild('entityInput')
-  public readonly entityInput?: ElementRef<HTMLInputElement>;
+  public readonly entityInputRef?: ElementRef<HTMLInputElement>;
 
   public constructor() {
-    this.filteredEntities$ = this.entityControl.valueChanges.pipe(
+    this.filteredEntities$ = this.entityInputControl.valueChanges.pipe(
       startWith(''),
-      map(value => this.filterOptions(value)),
+      map(value => this.filterEntities(value)),
     );
   }
 
@@ -79,10 +79,10 @@ export class EntitiesSelectComponent {
   public selectEntity(event: MatAutocompleteSelectedEvent): void {
     this.selectedIds = [...this.selectedIds, event.option.value];
 
-    if (this.entityInput) {
-      this.entityInput.nativeElement.value = '';
+    if (this.entityInputRef) {
+      this.entityInputRef.nativeElement.value = '';
     }
-    this.entityControl.setValue(null);
+    this.entityInputControl.setValue(null);
     this.emitChange();
   }
 
@@ -99,7 +99,7 @@ export class EntitiesSelectComponent {
     this.changed.emit(this.selectedIds);
   }
 
-  private filterOptions(entityId: Entity['id'] | null): readonly Entity[] {
+  private filterEntities(entityId: Entity['id'] | null): readonly Entity[] {
     if (entityId === null) {
       return this.entities;
     }
