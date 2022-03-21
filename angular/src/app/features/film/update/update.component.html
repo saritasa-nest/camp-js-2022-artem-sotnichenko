@@ -2,8 +2,6 @@
   <sw-film-form
     *ngIf="film$ | async; else spinner"
     [film]="film$ | async"
-    [allPlanets]="(planets$ | async) ?? []"
-    [allCharacters]="(characters$ | async) ?? []"
     (filmSubmit)="onSubmit($event)"
     (filmCancel)="onCancel()"
     submitButtonText="Update"

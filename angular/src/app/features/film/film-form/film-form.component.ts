@@ -1,11 +1,14 @@
 import { formatDate } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Self, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ignoreElements, map, merge, ReplaySubject, take, takeUntil, tap } from 'rxjs';
+import { ignoreElements, map, merge, Observable, ReplaySubject, take, takeUntil, tap } from 'rxjs';
 import { Character } from 'src/app/core/models/character';
 import { FilmForm } from 'src/app/core/models/film-form';
 import { Planet } from 'src/app/core/models/planet';
+import { CharacterService } from 'src/app/core/services/character.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
+import { PlanetService } from 'src/app/core/services/planet.service';
+import { DATE_FORMAT, DATE_LOCALE } from 'src/app/core/utils/constants';
 
 /** Film form. */
 @Component({
@@ -43,14 +46,6 @@ export class FilmFormComponent implements OnInit {
     }
   }
 
-  /** All planets, used in autocomplete of entities select. */
-  @Input()
-  public allPlanets: readonly Planet[] = [];
-
-  /** All characters, used in autocomplete of entities select. */
-  @Input()
-  public allCharacters: readonly Character[] = [];
-
   /** Submit event handler. */
   @Output()
   public readonly filmSubmit = new EventEmitter<FilmForm>();
@@ -71,10 +66,21 @@ export class FilmFormComponent implements OnInit {
   /** Filters form. */
   public readonly filmForm = this.createFilmForm();
 
+  /** All planets, used in autocomplete of entities select. */
+  public readonly allPlanets$: Observable<readonly Planet[]>;
+
+  /** All characters, used in autocomplete of entities select. */
+  public readonly allCharacters$: Observable<readonly Character[]>;
+
   public constructor(
     @Self() private readonly destroy$: DestroyService,
     private readonly fb: FormBuilder,
-  ) { }
+    characterService: CharacterService,
+    planetService: PlanetService,
+  ) {
+    this.allCharacters$ = characterService.getAllCharacters();
+    this.allPlanets$ = planetService.getAllPlanets();
+  }
 
   /** @inheritdoc */
   public ngOnInit(): void {
@@ -101,7 +107,7 @@ export class FilmFormComponent implements OnInit {
     return this.fb.group({
       title: ['', [Validators.required]],
       openingCrawl: ['', [Validators.required]],
-      releaseDate: [formatDate(new Date(), 'yyyy-MM-dd', 'en'), [Validators.required]],
+      releaseDate: [formatDate(new Date(), DATE_FORMAT, DATE_LOCALE), [Validators.required]],
       director: ['', [Validators.required]],
       producers: ['', [Validators.required]],
       characterIds: [[]],
@@ -117,7 +123,7 @@ export class FilmFormComponent implements OnInit {
     return this.filmForm.patchValue({
       title: film.title,
       openingCrawl: film.openingCrawl,
-      releaseDate: formatDate(film.releaseDate, 'yyyy-MM-dd', 'en'),
+      releaseDate: formatDate(film.releaseDate, DATE_FORMAT, DATE_LOCALE),
       director: film.director,
       producers: film.producers,
       characterIds: film.characterIds,

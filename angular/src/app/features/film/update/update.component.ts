@@ -24,19 +24,11 @@ export class UpdateComponent {
   /** Film. */
   public readonly film$: Observable<Film>;
 
-  /** All planets. */
-  public readonly planets$: Observable<readonly Planet[]>;
-
-  /** All characters. */
-  public readonly characters$: Observable<readonly Character[]>;
-
   public constructor(
     @Self() private readonly destroy$: DestroyService,
     private readonly location: Location,
     private readonly filmService: FilmService,
     route: ActivatedRoute,
-    characterService: CharacterService,
-    planetService: PlanetService,
   ) {
     this.film$ = route.paramMap.pipe(
       switchMap(paramMap => {
@@ -46,8 +38,6 @@ export class UpdateComponent {
       }),
       shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    this.characters$ = characterService.getAllCharacters();
-    this.planets$ = planetService.getAllPlanets();
   }
 
   /**

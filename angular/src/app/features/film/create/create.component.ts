@@ -19,22 +19,11 @@ import { PlanetService } from 'src/app/core/services/planet.service';
 })
 export class CreateComponent {
 
-  /** All planets. */
-  public readonly planets$: Observable<readonly Planet[]>;
-
-  /** All characters. */
-  public readonly characters$: Observable<readonly Character[]>;
-
   public constructor(
-    characterService: CharacterService,
-    planetService: PlanetService,
     private readonly filmService: FilmService,
     @Self() private readonly destroy$: DestroyService,
     private readonly router: Router,
-  ) {
-    this.planets$ = planetService.getAllPlanets();
-    this.characters$ = characterService.getAllCharacters();
-  }
+  ) {}
 
   /**
    * Handle submit.

@@ -71,15 +71,15 @@
       <sw-entities-select
         class="film-form__select"
         label="Characters"
-        (changed)="onCharactersChange($event)"
-        [entities]="allCharacters"
+        (entityChange)="onCharactersChange($event)"
+        [entities]="(allCharacters$ | async) ?? []"
         [selectedIds]="(selectedCharacterIds$ | async) ?? []"
       ></sw-entities-select>
       <sw-entities-select
         class="film-form__select"
         label="Planets"
-        (changed)="onPlanetsChange($event)"
-        [entities]="allPlanets"
+        (entityChange)="onPlanetsChange($event)"
+        [entities]="(allPlanets$ | async) ?? []"
         [selectedIds]="(selectedPlanetIds$ | async) ?? []"
       ></sw-entities-select>
     </main>

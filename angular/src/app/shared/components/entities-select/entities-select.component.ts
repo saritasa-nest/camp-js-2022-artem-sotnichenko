@@ -34,7 +34,7 @@ export class EntitiesSelectComponent {
 
   /** Emits when options selected. */
   @Output()
-  public readonly changed = new EventEmitter<readonly Entity['id'][]>();
+  public readonly entityChange = new EventEmitter<readonly Entity['id'][]>();
 
   /** Filtered entities, used in autocomplete options dropdown. */
   public readonly filteredEntities$: Observable<readonly Entity[]>;
@@ -96,7 +96,7 @@ export class EntitiesSelectComponent {
   }
 
   private emitChange(): void {
-    this.changed.emit(this.selectedIds);
+    this.entityChange.emit(this.selectedIds);
   }
 
   private filterEntities(entityId: Entity['id'] | null): readonly Entity[] {

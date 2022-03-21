@@ -1,7 +1,5 @@
 <sw-main-layout>
   <sw-film-form
-    [allPlanets]="(planets$ | async) ?? []"
-    [allCharacters]="(characters$ | async) ?? []"
     (filmSubmit)="onSubmit($event)"
     submitButtonText="Create"
     [isCancelButtonVisible]="false"
