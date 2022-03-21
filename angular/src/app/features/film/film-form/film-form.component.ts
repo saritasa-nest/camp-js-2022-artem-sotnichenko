@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Self } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Self, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { map, ReplaySubject, takeUntil, tap } from 'rxjs';
+import { ignoreElements, map, merge, ReplaySubject, take, takeUntil, tap } from 'rxjs';
 import { Character } from 'src/app/core/models/character';
 import { FilmForm } from 'src/app/core/models/film-form';
 import { Planet } from 'src/app/core/models/planet';
@@ -15,7 +15,7 @@ import { DestroyService } from 'src/app/core/services/destroy.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DestroyService],
 })
-export class FilmFormComponent {
+export class FilmFormComponent implements OnInit {
   /** Submit button text. */
   @Input()
   public submitButtonText = 'Submit';
@@ -34,10 +34,10 @@ export class FilmFormComponent {
 
   /**
    * Film.
-   * Transforming film from prop into stream, so data that depends on film properly updating.
    */
   @Input()
   public set film(film: FilmForm | null) {
+    // Transforming film from prop into stream, so data that depends on film properly updating.
     if (film != null) {
       this.film$.next(film);
     }
@@ -60,7 +60,7 @@ export class FilmFormComponent {
   public readonly filmCancel = new EventEmitter<void>();
 
   /** Film. */
-  public readonly film$ = new ReplaySubject<FilmForm>();
+  public readonly film$ = new ReplaySubject<FilmForm>(1);
 
   /** Selected planet ids. */
   public readonly selectedPlanetIds$ = this.film$.pipe(map(film => film.planetIds));
@@ -69,51 +69,76 @@ export class FilmFormComponent {
   public readonly selectedCharacterIds$ = this.film$.pipe(map(film => film.characterIds));
 
   /** Filters form. */
-  public filmForm: FormGroup = this.getFilmForm();
+  public readonly filmForm = this.createFilmForm();
 
   public constructor(
     @Self() private readonly destroy$: DestroyService,
     private readonly fb: FormBuilder,
-  ) {
-    this.film$.pipe(
+  ) { }
+
+  /** @inheritdoc */
+  public ngOnInit(): void {
+    const updateFilmFormOnPropChangeSideEffect$ = this.film$.pipe(
       tap(film => {
-        this.filmForm = this.getFilmForm(film);
+        this.updateFilmForm(film);
       }),
       takeUntil(this.destroy$),
-    ).subscribe();
+    );
+
+    merge(
+      updateFilmFormOnPropChangeSideEffect$,
+    ).pipe(
+      ignoreElements(),
+      takeUntil(this.destroy$),
+    )
+      .subscribe();
   }
 
   /**
-   * Get film reactive form.
+   * Create film reactive form.
+   */
+  public createFilmForm(): FormGroup {
+    return this.fb.group({
+      title: ['', [Validators.required]],
+      openingCrawl: ['', [Validators.required]],
+      releaseDate: [formatDate(new Date(), 'yyyy-MM-dd', 'en'), [Validators.required]],
+      director: ['', [Validators.required]],
+      producers: ['', [Validators.required]],
+      characterIds: [[]],
+      planetIds: [[]],
+    });
+  }
+
+  /**
+   * Update film  form.
    * @param film Film.
    */
-  public getFilmForm(film?: FilmForm): FormGroup {
-    return this.fb.group({
-      title: [film?.title ?? '', [Validators.required]],
-      openingCrawl: [film?.openingCrawl ?? '', [Validators.required]],
-      releaseDate: [formatDate(this.film?.releaseDate ?? new Date(), 'yyyy-MM-dd', 'en'), [Validators.required]],
-      director: [film?.director ?? '', [Validators.required]],
-      producers: [film?.producers.join(',') ?? '', [Validators.required]],
-      characterIds: [film?.characterIds ?? []],
-      planetIds: [film?.planetIds ?? []],
+  public updateFilmForm(film: FilmForm): void {
+    return this.filmForm.patchValue({
+      title: film.title,
+      openingCrawl: film.openingCrawl,
+      releaseDate: formatDate(film.releaseDate, 'yyyy-MM-dd', 'en'),
+      director: film.director,
+      producers: film.producers,
+      characterIds: film.characterIds,
+      planetIds: film.planetIds,
     });
   }
 
   /** Handle form submit. */
   public onFilmSubmit(): void {
     if (this.filmForm.valid) {
-      const film = this.filmForm?.value;
-      if (film != null) {
-        this.filmSubmit.emit({
-          title: film.title.trim(),
-          openingCrawl: film.openingCrawl.trim(),
-          releaseDate: new Date(film.releaseDate),
-          director: film.director.trim(),
-          producers: film.producers.split(','),
-          characterIds: film.characterIds,
-          planetIds: film.planetIds,
-        } as FilmForm);
-      }
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const film = this.filmForm!.value;
+      this.filmSubmit.emit({
+        title: film.title.trim(),
+        openingCrawl: film.openingCrawl.trim(),
+        releaseDate: new Date(film.releaseDate),
+        director: film.director.trim(),
+        producers: film.producers.split(','),
+        characterIds: film.characterIds,
+        planetIds: film.planetIds,
+      } as FilmForm);
     }
   }
 
@@ -127,7 +152,8 @@ export class FilmFormComponent {
    * @param ids Characters ids.
    */
   public onCharactersChange(ids: readonly Character['id'][]): void {
-    this.filmForm.get('characterIds')?.setValue(ids);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.filmForm.get('characterIds')!.setValue(ids);
   }
 
   /**
@@ -135,6 +161,7 @@ export class FilmFormComponent {
    * @param ids Planets ids.
    */
   public onPlanetsChange(ids: readonly Planet['id'][]): void {
-    this.filmForm.get('planetIds')?.setValue(ids);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.filmForm.get('planetIds')!.setValue(ids);
   }
 }
