@@ -3,10 +3,10 @@ import { FilmService } from 'src/api/services/film.service';
 
 export const fetchFilms = createAsyncThunk(
   'films/fetchFilms',
-  FilmService.fetchFilms,
+  FilmService.fetchMany,
 );
 
 export const fetchFilmsOnTop = createAsyncThunk(
   'films/fetchFilmsOnTop',
-  FilmService.fetchFilms,
+  FilmService.fetchMany,
 );

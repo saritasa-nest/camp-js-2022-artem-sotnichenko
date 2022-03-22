@@ -3,43 +3,42 @@ import {
 } from '@mui/material';
 import { memo, useState, VFC } from 'react';
 import {
-  SortDirection, SortField, TO_READABLE_SORT_DIRECTION_MAP, TO_READABLE_SORT_FIELD_MAP,
+  FilmService, FilmSortDirection, FilmSortField,
 } from 'src/api/services/film.service';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
-import cls from './FilterSort.module.css';
+import cls from './FilmFilterSort.module.css';
 
 interface Props {
   /** Handler for sort field change. */
-  readonly selectedSortField: SortField;
+  readonly selectedSortField: FilmSortField;
 
   /** Handler for sort direction change. */
-  readonly selectedSortDirection: SortDirection;
+  readonly selectedSortDirection: FilmSortDirection;
 
   /** Handler for sort field change. */
-  readonly onSortFieldChange: (sortField: SortField) => void;
+  readonly onSortFieldChange: (sortField: FilmSortField) => void;
 
   /** Handler for sort direction change. */
-  readonly onSortDirectionChange: (sortDirection: SortDirection) => void;
+  readonly onSortDirectionChange: (sortDirection: FilmSortDirection) => void;
 }
 
-const FilterSortComponent: VFC<Props> = ({
+const FilmFilterSortComponent: VFC<Props> = ({
   selectedSortField,
   selectedSortDirection,
   onSortFieldChange,
   onSortDirectionChange,
 }) => {
   const [sortField, setSortField] = useState(selectedSortField);
-  const [sortDirection, setSortDirection] = useState<SortDirection>(selectedSortDirection);
+  const [sortDirection, setSortDirection] = useState<FilmSortDirection>(selectedSortDirection);
 
   /**
    * Handle sort field change.
    */
   function handleSortDirectionClick(): void {
-    const newSortDirection = sortDirection === SortDirection.Ascending
-      ? SortDirection.Descending
-      : SortDirection.Ascending;
+    const newSortDirection = sortDirection === FilmSortDirection.Ascending
+      ? FilmSortDirection.Descending
+      : FilmSortDirection.Ascending;
 
-    // dispatch(setSort(e.target.value));
     setSortDirection(newSortDirection);
     onSortDirectionChange(newSortDirection);
   }
@@ -48,15 +47,15 @@ const FilterSortComponent: VFC<Props> = ({
    * @param event Change event.
    */
   function handleSortFieldChange(event: SelectChangeEvent<unknown>): void {
-    // dispatch(setSort(e.target.value));
     if (typeof event.target.value === 'string') {
-      const newSortField = event.target.value as SortField;
+      const newSortField = event.target.value as FilmSortField;
       setSortField(newSortField);
       onSortFieldChange(newSortField);
     }
   }
 
-  const fields = Object.entries(TO_READABLE_SORT_FIELD_MAP).map(([value, text]) => ({ value, text }));
+  const fields = Object.entries(FilmService.sortFieldMap)
+    .map(([value, text]) => ({ value, text }));
 
   return (
     <div className={cls.sort}>
@@ -76,9 +75,9 @@ const FilterSortComponent: VFC<Props> = ({
           </MenuItem>
         ))}
       </Select>
-      <Tooltip title={TO_READABLE_SORT_DIRECTION_MAP[sortDirection]}>
+      <Tooltip title={FilmService.sortDirectionMap[sortDirection]}>
         <IconButton onClick={() => handleSortDirectionClick()}>
-          {sortDirection === SortDirection.Ascending
+          {sortDirection === FilmSortDirection.Ascending
             ? <ArrowUpward />
             : <ArrowDownward />}
         </IconButton>
@@ -87,4 +86,4 @@ const FilterSortComponent: VFC<Props> = ({
   );
 };
 
-export const FilterSort = memo(FilterSortComponent);
+export const FilmFilterSort = memo(FilmFilterSortComponent);

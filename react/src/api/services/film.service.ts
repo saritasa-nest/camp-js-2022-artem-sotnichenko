@@ -6,47 +6,67 @@ import { FilmDocument } from '../dtos/film.dto';
 import { FilmMapper } from '../mappers/film.mapper';
 import { FirestoreService } from './firestore.service';
 
-/** Sort direction. */
-export enum SortDirection {
-  Ascending = 'asc',
-  Descending = 'desc',
-}
+const FILMS_PER_PAGE = 5;
+const FIREBASE_SEARCH_SYMBOL = '~';
 
 /** Sort field. */
-export enum SortField {
+export enum FilmSortField {
   Title = 'fields.title',
   Producers = 'fields.producer',
   Director = 'fields.director',
   ReleaseDate = 'fields.release_date',
 }
 
-export const TO_READABLE_SORT_FIELD_MAP: Readonly<Record<SortField, string>> = {
-  [SortField.Title]: 'Title',
-  [SortField.Producers]: 'Producers',
-  [SortField.Director]: 'Director',
-  [SortField.ReleaseDate]: 'Release date',
-};
+/** Sort direction. */
+export enum FilmSortDirection {
+  Ascending = 'asc',
+  Descending = 'desc',
+}
 
-export const TO_READABLE_SORT_DIRECTION_MAP: Readonly<Record<SortDirection, string>> = {
-  [SortDirection.Ascending]: 'Ascending',
-  [SortDirection.Descending]: 'Descending',
-};
+/** Search filter. */
+export interface FilmFetchFilterSearch {
+  /** Search text. */
+  searchText: string;
+}
 
-const DEFAULT_SORT_FIELD = SortField.Title;
-const DEFAULT_SORT_DIRECTION = SortDirection.Ascending;
-const DEFAULT_SEARCH_FIELD = SortField.Title;
-const FIREBASE_SEARCH_SYMBOL = '~';
+/** Sort filter. */
+export interface FilmFetchFilterSort {
+  /** Sort field. */
+  sortField: FilmSortField;
+
+  /** Sort direction. */
+  sortDirection: FilmSortDirection;
+}
+
+/** Filter. Search and sort are exclusive only one can be applied. */
+export type FilmFetchFilter = FilmFetchFilterSearch | FilmFetchFilterSort;
+
+/** Fetch many films options. */
+export interface FilmFetchManyOptions {
+  /** Count of film. */
+  count?: number;
+
+  /** Fetch after entity id. */
+  afterId?: string;
+
+  /** Filter. Search and sort are exclusive only one can be applied. */
+  filter?: FilmFetchFilter;
+}
 
 /**
  * Get query constraint, for use in firestore query.
  * @param options Options.
  */
 async function getQueryConstraints({
-  count,
-  fetchAfter,
+  count = FILMS_PER_PAGE,
+  afterId,
   filter,
-}: FilmService.FetchFilmsOptions): Promise<readonly QueryConstraint[]> {
+}: FilmFetchManyOptions): Promise<readonly QueryConstraint[]> {
   const constraints: QueryConstraint[] = [];
+
+  const DEFAULT_SORT_FIELD = FilmSortField.Title;
+  const DEFAULT_SORT_DIRECTION = FilmSortDirection.Ascending;
+  const DEFAULT_SEARCH_FIELD = FilmSortField.Title;
 
   constraints.push(limit(count));
 
@@ -63,8 +83,8 @@ async function getQueryConstraints({
     constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION));
   }
 
-  if (fetchAfter != null) {
-    const cursor = await FirestoreService.fetchSnapshot('films', fetchAfter);
+  if (afterId != null) {
+    const cursor = await FirestoreService.fetchSnapshot('films', afterId);
     constraints.push(startAfter(cursor));
   }
 
@@ -72,43 +92,25 @@ async function getQueryConstraints({
 }
 
 export namespace FilmService {
-  /** Search filter. */
-  export interface FilterSearch {
-    /** Search text. */
-    searchText: string;
-  }
-
-  /** Sort filter. */
-  export interface FilterSort {
-    /** Sort field. */
-    sortField: SortField;
-
-    /** Sort direction. */
-    sortDirection: SortDirection;
-  }
-
-  /** Filter. Search and sort are exclusive only one can be applied. */
-  export type Filter = FilterSearch | FilterSort;
-
-  /** Options of `fetchFilms`. */
-  export interface FetchFilmsOptions {
-    /** Count of film. */
-    count: number;
-
-    /** Fetch after entity id. */
-    fetchAfter?: string;
-
-    /** Filter. Search and sort are exclusive only one can be applied. */
-    filter?: Filter;
-  }
-
   /**
    * Fetch films.
    * @param options Options.
    */
-  export async function fetchFilms(options?: FetchFilmsOptions): Promise<Film[]> {
+  export async function fetchMany(options?: FilmFetchManyOptions): Promise<Film[]> {
     const constraints = options ? await getQueryConstraints(options) : [];
     const filmDtos = await FirestoreService.fetchMany<FilmDocument>('films', constraints);
     return filmDtos.map(FilmMapper.fromDto);
   }
+
+  export const sortFieldMap: Readonly<Record<FilmSortField, string>> = {
+    [FilmSortField.Title]: 'Title',
+    [FilmSortField.Producers]: 'Producers',
+    [FilmSortField.Director]: 'Director',
+    [FilmSortField.ReleaseDate]: 'Release date',
+  };
+
+  export const sortDirectionMap: Readonly<Record<FilmSortDirection, string>> = {
+    [FilmSortDirection.Ascending]: 'Ascending',
+    [FilmSortDirection.Descending]: 'Descending',
+  };
 }
