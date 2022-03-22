@@ -10,7 +10,7 @@ import cls from './AuthPage.module.css';
 const AuthPageComponent: VFC = () => {
   const dispatch = useAppDispatch();
 
-  const handleGoogleSignInClick = useCallback(() => dispatch(signInWithGoogle()), []);
+  const handleGoogleSignInClick = useCallback(() => dispatch(signInWithGoogle()), [dispatch]);
 
   return (
     <Stack className={cls['auth-page']}>
