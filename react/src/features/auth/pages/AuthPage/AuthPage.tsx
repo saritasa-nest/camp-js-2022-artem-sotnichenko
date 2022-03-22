@@ -5,6 +5,7 @@ import {
 import { Google } from '@mui/icons-material';
 import { signInWithGoogle } from 'src/store/auth/dispatchers';
 import { useAppDispatch } from 'src/store';
+import cls from './AuthPage.module.css';
 
 const AuthPageComponent: VFC = () => {
   const dispatch = useAppDispatch();
@@ -12,17 +13,11 @@ const AuthPageComponent: VFC = () => {
   const handleGoogleSignInClick = useCallback(() => dispatch(signInWithGoogle()), []);
 
   return (
-    <Stack
-      width="100%"
-      height="100%"
-      alignItems="center"
-      justifyContent="center"
-      gap={2}
-    >
+    <Stack className={cls['auth-page']}>
       <Typography
         component="h2"
         variant="h5"
-        fontWeight="bold"
+        className={cls.title}
       >
         Sign in with socials
       </Typography>
