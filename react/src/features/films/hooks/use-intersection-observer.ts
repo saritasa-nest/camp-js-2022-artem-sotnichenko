@@ -3,9 +3,9 @@ import { RefObject, useEffect, useState } from 'react';
 /**
  * Intersection observer hook.
  * @param elementRef Element ref.
- * @param options: Options.
+ * @param options Options.
  */
-function useIntersectionObserver(
+export function useIntersectionObserver(
   elementRef: RefObject<Element>,
   {
     threshold = 0,
@@ -15,27 +15,24 @@ function useIntersectionObserver(
 ): IntersectionObserverEntry | undefined {
   const [entry, setEntry] = useState<IntersectionObserverEntry>();
 
-  const updateEntry = ([_entry]: IntersectionObserverEntry[]): void => {
-    setEntry(_entry);
+  const updateEntry = ([firstEntry]: IntersectionObserverEntry[]): void => {
+    setEntry(firstEntry);
   };
 
   useEffect(() => {
-    const node = elementRef.current;
+    const node = elementRef?.current;
+    const hasIOSupport = !!window.IntersectionObserver;
 
-    if (node == null) return;
+    if (!hasIOSupport || !node) return;
 
-    const observerOptions = { threshold, root, rootMargin };
-    const observer = new IntersectionObserver(updateEntry, observerOptions);
+    const observerParams = { threshold, root, rootMargin };
+    const observer = new IntersectionObserver(updateEntry, observerParams);
 
     observer.observe(node);
 
     // eslint-disable-next-line consistent-return
     return () => observer.disconnect();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [elementRef, JSON.stringify(threshold), root, rootMargin]);
 
   return entry;
 }
-
-export default useIntersectionObserver;

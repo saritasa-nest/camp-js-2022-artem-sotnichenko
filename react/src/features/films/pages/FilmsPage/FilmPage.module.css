@@ -55,4 +55,5 @@
   gap: var(--size-4);
   overflow-y: auto;
   width: 100%;
+  scrollbar-gutter: stable;
 }

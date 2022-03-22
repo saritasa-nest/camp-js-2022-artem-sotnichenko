@@ -1,12 +1,13 @@
 import {
+  CircularProgress,
   IconButton, OutlinedInput, Tooltip,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import {
-  memo, ReactElement, useEffect, useRef, useState, VFC,
+  memo, ReactElement, useCallback, useEffect, useRef, useState, VFC,
 } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import { fetchFilmsOnTop } from 'src/store/film/dispatchers';
+import { fetchFilms, fetchFilmsOnTop } from 'src/store/film/dispatchers';
 import { selectAllFilms, selectStatus } from 'src/store/film/selectors';
 import {
   Sort, Search,
@@ -20,22 +21,20 @@ import { FilmList } from '../../components/FilmList';
 
 import cls from './FilmPage.module.css';
 import { FilterSort } from '../../components/FilterSort';
-import useIntersectionObserver from '../../hooks/use-intersection-observer';
+import { useIntersectionObserver } from '../../hooks/use-intersection-observer';
 
 const FilmsPageComponent: VFC = () => {
   const dispatch = useAppDispatch();
 
   const films = useAppSelector(selectAllFilms);
+  const filmStatus = useAppSelector(selectStatus);
 
   const [filterType, setFilterType] = useState<'search' | 'sort' | null>(null);
   const [searchText, setSearchText] = useState('');
   const [sortField, setSortField] = useState(SortField.Title);
   const [sortDirection, setSortDirection] = useState(SortDirection.Ascending);
 
-  /**
-   * Get filter to fetch films with.
-   */
-  function getFilter(): FilmService.Filter | undefined {
+  const getFilter = useCallback((): FilmService.Filter | undefined => {
     if (filterType === 'search') {
       return { searchText };
     }
@@ -43,46 +42,42 @@ const FilmsPageComponent: VFC = () => {
       return { sortField, sortDirection };
     }
     return undefined;
-  }
+  }, [filterType, searchText, sortField, sortDirection]);
 
-  const currentFilter = getFilter();
   const currentFetchAfterId = films.at(-1)?.id ?? undefined;
 
+  useEffect(() => {
+    dispatch(clearFilms());
+    if (filmStatus !== 'loading') {
+      dispatch(fetchFilms({
+        count: 5,
+        filter: getFilter(),
+      }));
+    }
+  }, [getFilter]);
+
   const endOfListRef = useRef<HTMLDivElement | null>(null);
-  const intersectionObserverEntry = useIntersectionObserver(endOfListRef, {});
-
-  const isBottomVisible = intersectionObserverEntry?.isIntersecting ?? false;
-
-  const filmStatus = useAppSelector(selectStatus);
-
-  /**
-   * TODO: Add clear on filter change.
-   */
-  // useEffect(() => {
-  //   console.log(currentFilter);
-  //   if (films.length !== 0 && filmStatus !== 'loading') {
-  //     dispatch(clearFilms());
-  //   }
-  // }, [filterType]);
+  const entry = useIntersectionObserver(endOfListRef, {});
+  const isBottomVisible = !!entry?.isIntersecting;
 
   useEffect(() => {
-    if ((filmStatus === 'idle' || isBottomVisible) && filmStatus !== 'loading') {
+    if (isBottomVisible && filmStatus !== 'loading') {
       dispatch(fetchFilmsOnTop({
         count: 5,
-        filter: currentFilter,
+        filter: getFilter(),
         fetchAfter: currentFetchAfterId,
       }));
     }
-  }, [dispatch, isBottomVisible, filmStatus]);
+  }, [isBottomVisible, currentFetchAfterId]);
 
   /** Handle sort button click. */
-  function handleSortClick(): void {
+  const handleSortClick = (): void => {
     setFilterType(filterType === 'sort' ? null : 'sort');
-  }
+  };
   /** Handle search button click. */
-  function handleSearchClick(): void {
+  const handleSearchClick = (): void => {
     setFilterType(filterType === 'search' ? null : 'search');
-  }
+  };
 
   const isFilterBlockVisible = filterType != null;
 
@@ -140,6 +135,7 @@ const FilmsPageComponent: VFC = () => {
           className={cls.list}
         >
           <FilmList films={films} />
+          {filmStatus === 'loading' && <CircularProgress />}
           <div ref={endOfListRef} />
         </div>
       </aside>

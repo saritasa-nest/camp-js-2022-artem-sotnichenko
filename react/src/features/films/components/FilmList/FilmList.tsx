@@ -9,10 +9,8 @@ interface Props {
   readonly films: readonly Film[];
 }
 
-const FilmListComponent: VFC<Props> = ({ films }) => {
-  console.log('film list');
-
-  return <div className={cls['film-list']}>{films.map(film => <FilmCard key={film.id} film={film} />)}</div>;
-};
+const FilmListComponent: VFC<Props> = ({ films }) => (
+  <div className={cls['film-list']}>{films.map(film => <FilmCard key={film.id} film={film} />)}</div>
+);
 
 export const FilmList = memo(FilmListComponent);
