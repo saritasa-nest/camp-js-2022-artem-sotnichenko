@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
