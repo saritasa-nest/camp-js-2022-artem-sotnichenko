@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { FilmForm } from 'src/app/core/models/film-form';
@@ -22,7 +22,7 @@ export class UpdateComponent {
 
   public constructor(
     @Self() private readonly destroy$: DestroyService,
-    private readonly location: Location,
+    private readonly router: Router,
     private readonly filmService: FilmService,
     route: ActivatedRoute,
   ) {
@@ -54,6 +54,11 @@ export class UpdateComponent {
    * Handle cancel.
    */
   public onCancel(): void {
-    this.location.back();
+    this.film$.pipe(
+      take(1),
+      takeUntil(this.destroy$),
+    ).subscribe({
+      next: film => this.router.navigate(['/film', film.id]),
+    });
   }
 }

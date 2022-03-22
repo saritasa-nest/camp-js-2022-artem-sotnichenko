@@ -1,27 +1,32 @@
 <sw-main-layout>
   <div class="films">
-    <table
-      aria-label="Films"
-      class="films__table"
-      [@show]="(films$ | async) ? 'visible' : 'hidden'"
-      *ngIf="films$ | async; else loading"
-    >
-      <tr class="films__head">
-        <th class="films__column films__column_title">Title</th>
-        <th class="films__column films__column_producers">Producers</th>
-        <th class="films__column films__column_director">Director</th>
-        <th class="films__column films__column_release-date">Release</th>
-      </tr>
-      <tr
-        sw-film-row
-        *ngFor="let film of films$ | async; trackBy: trackFilm"
-        [id]="film.id"
-        [title]="film.title"
-        [producers]="film.producers"
-        [director]="film.director"
-        [releaseDate]="film.releaseDate"
-      ></tr>
-    </table>
+    <div class="films__table-wrap">
+      <table
+        aria-label="Films"
+        class="films__table"
+        [@show]="(films$ | async) ? 'visible' : 'hidden'"
+        *ngIf="films$ | async; else loading"
+      >
+        <tr class="films__head">
+          <th class="films__column films__column_title">Title</th>
+          <th class="films__column films__column_producers">Producers</th>
+          <th class="films__column films__column_director">Director</th>
+          <th class="films__column films__column_release-date">Release</th>
+        </tr>
+        <tr
+          sw-film-row
+          *ngFor="let film of films$ | async; trackBy: trackFilm"
+          [id]="film.id"
+          [title]="film.title"
+          [producers]="film.producers"
+          [director]="film.director"
+          [releaseDate]="film.releaseDate"
+        ></tr>
+      </table>
+      <a class="films__create" routerLink="/film/create" mat-stroked-button>
+        Create film
+      </a>
+    </div>
     <ng-template #loading>
       <div class="films__spinner">
         <mat-spinner [diameter]="32"></mat-spinner>
