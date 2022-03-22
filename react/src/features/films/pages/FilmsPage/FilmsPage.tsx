@@ -52,7 +52,7 @@ const FilmsPageComponent: VFC = () => {
       <aside className={cls.sidebar}>
         <FilmFilter onChange={handleFilterChange} />
         <div className={cls['list-wrap']}>
-          <FilmList films={films} onLoadMore={() => handleLoadMore()} />
+          <FilmList films={films} onLoadMore={handleLoadMore} />
         </div>
       </aside>
       <Box>

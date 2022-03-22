@@ -15,16 +15,16 @@ export class Film extends Immerable {
   public readonly director: string;
 
   /** The name(s) of the producer(s) of this film. */
-  public readonly producers: string[];
+  public readonly producers: readonly string[];
 
   /** The Date of film release at original creator country. */
   public readonly releaseDate: Date;
 
   /** An array of people ids that are in this film. */
-  public readonly characterIds: string[];
+  public readonly characterIds: readonly string[];
 
   /** An array of planet ids that are in this film. */
-  public readonly planetIds: string[];
+  public readonly planetIds: readonly string[];
 
   public constructor(data: FilmInitArgs) {
     super();

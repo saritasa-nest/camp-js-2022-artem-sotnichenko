@@ -5,7 +5,10 @@ import { memo, useState, VFC } from 'react';
 import {
   FilmService, FilmSortDirection, FilmSortField,
 } from 'src/api/services/film.service';
-import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import {
+  ArrowUpward as ArrowUpwardIcon,
+  ArrowDownward as ArrowDownwardIcon,
+} from '@mui/icons-material';
 import cls from './FilmFilterSort.module.css';
 
 interface Props {
@@ -34,25 +37,25 @@ const FilmFilterSortComponent: VFC<Props> = ({
   /**
    * Handle sort field change.
    */
-  function handleSortDirectionClick(): void {
+  const handleSortDirectionClick = (): void => {
     const newSortDirection = sortDirection === FilmSortDirection.Ascending
       ? FilmSortDirection.Descending
       : FilmSortDirection.Ascending;
 
     setSortDirection(newSortDirection);
     onSortDirectionChange(newSortDirection);
-  }
+  };
   /**
    * Handle sort field change.
    * @param event Change event.
    */
-  function handleSortFieldChange(event: SelectChangeEvent<unknown>): void {
+  const handleSortFieldChange = (event: SelectChangeEvent<unknown>): void => {
     if (typeof event.target.value === 'string') {
       const newSortField = event.target.value as FilmSortField;
       setSortField(newSortField);
       onSortFieldChange(newSortField);
     }
-  }
+  };
 
   const fields = Object.entries(FilmService.sortFieldMap)
     .map(([value, text]) => ({ value, text }));
@@ -61,7 +64,7 @@ const FilmFilterSortComponent: VFC<Props> = ({
     <div className={cls.sort}>
       <Select
         className={cls.sort__select}
-        onChange={e => handleSortFieldChange(e)}
+        onChange={handleSortFieldChange}
         input={<OutlinedInput className={cls.sort__field} label="Name" />}
         value={sortField}
         label="Sort field"
@@ -76,10 +79,10 @@ const FilmFilterSortComponent: VFC<Props> = ({
         ))}
       </Select>
       <Tooltip title={FilmService.sortDirectionMap[sortDirection]}>
-        <IconButton onClick={() => handleSortDirectionClick()}>
+        <IconButton onClick={handleSortDirectionClick}>
           {sortDirection === FilmSortDirection.Ascending
-            ? <ArrowUpward />
-            : <ArrowDownward />}
+            ? <ArrowUpwardIcon />
+            : <ArrowDownwardIcon />}
         </IconButton>
       </Tooltip>
     </div>

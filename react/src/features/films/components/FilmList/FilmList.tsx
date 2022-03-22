@@ -22,7 +22,7 @@ interface Props {
 
 const FilmListComponent: VFC<Props> = ({ films, onLoadMore }) => {
   const endOfListRef = useRef<HTMLDivElement | null>(null);
-  const ioEntry = useIntersectionObserver(endOfListRef, {});
+  const ioEntry = useIntersectionObserver(endOfListRef);
 
   useEffect(() => {
     if (ioEntry?.isIntersecting) {

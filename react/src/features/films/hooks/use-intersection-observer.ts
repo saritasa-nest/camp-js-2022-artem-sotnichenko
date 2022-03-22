@@ -9,12 +9,12 @@ import { RefObject, useEffect, useState } from 'react';
  */
 export function useIntersectionObserver(
   elementRef: RefObject<Element>,
-  {
-    threshold = 0,
-    root = null,
-    rootMargin = '0%',
-  }: IntersectionObserverInit,
+  options?: IntersectionObserverInit,
 ): IntersectionObserverEntry | undefined {
+  const threshold = options?.threshold ?? 0;
+  const root = options?.root ?? null;
+  const rootMargin = options?.rootMargin ?? '0%';
+
   const [entry, setEntry] = useState<IntersectionObserverEntry>();
 
   const updateEntry = ([firstEntry]: IntersectionObserverEntry[]): void => {

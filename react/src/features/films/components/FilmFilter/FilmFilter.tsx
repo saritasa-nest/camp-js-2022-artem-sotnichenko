@@ -1,9 +1,9 @@
 import {
+  ChangeEvent, memo, ReactElement, useEffect, useState, VFC,
+} from 'react';
+import {
   IconButton, OutlinedInput, Tooltip,
 } from '@mui/material';
-import {
-  memo, ReactElement, useEffect, useState, VFC,
-} from 'react';
 import {
   Sort as SortIcon,
   Search as SearchIcon,
@@ -31,6 +31,13 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
   const [sortField, setSortField] = useState(FilmSortField.Title);
   const [sortDirection, setSortDirection] = useState(FilmSortDirection.Ascending);
 
+  const handleSearchTextChange = (
+    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ): void => { setSearchText(event.target.value); };
+
+  const handleSortFieldChange = setSortField;
+  const handleSortDirectionChange = setSortDirection;
+
   useEffect(() => {
     if (currentFilterType === FilterType.Search) {
       return onChange({ searchText });
@@ -45,7 +52,8 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
   const handleSortClick = (): void => {
     setFilterType(currentFilterType === FilterType.Sort ? null : FilterType.Sort);
   };
-    /** Handle search button click. */
+
+  /** Handle search button click. */
   const handleSearchClick = (): void => {
     setFilterType(currentFilterType === FilterType.Search ? null : FilterType.Search);
   };
@@ -59,7 +67,7 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
             className={cls['search-input']}
             placeholder="Search"
             value={searchText}
-            onChange={e => setSearchText(e.target.value)}
+            onChange={handleSearchTextChange}
           />
         </div>
       );
@@ -70,8 +78,8 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
           <FilmFilterSort
             selectedSortField={sortField}
             selectedSortDirection={sortDirection}
-            onSortFieldChange={field => setSortField(field)}
-            onSortDirectionChange={direction => setSortDirection(direction)}
+            onSortFieldChange={handleSortFieldChange}
+            onSortDirectionChange={handleSortDirectionChange}
           />
         </div>
       );
@@ -85,12 +93,12 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
         <div>Films</div>
         <div className={cls.buttons}>
           <Tooltip title="Sort">
-            <IconButton size="small" onClick={() => handleSortClick()}>
+            <IconButton size="small" onClick={handleSortClick}>
               <SortIcon fontSize="small" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Search">
-            <IconButton size="small" onClick={() => handleSearchClick()}>
+            <IconButton size="small" onClick={handleSearchClick}>
               <SearchIcon fontSize="small" />
             </IconButton>
           </Tooltip>
