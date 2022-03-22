@@ -4,6 +4,8 @@ import { RefObject, useEffect, useState } from 'react';
  * Intersection observer hook.
  * @param elementRef Element ref.
  * @param options Options.
+ *
+ * A bit refactored version of https://usehooks-ts.com/react-hook/use-intersection-observer.
  */
 export function useIntersectionObserver(
   elementRef: RefObject<Element>,

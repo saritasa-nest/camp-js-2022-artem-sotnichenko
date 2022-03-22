@@ -6,9 +6,6 @@ import { FilmDocument } from '../dtos/film.dto';
 import { FilmMapper } from '../mappers/film.mapper';
 import { FirestoreService } from './firestore.service';
 
-const FILMS_PER_PAGE = 5;
-const FIREBASE_SEARCH_SYMBOL = '~';
-
 /** Sort field. */
 export enum FilmSortField {
   Title = 'fields.title',
@@ -26,16 +23,16 @@ export enum FilmSortDirection {
 /** Search filter. */
 export interface FilmFetchFilterSearch {
   /** Search text. */
-  searchText: string;
+  readonly searchText: string;
 }
 
 /** Sort filter. */
 export interface FilmFetchFilterSort {
   /** Sort field. */
-  sortField: FilmSortField;
+  readonly sortField: FilmSortField;
 
   /** Sort direction. */
-  sortDirection: FilmSortDirection;
+  readonly sortDirection: FilmSortDirection;
 }
 
 /** Filter. Search and sort are exclusive only one can be applied. */
@@ -44,14 +41,21 @@ export type FilmFetchFilter = FilmFetchFilterSearch | FilmFetchFilterSort;
 /** Fetch many films options. */
 export interface FilmFetchManyOptions {
   /** Count of film. */
-  count?: number;
+  readonly count?: number;
 
   /** Fetch after entity id. */
-  afterId?: string;
+  readonly afterId?: string;
 
   /** Filter. Search and sort are exclusive only one can be applied. */
-  filter?: FilmFetchFilter;
+  readonly filter?: FilmFetchFilter;
 }
+
+const FILMS_PER_PAGE = 5;
+const FIREBASE_SEARCH_SYMBOL = '~';
+
+const DEFAULT_SORT_FIELD = FilmSortField.Title;
+const DEFAULT_SORT_DIRECTION = FilmSortDirection.Ascending;
+const DEFAULT_SEARCH_SORT_FIELD = FilmSortField.Title;
 
 /**
  * Get query constraint, for use in firestore query.
@@ -64,17 +68,13 @@ async function getQueryConstraints({
 }: FilmFetchManyOptions): Promise<readonly QueryConstraint[]> {
   const constraints: QueryConstraint[] = [];
 
-  const DEFAULT_SORT_FIELD = FilmSortField.Title;
-  const DEFAULT_SORT_DIRECTION = FilmSortDirection.Ascending;
-  const DEFAULT_SEARCH_FIELD = FilmSortField.Title;
-
   constraints.push(limit(count));
 
   if (filter != null) {
     if ('searchText' in filter) {
       constraints.push(
-        where(DEFAULT_SEARCH_FIELD, '>=', filter.searchText),
-        where(DEFAULT_SEARCH_FIELD, '<=', `${filter.searchText}${FIREBASE_SEARCH_SYMBOL}`),
+        where(DEFAULT_SEARCH_SORT_FIELD, '>=', filter.searchText),
+        where(DEFAULT_SEARCH_SORT_FIELD, '<=', `${filter.searchText}${FIREBASE_SEARCH_SYMBOL}`),
       );
     } else {
       constraints.push(orderBy(filter.sortField, filter.sortDirection));

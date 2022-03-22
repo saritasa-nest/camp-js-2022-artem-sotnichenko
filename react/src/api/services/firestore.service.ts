@@ -12,15 +12,16 @@ import {
 import { FirestoreWrapper } from '../dtos/firestore-wrapper.dto';
 import { FirebaseService } from './firebase.service';
 
+export type FirestoreCollectionName = 'films' | 'characters' | 'planets';
+
 export namespace FirestoreService {
-  export type CollectionName = 'films' | 'characters' | 'planets';
 
   /**
    * Create typed collection.
    * @param db Firestore instance.
    * @param collectionName Collection name.
    */
-  export function getCollection<T = DocumentData>(collectionName: CollectionName): CollectionReference<T> {
+  export function getCollection<T = DocumentData>(collectionName: FirestoreCollectionName): CollectionReference<T> {
     return collection(FirebaseService.db, collectionName) as CollectionReference<T>;
   }
 
@@ -30,7 +31,7 @@ export namespace FirestoreService {
    * @param constraints Query constraints.
    */
   export async function fetchMany<T = DocumentData>(
-    collectionName: CollectionName,
+    collectionName: FirestoreCollectionName,
     constraints: readonly QueryConstraint[] = [],
   ): Promise<(T & FirestoreWrapper)[]> {
     const querySnapshot = await getDocs<T>(query(getCollection(collectionName), ...constraints));
@@ -43,7 +44,7 @@ export namespace FirestoreService {
    * @param id Document id.
    */
   export function fetchSnapshot<T = DocumentData>(
-    collectionName: CollectionName,
+    collectionName: FirestoreCollectionName,
     id: string,
   ): Promise<DocumentSnapshot<T>> {
     return getDoc(doc(getCollection<T>(collectionName), id));

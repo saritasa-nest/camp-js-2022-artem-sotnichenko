@@ -27,6 +27,7 @@ export const filmsSlice = createSlice({
   reducers: {
     clearFilms(state) {
       filmsAdapter.removeAll(state as InitialState);
+      state.status = 'idle';
     },
   },
   extraReducers: builder => {

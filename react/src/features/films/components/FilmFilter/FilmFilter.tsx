@@ -5,7 +5,8 @@ import {
   memo, ReactElement, useEffect, useState, VFC,
 } from 'react';
 import {
-  Sort, Search,
+  Sort as SortIcon,
+  Search as SearchIcon,
 } from '@mui/icons-material';
 import {
   FilmFetchFilter, FilmSortDirection, FilmSortField,
@@ -15,37 +16,43 @@ import { FilmFilterSort } from '../FilmFilterSort';
 
 interface Props {
   /** Callback on filter change. */
-  onChange: (filter: FilmFetchFilter | null) => void;
+  readonly onChange: (filter: FilmFetchFilter | null) => void;
+}
+
+/** Filter type. */
+enum FilterType {
+  Search,
+  Sort,
 }
 
 const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
-  const [filterType, setFilterType] = useState<'search' | 'sort' | null>(null);
+  const [currentFilterType, setFilterType] = useState<FilterType | null>(null);
   const [searchText, setSearchText] = useState('');
   const [sortField, setSortField] = useState(FilmSortField.Title);
   const [sortDirection, setSortDirection] = useState(FilmSortDirection.Ascending);
 
   useEffect(() => {
-    if (filterType === 'search') {
+    if (currentFilterType === FilterType.Search) {
       return onChange({ searchText });
     }
-    if (filterType === 'sort') {
+    if (currentFilterType === FilterType.Sort) {
       return onChange({ sortField, sortDirection });
     }
     return onChange(null);
-  }, [filterType, searchText, sortField, sortDirection]);
+  }, [currentFilterType, searchText, sortField, sortDirection]);
 
   /** Handle sort button click. */
   const handleSortClick = (): void => {
-    setFilterType(filterType === 'sort' ? null : 'sort');
+    setFilterType(currentFilterType === FilterType.Sort ? null : FilterType.Sort);
   };
     /** Handle search button click. */
   const handleSearchClick = (): void => {
-    setFilterType(filterType === 'search' ? null : 'search');
+    setFilterType(currentFilterType === FilterType.Search ? null : FilterType.Search);
   };
 
   /** Shows one of filters. */
   function getFilterBlock(): ReactElement | null {
-    if (filterType === 'search') {
+    if (currentFilterType === FilterType.Search) {
       return (
         <div className={cls.filter}>
           <OutlinedInput
@@ -57,7 +64,7 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
         </div>
       );
     }
-    if (filterType === 'sort') {
+    if (currentFilterType === FilterType.Sort) {
       return (
         <div className={cls.filter}>
           <FilmFilterSort
@@ -79,12 +86,12 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
         <div className={cls.buttons}>
           <Tooltip title="Sort">
             <IconButton size="small" onClick={() => handleSortClick()}>
-              <Sort fontSize="small" />
+              <SortIcon fontSize="small" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Search">
             <IconButton size="small" onClick={() => handleSearchClick()}>
-              <Search fontSize="small" />
+              <SearchIcon fontSize="small" />
             </IconButton>
           </Tooltip>
         </div>

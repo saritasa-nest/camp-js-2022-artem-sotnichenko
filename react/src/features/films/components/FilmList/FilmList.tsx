@@ -35,7 +35,7 @@ const FilmListComponent: VFC<Props> = ({ films, onLoadMore }) => {
   return (
     <div className={cls['film-list']}>
       {films.map(film => <FilmCard key={film.id} film={film} />)}
-      {filmStatus === 'loading' && <CircularProgress />}
+      {(filmStatus === 'loading' || true) && <CircularProgress />}
       <div ref={endOfListRef} />
     </div>
   );
