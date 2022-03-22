@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Self, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { take, takeUntil } from 'rxjs';
 import { FilmForm } from 'src/app/core/models/film-form';
@@ -19,6 +19,7 @@ export class CreateComponent {
     private readonly filmService: FilmService,
     @Self() private readonly destroy$: DestroyService,
     private readonly router: Router,
+    private readonly ngZone: NgZone,
   ) {}
 
   /**
@@ -29,14 +30,13 @@ export class CreateComponent {
     /*
      * Getting "Navigation triggered outside Angular zone, did you forget to call 'ngZone.run()'?" warning,
      * when adding pipe directly to create return.
-     * Decided to use a variable to explicitly subscribe in angular zone.
      */
-    const newFilm$ = this.filmService.create(filmForm);
-    newFilm$.pipe(
+    this.filmService.create(filmForm).pipe(
       takeUntil(this.destroy$),
       take(1),
-    ).subscribe({
-      next: film => this.router.navigate(['/film', film.id]),
-    });
+    )
+      .subscribe({
+        next: film => this.ngZone.run(() => this.router.navigate(['/film', film.id])),
+      });
   }
 }
