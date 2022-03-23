@@ -5,11 +5,18 @@
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: var(--size-4) 0;
+}
+
+.header__logo-link {
+  text-decoration: none;
+  color: var(--color-text);
 }
 
 .header__user-block {
   display: flex;
-  gap: var(--size-4);
+  flex-direction: row;
   align-items: center;
+  gap: var(--size-4);
 }
