@@ -1,7 +1,7 @@
+import { memo, VFC } from 'react';
 import {
   IconButton, MenuItem, OutlinedInput, Select, SelectChangeEvent, Tooltip,
 } from '@mui/material';
-import { memo, useState, VFC } from 'react';
 import {
   FilmService, FilmSortDirection, FilmSortField,
 } from 'src/api/services/film.service';
@@ -31,30 +31,23 @@ const FilmFilterSortComponent: VFC<Props> = ({
   onSortFieldChange,
   onSortDirectionChange,
 }) => {
-  const [sortField, setSortField] = useState(selectedSortField);
-  const [sortDirection, setSortDirection] = useState<FilmSortDirection>(selectedSortDirection);
-
   /**
    * Handle sort field change.
    */
   const handleSortDirectionClick = (): void => {
-    const newSortDirection = sortDirection === FilmSortDirection.Ascending
+    const newSortDirection = selectedSortDirection === FilmSortDirection.Ascending
       ? FilmSortDirection.Descending
       : FilmSortDirection.Ascending;
 
-    setSortDirection(newSortDirection);
     onSortDirectionChange(newSortDirection);
   };
   /**
    * Handle sort field change.
    * @param event Change event.
    */
-  const handleSortFieldChange = (event: SelectChangeEvent<unknown>): void => {
-    if (typeof event.target.value === 'string') {
-      const newSortField = event.target.value as FilmSortField;
-      setSortField(newSortField);
-      onSortFieldChange(newSortField);
-    }
+  const handleSortFieldChange = (event: SelectChangeEvent<FilmSortField>): void => {
+    const newSortField = event.target.value as FilmSortField;
+    onSortFieldChange(newSortField);
   };
 
   const fields = Object.entries(FilmService.sortFieldMap)
@@ -66,7 +59,7 @@ const FilmFilterSortComponent: VFC<Props> = ({
         className={cls.sort__select}
         onChange={handleSortFieldChange}
         input={<OutlinedInput className={cls.sort__field} label="Name" />}
-        value={sortField}
+        value={selectedSortField}
         label="Sort field"
       >
         {fields.map(field => (
@@ -78,9 +71,9 @@ const FilmFilterSortComponent: VFC<Props> = ({
           </MenuItem>
         ))}
       </Select>
-      <Tooltip title={FilmService.sortDirectionMap[sortDirection]}>
+      <Tooltip title={FilmService.sortDirectionMap[selectedSortDirection]}>
         <IconButton onClick={handleSortDirectionClick}>
-          {sortDirection === FilmSortDirection.Ascending
+          {selectedSortDirection === FilmSortDirection.Ascending
             ? <ArrowUpwardIcon />
             : <ArrowDownwardIcon />}
         </IconButton>

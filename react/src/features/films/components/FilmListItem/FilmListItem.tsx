@@ -1,14 +1,14 @@
 import { memo, VFC } from 'react';
 import { Film } from 'src/models/film';
 import { formatDate } from 'src/utils/format-date';
-import cls from './FilmCard.module.css';
+import cls from './FilmListItem.module.css';
 
 interface Props {
   /** Film. */
   readonly film: Film;
 }
 
-const FilmCardComponent: VFC<Props> = ({ film }) => (
+const FilmListItemComponent: VFC<Props> = ({ film }) => (
   <div className={cls['film-card']}>
     <div className={cls.header}>
       <div className={cls.title}>{film.title}</div>
@@ -20,4 +20,4 @@ const FilmCardComponent: VFC<Props> = ({ film }) => (
   </div>
 );
 
-export const FilmCard = memo(FilmCardComponent);
+export const FilmListItem = memo(FilmListItemComponent);

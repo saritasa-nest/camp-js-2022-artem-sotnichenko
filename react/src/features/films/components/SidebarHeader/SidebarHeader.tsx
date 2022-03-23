@@ -8,15 +8,14 @@ import {
   Sort as SortIcon,
   Search as SearchIcon,
 } from '@mui/icons-material';
-import {
-  FilmFetchFilter, FilmSortDirection, FilmSortField,
-} from 'src/api/services/film.service';
-import cls from './FilmFilter.module.css';
+import type { FilmFilter } from 'src/api/services/film.service';
+import { FilmSortDirection, FilmSortField } from 'src/api/services/film.service';
+import cls from './SidebarHeader.module.css';
 import { FilmFilterSort } from '../FilmFilterSort';
 
 interface Props {
   /** Callback on filter change. */
-  readonly onChange: (filter: FilmFetchFilter | null) => void;
+  readonly onChange: (filter: FilmFilter | null) => void;
 }
 
 /** Filter type. */
@@ -25,7 +24,7 @@ enum FilterType {
   Sort,
 }
 
-const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
+const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
   const [currentFilterType, setFilterType] = useState<FilterType | null>(null);
   const [searchText, setSearchText] = useState('');
   const [sortField, setSortField] = useState(FilmSortField.Title);
@@ -99,4 +98,4 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
   );
 };
 
-export const FilmFilter = memo(FilmFilterComponent);
+export const SidebarHeader = memo(SidebarHeaderComponent);

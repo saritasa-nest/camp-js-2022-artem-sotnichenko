@@ -21,13 +21,13 @@ export enum FilmSortDirection {
 }
 
 /** Search filter. */
-export interface FilmFetchFilterSearch {
+export interface FilmFilterSearch {
   /** Search text. */
   readonly searchText: string;
 }
 
 /** Sort filter. */
-export interface FilmFetchFilterSort {
+export interface FilmFilterSort {
   /** Sort field. */
   readonly sortField: FilmSortField;
 
@@ -36,7 +36,7 @@ export interface FilmFetchFilterSort {
 }
 
 /** Filter. Search and sort are exclusive only one can be applied. */
-export type FilmFetchFilter = FilmFetchFilterSearch | FilmFetchFilterSort;
+export type FilmFilter = FilmFilterSearch | FilmFilterSort;
 
 /** Fetch many films options. */
 export interface FilmFetchManyOptions {
@@ -47,7 +47,7 @@ export interface FilmFetchManyOptions {
   readonly afterId?: string;
 
   /** Filter. Search and sort are exclusive only one can be applied. */
-  readonly filter?: FilmFetchFilter;
+  readonly filter?: FilmFilter;
 }
 
 const FILMS_PER_PAGE = 5;
