@@ -23,7 +23,7 @@ export function useIntersectionObserver(
 
   useEffect(() => {
     const node = elementRef?.current;
-    const hasIOSupport = !!window.IntersectionObserver;
+    const hasIOSupport = window.IntersectionObserver != null;
 
     if (!hasIOSupport || !node) return;
 

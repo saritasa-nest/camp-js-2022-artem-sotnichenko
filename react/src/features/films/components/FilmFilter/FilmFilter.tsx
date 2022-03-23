@@ -1,5 +1,5 @@
 import {
-  ChangeEvent, memo, ReactElement, useEffect, useState, VFC,
+  ChangeEvent, memo, useEffect, useState, VFC,
 } from 'react';
 import {
   IconButton, OutlinedInput, Tooltip,
@@ -58,35 +58,6 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
     setFilterType(currentFilterType === FilterType.Search ? null : FilterType.Search);
   };
 
-  /** Shows one of filters. */
-  function getFilterBlock(): ReactElement | null {
-    if (currentFilterType === FilterType.Search) {
-      return (
-        <div className={cls.filter}>
-          <OutlinedInput
-            className={cls['search-input']}
-            placeholder="Search"
-            value={searchText}
-            onChange={handleSearchTextChange}
-          />
-        </div>
-      );
-    }
-    if (currentFilterType === FilterType.Sort) {
-      return (
-        <div className={cls.filter}>
-          <FilmFilterSort
-            selectedSortField={sortField}
-            selectedSortDirection={sortDirection}
-            onSortFieldChange={handleSortFieldChange}
-            onSortDirectionChange={handleSortDirectionChange}
-          />
-        </div>
-      );
-    }
-    return null;
-  }
-
   return (
     <div className={cls.header}>
       <div className={cls.options}>
@@ -104,7 +75,26 @@ const FilmFilterComponent: VFC<Props> = ({ onChange }) => {
           </Tooltip>
         </div>
       </div>
-      {getFilterBlock()}
+      {currentFilterType === FilterType.Search && (
+        <div className={cls.filter}>
+          <OutlinedInput
+            className={cls['search-input']}
+            placeholder="Search"
+            value={searchText}
+            onChange={handleSearchTextChange}
+          />
+        </div>
+      )}
+      {currentFilterType === FilterType.Sort && (
+        <div className={cls.filter}>
+          <FilmFilterSort
+            selectedSortField={sortField}
+            selectedSortDirection={sortDirection}
+            onSortFieldChange={handleSortFieldChange}
+            onSortDirectionChange={handleSortDirectionChange}
+          />
+        </div>
+      )}
     </div>
   );
 };

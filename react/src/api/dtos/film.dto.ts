@@ -22,10 +22,10 @@ export interface FilmDocument {
     readonly release_date: string;
 
     /** An array of people ids that are in this film. */
-    readonly characters: string[];
+    readonly characters: readonly string[];
 
     /** An array of planet ids that are in this film. */
-    readonly planets: string[];
+    readonly planets: readonly string[];
   };
 }
 
