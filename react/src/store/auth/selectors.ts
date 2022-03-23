@@ -9,4 +9,4 @@ export const selectUser = createSelector((state: RootState) => state.auth.user, 
 export const selectIsAuthorized = createSelector((state: RootState) => state.auth.user, user => Boolean(user));
 
 /** Selects user authorization state. */
-export const selectLoading = createSelector((state: RootState) => state.auth.loading, loading => loading);
+export const selectAuthLoading = createSelector((state: RootState) => state.auth.loading, loading => loading);

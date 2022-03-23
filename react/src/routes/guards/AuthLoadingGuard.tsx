@@ -1,28 +1,22 @@
 import { LinearProgress } from '@mui/material';
 import { useEffect, VFC } from 'react';
 import { Outlet } from 'react-router-dom';
-import { AuthService } from 'src/api/services/auth.service';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import { selectLoading } from 'src/store/auth/selectors';
-import { setLoading, setUser } from 'src/store/auth/slice';
+import { fetchUser } from 'src/store/auth/dispatchers';
+import { selectAuthLoading } from 'src/store/auth/selectors';
 
 /**
- * Show loading component while auth in a loading state.
- * Need for other auth-related guards to work properly without route flickering.
+ * Auth loading guard.
  */
 export const AuthLoadingGuard: VFC = () => {
-  const isLoading = useAppSelector(selectLoading);
   const dispatch = useAppDispatch();
+  const isAuthLoading = useAppSelector(selectAuthLoading);
 
   useEffect(() => {
-    const unsubscribe = AuthService.subscribeToAuthChange(user => {
-      dispatch(setUser(user));
-      dispatch(setLoading(false));
-    });
-    return unsubscribe;
+    dispatch(fetchUser());
   }, [dispatch]);
 
-  if (isLoading) {
+  if (isAuthLoading) {
     return <LinearProgress />;
   }
 

@@ -16,10 +16,11 @@ export namespace AuthService {
   const provider = new GoogleAuthProvider();
 
   /**
-   * Shows pop up with google sign in.
+   * Shows popup with google sign in.
    */
-  export async function signInWithGoogle(): Promise<void> {
-    await signInWithPopup(auth, provider);
+  export async function signInWithGoogle(): Promise<User | null> {
+    const { user } = await signInWithPopup(auth, provider);
+    return user ? UserMapper.fromDto(user) : null;
   }
 
   /**
@@ -35,5 +36,21 @@ export namespace AuthService {
    */
   export function subscribeToAuthChange(callback: (user: User | null) => unknown): Unsubscribe {
     return onAuthStateChanged(auth, userDto => callback(userDto !== null ? UserMapper.fromDto(userDto) : null));
+  }
+
+  /**
+   * Get user asynchronously.
+   */
+  export function getUser(): Promise<User | null> {
+    return new Promise((resolve, reject) => {
+      try {
+        const unsubscribe = subscribeToAuthChange(user => {
+          unsubscribe();
+          resolve(user);
+        });
+      } catch (error: unknown) {
+        reject(error);
+      }
+    });
   }
 }
