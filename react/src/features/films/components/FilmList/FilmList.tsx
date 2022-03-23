@@ -13,9 +13,6 @@ interface Props {
   /** Films. */
   readonly films: readonly Film[];
 
-  /** Whether there more films. */
-  readonly hasMore?: boolean;
-
   /** Callback to load more films. */
   readonly onLoadMore: () => void;
 }
@@ -28,7 +25,7 @@ const FilmListComponent: VFC<Props> = ({ films, onLoadMore }) => {
     if (ioEntry?.isIntersecting) {
       onLoadMore();
     }
-  }, [ioEntry, films]);
+  }, [ioEntry, films, onLoadMore]);
 
   const filmStatus = useAppSelector(selectFilmStatus);
 

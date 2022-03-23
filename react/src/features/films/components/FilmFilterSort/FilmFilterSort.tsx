@@ -1,4 +1,6 @@
-import { memo, VFC } from 'react';
+import {
+  memo, useCallback, useMemo, VFC,
+} from 'react';
 import {
   IconButton, MenuItem, OutlinedInput, Select, SelectChangeEvent, Tooltip,
 } from '@mui/material';
@@ -34,24 +36,24 @@ const FilmFilterSortComponent: VFC<Props> = ({
   /**
    * Handle sort field change.
    */
-  const handleSortDirectionClick = (): void => {
+  const handleSortDirectionClick = useCallback(() => {
     const newSortDirection = selectedSortDirection === FilmSortDirection.Ascending
       ? FilmSortDirection.Descending
       : FilmSortDirection.Ascending;
 
     onSortDirectionChange(newSortDirection);
-  };
+  }, [selectedSortDirection, onSortDirectionChange]);
   /**
    * Handle sort field change.
    * @param event Change event.
    */
-  const handleSortFieldChange = (event: SelectChangeEvent<FilmSortField>): void => {
+  const handleSortFieldChange = useCallback((event: SelectChangeEvent<FilmSortField>) => {
     const newSortField = event.target.value as FilmSortField;
     onSortFieldChange(newSortField);
-  };
+  }, [onSortFieldChange]);
 
-  const fields = Object.entries(FilmService.sortFieldMap)
-    .map(([value, text]) => ({ value, text }));
+  const fields = useMemo(() => Object.entries(FilmService.sortFieldMap)
+    .map(([value, text]) => ({ value, text })), []);
 
   return (
     <div className={cls.sort}>

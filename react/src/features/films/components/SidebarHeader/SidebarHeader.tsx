@@ -1,5 +1,5 @@
 import {
-  ChangeEvent, memo, useEffect, useState, VFC,
+  ChangeEvent, memo, useCallback, useState, VFC,
 } from 'react';
 import {
   IconButton, OutlinedInput, Tooltip,
@@ -26,36 +26,31 @@ enum FilterType {
 
 const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
   const [currentFilterType, setFilterType] = useState<FilterType | null>(null);
-  const [searchText, setSearchText] = useState('');
+
   const [sortField, setSortField] = useState(FilmSortField.Title);
   const [sortDirection, setSortDirection] = useState(FilmSortDirection.Ascending);
 
-  const handleSearchTextChange = (
+  const handleSearchTextChange = useCallback((
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-  ): void => { setSearchText(event.target.value); };
+  ) => onChange({ searchText: event.target.value }), [onChange]);
 
-  const handleSortFieldChange = setSortField;
-  const handleSortDirectionChange = setSortDirection;
+  const handleSortFieldChange = useCallback((field: FilmSortField) => {
+    setSortField(field);
+    onChange({ sortField, sortDirection });
+  }, [onChange, setSortField, sortField, sortDirection]);
 
-  useEffect(() => {
-    if (currentFilterType === FilterType.Search) {
-      return onChange({ searchText });
+  const handleSortDirectionChange = useCallback((direction: FilmSortDirection) => {
+    setSortDirection(direction);
+    onChange({ sortField, sortDirection });
+  }, [onChange, setSortDirection, sortField, sortDirection]);
+
+  const handleFilterButtonClick = useCallback((buttonFilterType: FilterType) => () => {
+    const newFilterType = currentFilterType === buttonFilterType ? null : buttonFilterType;
+    setFilterType(newFilterType);
+    if (newFilterType === null) {
+      onChange(null);
     }
-    if (currentFilterType === FilterType.Sort) {
-      return onChange({ sortField, sortDirection });
-    }
-    return onChange(null);
-  }, [currentFilterType, searchText, sortField, sortDirection]);
-
-  /** Handle sort button click. */
-  const handleSortClick = (): void => {
-    setFilterType(currentFilterType === FilterType.Sort ? null : FilterType.Sort);
-  };
-
-  /** Handle search button click. */
-  const handleSearchClick = (): void => {
-    setFilterType(currentFilterType === FilterType.Search ? null : FilterType.Search);
-  };
+  }, [currentFilterType, onChange]);
 
   return (
     <div className={cls.header}>
@@ -63,12 +58,12 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
         <div>Films</div>
         <div className={cls.buttons}>
           <Tooltip title="Sort">
-            <IconButton size="small" onClick={handleSortClick}>
+            <IconButton size="small" onClick={handleFilterButtonClick(FilterType.Sort)}>
               <SortIcon fontSize="small" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Search">
-            <IconButton size="small" onClick={handleSearchClick}>
+            <IconButton size="small" onClick={handleFilterButtonClick(FilterType.Search)}>
               <SearchIcon fontSize="small" />
             </IconButton>
           </Tooltip>
@@ -79,7 +74,6 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
           <OutlinedInput
             className={cls['search-input']}
             placeholder="Search"
-            value={searchText}
             onChange={handleSearchTextChange}
           />
         </div>

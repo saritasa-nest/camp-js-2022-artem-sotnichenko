@@ -1,6 +1,5 @@
-import { Box } from '@mui/system';
 import {
-  memo, useCallback, useEffect, useState, VFC,
+  memo, useCallback, useState, VFC,
 } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import { fetchFilms, fetchFilmsOnTop } from 'src/store/film/dispatchers';
@@ -15,50 +14,38 @@ const SidebarComponent: VFC = () => {
   const dispatch = useAppDispatch();
   const films = useAppSelector(selectAllFilms);
   const filmStatus = useAppSelector(selectFilmStatus);
-  const [filter, setFilter] = useState<FilmFilter>();
+
+  const [filter, setFilter] = useState<FilmFilter | null>(null);
+  const fetchAfterId = films.at(-1)?.id;
 
   /**
    * Filter change handler.
    */
   const handleFilterChange = useCallback((newFilter: FilmFilter | null) => {
-    setFilter(newFilter ?? undefined);
-  }, []);
-
-  useEffect(() => {
-    dispatch(clearFilms());
+    setFilter(newFilter);
 
     if (filmStatus !== 'loading') {
-      dispatch(fetchFilms({ filter }));
-    }
-
-    return () => {
       dispatch(clearFilms());
-    };
-  }, [filter]);
-
-  const afterId = films.at(-1)?.id ?? undefined;
+      dispatch(fetchFilms({ filter: newFilter }));
+    }
+  }, [dispatch, filmStatus]);
 
   /**
    * Load more films handler.
    */
   const handleLoadMore = useCallback(() => {
     if (filmStatus !== 'loading') {
-      dispatch(fetchFilmsOnTop({ filter, afterId }));
+      dispatch(fetchFilmsOnTop({ filter, afterId: fetchAfterId }));
     }
-  }, [dispatch, filmStatus, filter, afterId]);
+  }, [dispatch, filmStatus, filter, fetchAfterId]);
 
   return (
-    <div className={cls.films}>
-      <aside className={cls.sidebar}>
-        <SidebarHeader onChange={handleFilterChange} />
-        <div className={cls['list-wrap']}>
-          <FilmList films={films} onLoadMore={handleLoadMore} />
-        </div>
-      </aside>
-      <Box>
-        film placeholder
-      </Box>
-    </div>
+    <aside className={cls.sidebar}>
+      <SidebarHeader onChange={handleFilterChange} />
+      <div className={cls['list-wrap']}>
+        <FilmList films={films} onLoadMore={handleLoadMore} />
+      </div>
+    </aside>
   );
 };
 

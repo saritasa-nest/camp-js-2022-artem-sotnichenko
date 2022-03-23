@@ -44,10 +44,10 @@ export interface FilmFetchManyOptions {
   readonly count?: number;
 
   /** Fetch after entity id. */
-  readonly afterId?: string;
+  readonly afterId?: string | null;
 
   /** Filter. Search and sort are exclusive only one can be applied. */
-  readonly filter?: FilmFilter;
+  readonly filter?: FilmFilter | null;
 }
 
 const FILMS_PER_PAGE = 5;
