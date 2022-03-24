@@ -7,18 +7,18 @@ import {
   fetchFilmsOnTop,
 } from './dispatchers';
 import {
-  filmsAdapter, InitialState, initialState,
+  filmsAdapter, FilmState, initialState,
 } from './state';
 
-const loadingReducer: CaseReducer<InitialState> = state => {
-  state.status = 'loading';
+const loadingReducer: CaseReducer<FilmState> = state => {
+  state.loading = true;
 };
 
-const rejectionReducer: CaseReducer<InitialState> = (state, action) => {
+const rejectionReducer: CaseReducer<FilmState> = (state, action) => {
   if (action.error.message) {
     state.error = action.error.message;
   }
-  state.status = 'failed';
+  state.loading = false;
 };
 
 export const filmsSlice = createSlice({
@@ -26,22 +26,22 @@ export const filmsSlice = createSlice({
   initialState,
   reducers: {
     clearFilms(state) {
-      filmsAdapter.removeAll(state as InitialState);
-      state.status = 'idle';
+      filmsAdapter.removeAll(state as FilmState);
+      state.loading = false;
     },
   },
   extraReducers: builder => {
     builder
       .addCase(fetchFilms.pending, loadingReducer)
       .addCase(fetchFilms.fulfilled, (state, action) => {
-        filmsAdapter.setAll(state as InitialState, action.payload);
-        state.status = 'succeeded';
+        filmsAdapter.setAll(state as FilmState, action.payload);
+        state.loading = false;
       })
       .addCase(fetchFilms.rejected, rejectionReducer)
       .addCase(fetchFilmsOnTop.pending, loadingReducer)
       .addCase(fetchFilmsOnTop.fulfilled, (state, action) => {
-        filmsAdapter.upsertMany(state as InitialState, action.payload);
-        state.status = 'succeeded';
+        filmsAdapter.upsertMany(state as FilmState, action.payload);
+        state.loading = false;
       })
       .addCase(fetchFilmsOnTop.rejected, rejectionReducer);
   },

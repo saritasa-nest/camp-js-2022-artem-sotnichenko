@@ -1,14 +1,22 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
 import { Film } from 'src/models/film';
-import { StateData } from '../state-data';
 
 export const filmsAdapter = createEntityAdapter<Film>({
   selectId: film => film.id,
 });
 
-export const initialState = filmsAdapter.getInitialState<StateData>({
-  status: 'idle',
-  error: null,
+/** Film store state. */
+export interface FilmStateData {
+
+  /** Error. */
+  readonly error?: string;
+
+  /** Loading. */
+  readonly loading: boolean;
+}
+
+export const initialState = filmsAdapter.getInitialState<FilmStateData>({
+  loading: false,
 });
 
-export type InitialState = typeof initialState;
+export type FilmState = typeof initialState;

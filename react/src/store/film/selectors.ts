@@ -2,8 +2,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { filmsAdapter } from './state';
 
-/** Selects films fetching status. */
-export const selectFilmStatus = createSelector((state: RootState) => state.films.status, status => status);
+/** Film loading status. */
+export const selectFilmLoading = createSelector((state: RootState) => state.films.loading, loading => loading);
 
 export const {
   selectAll: selectAllFilms,
