@@ -9,15 +9,17 @@
         </a>
         <h1 class="film__title">{{ film.title }}</h1>
         <div class="film__options">
-          <button
+          <a
+            [routerLink]="['/film/update', film.id]"
             type="button"
             mat-button
             class="film__button film__button_settings"
-            title="Settings"
+            title="Update"
           >
-            <mat-icon>settings</mat-icon>
-          </button>
+            <mat-icon>edit</mat-icon>
+          </a>
           <button
+            (click)="onDelete()"
             type="button"
             mat-button
             color="warn"

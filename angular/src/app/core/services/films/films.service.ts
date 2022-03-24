@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { endAt, limit, limitToLast, orderBy, QueryConstraint, startAt, where } from 'firebase/firestore';
+import { endAt, endBefore, limit, limitToLast, orderBy, QueryConstraint, startAfter, startAt, where } from 'firebase/firestore';
 import { map, Observable, switchMap } from 'rxjs';
 
 import { Film } from '../../models/film';
@@ -32,6 +32,9 @@ export interface FetchFilmsOptions extends FilterOptions {
 
   /** Pagination direction. */
   readonly paginationDirection: PaginationDirection;
+
+  /** Whether to include queryCursor when fetching. */
+  readonly shouldInclude: boolean;
 }
 
 const INITIAL_FILTER_OPTIONS = {
@@ -48,22 +51,12 @@ const FIREBASE_SEARCH_SYMBOL = '~';
 @Injectable({
   providedIn: 'root',
 })
-export class FilmService {
+export class FilmsService {
 
   public constructor(
     private readonly filmMapper: FilmMapper,
     private readonly firestoreService: FirestoreService,
   ) { }
-
-  /**
-   * Get one film by id.
-   * @param id Film id.
-   */
-  public getFilm(id: Film['id']): Observable<Film> {
-    return this.firestoreService.getOneById<FilmDto>('films', id).pipe(
-      map(this.filmMapper.fromDto),
-    );
-  }
 
   /**
    * Get cursor.
@@ -77,6 +70,7 @@ export class FilmService {
       paginationDirection: PaginationDirection.Next,
       searchText,
       sortOptions,
+      shouldInclude: true,
     };
   }
 
@@ -91,6 +85,7 @@ export class FilmService {
       paginationDirection,
       searchText,
       sortOptions,
+      shouldInclude: include,
     } = cursor;
 
     return this.firestoreService.getQueryCursorById(
@@ -103,6 +98,7 @@ export class FilmService {
         paginationDirection,
         searchText,
         sortOptions,
+        shouldInclude: include,
       })),
       map(filmDtos => filmDtos.map(dto => this.filmMapper.fromDto(dto))),
     );
@@ -111,13 +107,7 @@ export class FilmService {
   private fetchFilms(options: FetchFilmsOptions): Observable<FilmDto[]> {
     return this.firestoreService.getMany<FilmDto>(
       'films',
-      this.getQueryConstraints({
-        count: options.count,
-        queryCursor: options.queryCursor,
-        paginationDirection: options.paginationDirection,
-        searchText: options.searchText,
-        sortOptions: options.sortOptions,
-      }),
+      this.getQueryConstraints(options),
     );
   }
 
@@ -131,14 +121,9 @@ export class FilmService {
     paginationDirection,
     searchText,
     sortOptions,
+    shouldInclude,
   }: FetchFilmsOptions): readonly QueryConstraint[] {
     const constraints: QueryConstraint[] = [];
-
-    if (paginationDirection === PaginationDirection.Next) {
-      constraints.push(limit(count));
-    } else {
-      constraints.push(limitToLast(count));
-    }
 
     if (sortOptions !== null) {
       constraints.push(orderBy(sortOptions.field, sortOptions.direction));
@@ -152,11 +137,15 @@ export class FilmService {
       constraints.push(orderBy(DEFAULT_SORT_FIELD, DEFAULT_SORT_DIRECTION));
     }
 
-    if (queryCursor !== null) {
-      if (paginationDirection === PaginationDirection.Next) {
-        constraints.push(startAt(queryCursor));
-      } else {
-        constraints.push(endAt(queryCursor));
+    if (paginationDirection === PaginationDirection.Next) {
+      constraints.push(limit(count));
+      if (queryCursor !== null) {
+        constraints.push(shouldInclude ? startAt(queryCursor) : startAfter(queryCursor));
+      }
+    } else {
+      constraints.push(limitToLast(count));
+      if (queryCursor !== null) {
+        constraints.push(shouldInclude ? endAt(queryCursor) : endBefore(queryCursor));
       }
     }
 

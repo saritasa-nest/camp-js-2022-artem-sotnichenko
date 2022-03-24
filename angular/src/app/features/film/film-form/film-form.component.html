@@ -1,0 +1,87 @@
+<form [formGroup]="filmForm" (ngSubmit)="onFilmSubmit()" class="film-form">
+  <header class="film-form__header">
+    <div class="film-form__title-wrap">
+      <mat-form-field appearance="outline" class="film-form__title">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" formControlName="title" name="title" />
+      </mat-form-field>
+      <div class="film-form__options">
+        <button
+          *ngIf="isCancelButtonVisible"
+          mat-button
+          type="button"
+          class="film-form__button"
+          (click)="onCancel()"
+        >
+          {{ cancelButtonText }}
+        </button>
+        <button
+          *ngIf="isSubmitButtonVisible"
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="film-form__button"
+        >
+          {{ submitButtonText }}
+        </button>
+      </div>
+    </div>
+    <mat-form-field appearance="outline" class="film-form__description">
+      <mat-label>Opening crawl</mat-label>
+      <textarea
+        matInput
+        type="text"
+        formControlName="openingCrawl"
+        name="openingCrawl"
+      ></textarea>
+    </mat-form-field>
+  </header>
+  <aside class="film-form__container">
+    <div class="film-form__sidebar">
+      <mat-form-field appearance="outline" class="film-form__content">
+        <mat-label>Release date</mat-label>
+        <input
+          matInput
+          type="date"
+          formControlName="releaseDate"
+          name="releaseDate"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="film-form__content">
+        <mat-label>Director</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="director"
+          name="director"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="film-form__content">
+        <mat-label>Producers</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="producers"
+          name="producers"
+        />
+      </mat-form-field>
+    </div>
+    <main class="film-form__content">
+      <sw-entities-select
+        class="film-form__select"
+        label="Characters"
+        (entityChange)="onCharactersChange($event)"
+        [entities]="(allCharacters$ | async) ?? []"
+        [selectedIds]="(selectedCharacterIds$ | async) ?? []"
+      ></sw-entities-select>
+      <sw-entities-select
+        class="film-form__select"
+        label="Planets"
+        (entityChange)="onPlanetsChange($event)"
+        [entities]="(allPlanets$ | async) ?? []"
+        [selectedIds]="(selectedPlanetIds$ | async) ?? []"
+      ></sw-entities-select>
+    </main>
+  </aside>
+</form>

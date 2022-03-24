@@ -8,7 +8,7 @@
 
 .films {
   display: flex;
-  gap: var(--size-4);
+  gap: var(--size-8);
   align-items: start;
 }
 
@@ -16,6 +16,17 @@
   flex-grow: 1;
   display: flex;
   justify-content: center;
+  align-self: center;
+}
+
+.films__table-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4);
+  flex-grow: 1;
+}
+
+.films__create {
   align-self: center;
 }
 

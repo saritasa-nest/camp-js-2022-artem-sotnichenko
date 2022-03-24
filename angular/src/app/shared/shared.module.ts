@@ -13,6 +13,7 @@ import { AvatarComponent } from './components/avatar/avatar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component';
 import { HeaderComponent } from './components/header/header.component';
+import { EntitiesSelectComponent } from './components/entities-select/entities-select.component';
 
 const EXPORTED_DECLARATIONS = [
   LogoComponent,
@@ -21,6 +22,7 @@ const EXPORTED_DECLARATIONS = [
   SignInFormComponent,
   BlankLayoutComponent,
   MainLayoutComponent,
+  EntitiesSelectComponent,
 ];
 
 /** Shared module, for shared components and derectives. */
@@ -28,6 +30,7 @@ const EXPORTED_DECLARATIONS = [
   declarations: [
     HeaderComponent,
     ...EXPORTED_DECLARATIONS,
+    EntitiesSelectComponent,
   ],
   imports: [
     CommonModule,

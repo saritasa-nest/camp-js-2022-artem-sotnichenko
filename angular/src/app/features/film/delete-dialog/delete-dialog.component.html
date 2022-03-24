@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Delete film</h1>
+<div mat-dialog-content>
+  <p>Are you sure you want delete "{{ data?.filmName || "film" }}"?</p>
+</div>
+<div mat-dialog-actions>
+  <button type="button" mat-button [mat-dialog-close]="false">No</button>
+  <button type="button" mat-button [mat-dialog-close]="true" cdkFocusInitial>
+    Delete
+  </button>
+</div>

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
-import { doc, documentId, query, QueryConstraint, where } from 'firebase/firestore';
+import { addDoc, deleteDoc, doc, documentId, DocumentReference, query, QueryConstraint, UpdateData, updateDoc, where } from 'firebase/firestore';
 import { docData, doc as fromDocRef } from 'rxfire/firestore';
-import { combineLatest, first, map, Observable, of } from 'rxjs';
+import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 
-import { QueryCursor } from '../film/utils/types';
+import { QueryCursor } from '../films/utils/types';
 import { FirebaseWrapper } from '../mappers/dto/firebase-wrapper.dto';
 
 import { CollectionName, getCollection } from './utils/get-collection-typed';
@@ -20,6 +20,51 @@ export class FirestoreService {
   public constructor(
     private readonly db: Firestore,
   ) {}
+
+  /**
+   * Create entity.
+   * @param collectionName Collection name.
+   * @param data An Object containing the data for the new document.
+   * @returns Reference of object from store.
+   */
+  public create<T>(
+    collectionName: CollectionName,
+    data: unknown,
+  ): Observable<T> {
+    return from(
+      addDoc(getCollection(this.db, collectionName), data),
+    ).pipe(
+      switchMap(docRef => docData(docRef as DocumentReference<T>, { idField: 'id' })),
+    );
+  }
+
+  /**
+   * Update entity.
+   * @param collectionName Collection name.
+   * @param id Entity id.
+   * @param data An Object containing the data for the new document.
+   * @returns Reference of object from store.
+   */
+  public update(
+    collectionName: CollectionName,
+    id: string,
+    data: UpdateData<unknown>,
+  ): Observable<void> {
+    const docRef = doc(getCollection(this.db, collectionName), id);
+    return from(updateDoc(docRef, data));
+  }
+
+  /**
+   * Delete entity.
+   * @param collectionName Collection name.
+   * @param id Entity id.
+   */
+  public delete(
+    collectionName: CollectionName,
+    id: string,
+  ): Observable<void> {
+    return from(deleteDoc(doc(getCollection(this.db, collectionName), id)));
+  }
 
   /**
    * Get a stream of documents narrowed by array of constraints.

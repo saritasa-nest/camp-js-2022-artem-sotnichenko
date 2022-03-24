@@ -27,4 +27,11 @@ export class CharacterService {
       .getManyByIds<CharacterDto>('characters', ids)
       .pipe(map(dtos => dtos.map(dto => this.characterMapper.fromDto(dto))));
   }
+
+  /** Get all characters. */
+  public getAllCharacters(): Observable<Character[]> {
+    return this.firestoreService.getMany<CharacterDto>('characters').pipe(
+      map(characterDtos => characterDtos.map(this.characterMapper.fromDto)),
+    );
+  }
 }

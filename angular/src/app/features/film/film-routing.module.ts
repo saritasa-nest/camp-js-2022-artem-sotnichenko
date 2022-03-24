@@ -1,9 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FilmComponent } from './film.component';
+import { CreateComponent } from './create/create.component';
 
-const routes: Routes = [{ path: ':id', component: FilmComponent }];
+import { FilmComponent } from './details/film.component';
+import { UpdateComponent } from './update/update.component';
+
+const routes: Routes = [
+  { path: 'create', component: CreateComponent, pathMatch: 'full' },
+  { path: 'update/:id', component: UpdateComponent, pathMatch: 'full' },
+  { path: ':id', component: FilmComponent, pathMatch: 'full' },
+];
 
 /** Film routing. */
 @NgModule({

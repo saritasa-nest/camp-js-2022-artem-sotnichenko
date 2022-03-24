@@ -1,0 +1,15 @@
+<sw-main-layout>
+  <sw-film-form
+    *ngIf="film$ | async; else spinner"
+    [film]="film$ | async"
+    (filmSubmit)="onSubmit($event)"
+    (filmCancel)="onCancel()"
+    submitButtonText="Update"
+    cancelButtonText="Back"
+  ></sw-film-form>
+  <ng-template #spinner>
+    <div class="spinner">
+      <mat-spinner [diameter]="64"></mat-spinner>
+    </div>
+  </ng-template>
+</sw-main-layout>

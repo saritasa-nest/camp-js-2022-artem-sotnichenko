@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Self, Output, EventEmitter,
 import { FormBuilder } from '@angular/forms';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs';
 import { DestroyService } from 'src/app/core/services/destroy.service';
-import { PaginationDirection, FilterOptions, PagesStatus } from 'src/app/core/services/film/utils/types';
+import { PaginationDirection, FilterOptions, PagesStatus } from 'src/app/core/services/films/utils/types';
 import { TO_READABLE_SORT_DIRECTION_MAP, TO_READABLE_SORT_FIELD_MAP } from 'src/app/core/services/firestore/utils/maps';
 import { SortDirection, SortField } from 'src/app/core/services/firestore/utils/types';
 
@@ -60,7 +60,6 @@ export class FiltersComponent implements OnInit {
   public ngOnInit(): void {
     this.filtersForm.get('searchText')?.valueChanges
       .pipe(
-        takeUntil(this.destroy$),
         distinctUntilChanged(),
         tap(searchText => {
           if (searchText !== '') {
@@ -69,12 +68,12 @@ export class FiltersComponent implements OnInit {
             this.filtersForm.get('sortOptions')?.enable();
           }
         }),
+        takeUntil(this.destroy$),
       )
       .subscribe();
 
     this.filtersForm.get('sortOptions')?.valueChanges
       .pipe(
-        takeUntil(this.destroy$),
         distinctUntilChanged(),
         tap(sortOptions => {
           if (sortOptions.field !== INITIAL_SORT_FIELD || sortOptions.direction !== INITIAL_SORT_DIRECTION) {
@@ -83,6 +82,7 @@ export class FiltersComponent implements OnInit {
             this.filtersForm.get('searchText')?.enable();
           }
         }),
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

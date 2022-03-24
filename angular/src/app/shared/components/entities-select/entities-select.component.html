@@ -1,0 +1,35 @@
+<mat-form-field class="entities-select" appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+  <mat-chip-list #chipList>
+    <mat-chip
+      *ngFor="
+        let entity of getSelectedEntities(selectedIds);
+        trackBy: trackEntity
+      "
+      (removed)="deselectEntity(entity.id)"
+    >
+      {{ entity.name }}
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+    <input
+      placeholder="New entity..."
+      #entityInput
+      [formControl]="entityInputControl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+    />
+  </mat-chip-list>
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="selectEntity($event)"
+  >
+    <mat-option
+      *ngFor="let entity of filteredEntities$ | async; trackBy: trackEntity"
+      [value]="entity.id"
+    >
+      {{ entity.name }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

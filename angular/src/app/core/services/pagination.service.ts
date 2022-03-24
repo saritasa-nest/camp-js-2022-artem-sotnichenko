@@ -3,8 +3,8 @@ import { map, Observable } from 'rxjs';
 
 import { Film } from '../models/film';
 
-import { FilmService } from './film/film.service';
-import { EntityId, FilmCursor, PagesStatus, PaginationDirection } from './film/utils/types';
+import { FilmsService } from './films/films.service';
+import { EntityId, FilmCursor, PagesStatus, PaginationDirection } from './films/utils/types';
 
 /**
  * Pagination service.
@@ -15,12 +15,12 @@ import { EntityId, FilmCursor, PagesStatus, PaginationDirection } from './film/u
 export class PaginationService {
 
   public constructor(
-    private readonly filmService: FilmService,
+    private readonly filmsService: FilmsService,
   ) { }
 
   /**
    * Get count to fetch.
-   * Encapsulate logic of pagination, so other methods can calculate wheter there next pages or not by fetching on more item.
+   * Encapsulate logic of pagination, so other methods can calculate whether there next pages or not by fetching on more item.
    * @param count Expected count of films on the page.
    */
   private getPaginationCount(count: number): number {
@@ -34,7 +34,7 @@ export class PaginationService {
    */
   public getFilms(count: number, cursor: FilmCursor): Observable<Film[]> {
     const paginationCount = this.getPaginationCount(count);
-    return this.filmService.getFilms(paginationCount, cursor).pipe(
+    return this.filmsService.getFilms(paginationCount, cursor).pipe(
       map(films => this.getFilmsPage(paginationCount, films, cursor)),
     );
   }
@@ -81,7 +81,7 @@ export class PaginationService {
     let isFirst = entityId === null;
     let isLast = false;
 
-    if (films.length < expectedCount) {
+    if (films.length <= expectedCount) {
       if (paginationDirection === PaginationDirection.Next) {
         isLast = true;
       } else {
@@ -113,16 +113,21 @@ export class PaginationService {
     const paginationCount = this.getPaginationCount(expectedCount);
     const entityIds = this.getEntitiesIds(paginationCount, films, paginationDirection);
 
+    const isForwardNull = paginationDirection === PaginationDirection.Prev && entityId === null || entityIds.forward === null;
+    const isBackwardNull = paginationDirection === PaginationDirection.Next && entityId === null || entityIds.backward === null;
+
     return {
-      forward: paginationDirection === PaginationDirection.Prev && entityId === null ? null : {
+      forward: isForwardNull ? null : {
         ...currentCursor,
         paginationDirection: PaginationDirection.Next,
         entityId: entityIds.forward,
+        shouldInclude: currentCursor.paginationDirection !== PaginationDirection.Prev,
       },
-      backward: paginationDirection === PaginationDirection.Next && entityId === null ? null : {
+      backward: isBackwardNull ? null : {
         ...currentCursor,
         paginationDirection: PaginationDirection.Prev,
         entityId: entityIds.backward,
+        shouldInclude: currentCursor.paginationDirection !== PaginationDirection.Next,
       },
     };
   }
@@ -156,8 +161,10 @@ export class PaginationService {
         forwardEntityId = films[films.length - 1].id;
       }
       backwardEntityId = films[0].id;
-    } else if (films.length === expectedCount) {
-      backwardEntityId = films[0].id;
+    } else {
+      if (films.length === expectedCount) {
+        backwardEntityId = films[0].id;
+      }
       forwardEntityId = films[films.length - 1].id;
     }
 
