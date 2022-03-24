@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, Self, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Self } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Observable, shareReplay, switchMap, take, takeUntil } from 'rxjs';
+import { catchError, filter, map, Observable, shareReplay, switchMap, take, takeUntil } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
@@ -36,7 +36,6 @@ export class FilmComponent {
     private readonly filmService: FilmService,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly cd: ChangeDetectorRef,
     @Self() private readonly destroy$: DestroyService,
   ) {
     this.film$ = route.paramMap.pipe(
@@ -44,6 +43,10 @@ export class FilmComponent {
         const id = paramMap.get('id');
         assertNotNullish(id, 'There is no film id. This is probably route issue.');
         return this.filmService.getFilm(id);
+      }),
+      catchError((err, caught) => {
+        this.router.navigate(['/']);
+        return caught;
       }),
       shareReplay({ refCount: true, bufferSize: 1 }),
     );
