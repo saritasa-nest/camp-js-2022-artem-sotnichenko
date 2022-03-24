@@ -46,7 +46,9 @@ export class UpdateComponent {
       }),
       take(1),
       takeUntil(this.destroy$),
-    ).subscribe();
+    ).subscribe({
+      next: film => this.router.navigate(['/film', film.id]),
+    });
   }
 
   /**

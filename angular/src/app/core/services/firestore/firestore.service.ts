@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { collectionData, Firestore } from '@angular/fire/firestore';
-import { addDoc, deleteDoc, doc, documentId, DocumentReference, query, QueryConstraint, UpdateData, updateDoc, where } from 'firebase/firestore';
+import { addDoc, deleteDoc, doc, documentId, DocumentReference, getDoc, query, QueryConstraint, UpdateData, updateDoc, where } from 'firebase/firestore';
 import { docData, doc as fromDocRef } from 'rxfire/firestore';
 import { combineLatest, first, from, map, Observable, of, switchMap } from 'rxjs';
 
@@ -107,7 +107,14 @@ export class FirestoreService {
    * @param id Document id.
    */
   public getOneById<T extends FirebaseWrapper>(collectionName: CollectionName, id: string): Observable<T> {
-    return docData(doc<T>(getCollection(this.db, collectionName), id), { idField: 'id' });
+    return of(doc<T>(getCollection(this.db, collectionName), id)).pipe(
+      switchMap(docRef => getDoc(docRef)),
+      map(snapshot => ({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        ...snapshot.data()!,
+        id: snapshot.id,
+      })),
+    );
   }
 
   /**

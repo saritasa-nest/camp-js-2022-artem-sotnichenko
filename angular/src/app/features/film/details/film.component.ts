@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, Self, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Self, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Observable, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, shareReplay, switchMap, take, takeUntil } from 'rxjs';
 import { Film } from 'src/app/core/models/film';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { DestroyService } from 'src/app/core/services/destroy.service';
@@ -19,7 +19,7 @@ import { DeleteDialogComponent, DeleteDialogData, DeleteDialogResult } from '../
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DestroyService],
 })
-export class FilmComponent implements AfterViewInit {
+export class FilmComponent {
   /** Film. */
   public readonly film$: Observable<Film>;
 
@@ -57,16 +57,6 @@ export class FilmComponent implements AfterViewInit {
       switchMap(film => planetService.getPlanets(film.planetIds)
         .pipe(map(planets => planets.map(planet => planet.name)))),
     );
-  }
-
-  /** @inheritdoc */
-  public ngAfterViewInit(): void {
-    // Change detecting not working after navigate. Couldn't find working solution with `ngZone`.
-    this.film$.pipe(
-      tap(() => this.cd.detectChanges()),
-      take(1),
-      takeUntil(this.destroy$),
-    ).subscribe();
   }
 
   /** Handle delete. */

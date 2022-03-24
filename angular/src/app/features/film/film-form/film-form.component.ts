@@ -141,7 +141,7 @@ export class FilmFormComponent implements OnInit {
         openingCrawl: film.openingCrawl.trim(),
         releaseDate: new Date(film.releaseDate),
         director: film.director.trim(),
-        producers: film.producers.split(','),
+        producers: typeof film.producers === 'string' ? film.producers.split(',') : film.producers,
         characterIds: film.characterIds,
         planetIds: film.planetIds,
       } as FilmForm);
