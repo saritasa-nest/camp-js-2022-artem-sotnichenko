@@ -1,6 +1,6 @@
 import { memo, VFC } from 'react';
 import { Film } from 'src/models/film';
-import { formatDate } from 'src/utils/format-date';
+import { formatDate } from 'src/utils/formatDate';
 import cls from './FilmListItem.module.css';
 
 interface Props {

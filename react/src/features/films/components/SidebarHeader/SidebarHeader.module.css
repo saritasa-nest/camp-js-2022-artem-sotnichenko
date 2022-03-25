@@ -21,13 +21,18 @@
   gap: var(--size-4);
 }
 
-.filter {
+.query {
   width: 100%;
   display: flex;
   gap: var(--size-2);
   padding-bottom: var(--size-2);
+  align-items: center;
 }
 
-.search-input {
+.search-text {
   width: 100%;
+}
+
+.field-input {
+  flex-grow: 1;
 }

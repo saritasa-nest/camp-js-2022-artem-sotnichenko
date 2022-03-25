@@ -5,7 +5,7 @@
   align-items: center;
   border-right: var(--border);
   height: 100%;
-  width: var(--width, 360px);
+  width: var(--width);
 }
 
 .list-wrap {

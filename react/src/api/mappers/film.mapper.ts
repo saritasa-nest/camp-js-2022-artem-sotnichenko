@@ -1,5 +1,5 @@
 import { Film } from '../../models/film';
-import { splitByComma } from '../../utils/split-by-comma';
+import { splitByComma } from '../../utils/splitByComma';
 import { FilmDto } from '../dtos/film.dto';
 
 /**

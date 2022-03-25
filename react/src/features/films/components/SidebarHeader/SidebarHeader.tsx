@@ -1,92 +1,112 @@
 import {
-  ChangeEvent, memo, useCallback, useState, VFC,
+  memo, useCallback, useMemo, useState, VFC,
 } from 'react';
 import {
-  IconButton, OutlinedInput, Tooltip,
+  IconButton, MenuItem, OutlinedInput, Select, Tooltip,
 } from '@mui/material';
 import {
-  Sort as SortIcon,
-  Search as SearchIcon,
+  KeyboardArrowDown as KeyboardArrowDownIcon,
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  ArrowUpward as ArrowUpwardIcon,
+  ArrowDownward as ArrowDownwardIcon,
 } from '@mui/icons-material';
-import type { FilmFilter } from 'src/api/services/film.service';
-import { FilmSortDirection, FilmSortField } from 'src/api/services/film.service';
+import { useFormik } from 'formik';
+import { FilmQueryField } from 'src/models/filmQueryField';
+import { QueryDirection } from 'src/models/queryDirection';
+import { FilmQuery } from 'src/api/services/film.service';
 import cls from './SidebarHeader.module.css';
-import { FilmFilterSort } from '../FilmFilterSort';
 
 interface Props {
-  /** Callback on filter change. */
-  readonly onChange: (filter: FilmFilter | null) => void;
-}
-
-/** Filter type. */
-enum FilterType {
-  Search,
-  Sort,
+  /** Callback on query change. */
+  readonly onChange: (query: FilmQuery | null) => void;
 }
 
 const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
-  const [currentFilterType, setFilterType] = useState<FilterType | null>(null);
-
-  const [sortField, setSortField] = useState(FilmSortField.Title);
-  const [sortDirection, setSortDirection] = useState(FilmSortDirection.Ascending);
-
-  const handleSearchTextChange = useCallback((
-    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-  ) => onChange({ searchText: event.target.value }), [onChange]);
-
-  const handleSortFieldChange = useCallback((field: FilmSortField) => {
-    setSortField(field);
-    onChange({ sortField, sortDirection });
-  }, [onChange, setSortField, sortField, sortDirection]);
-
-  const handleSortDirectionChange = useCallback((direction: FilmSortDirection) => {
-    setSortDirection(direction);
-    onChange({ sortField, sortDirection });
-  }, [onChange, setSortDirection, sortField, sortDirection]);
-
-  const handleFilterButtonClick = useCallback((buttonFilterType: FilterType) => () => {
-    const newFilterType = currentFilterType === buttonFilterType ? null : buttonFilterType;
-    setFilterType(newFilterType);
-    if (newFilterType === null) {
+  const [isQueryVisible, setIsQueryVisible] = useState(false);
+  const handleOptionsToggle = useCallback(() => {
+    setIsQueryVisible(!isQueryVisible);
+    if (!isQueryVisible === false) {
       onChange(null);
     }
-  }, [currentFilterType, onChange]);
+  }, [isQueryVisible, onChange]);
+
+  const handleFormChange = (query: FilmQuery): void => {
+    onChange(query);
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      searchText: '',
+      field: FilmQueryField.Title,
+      direction: QueryDirection.Ascending,
+    },
+    onSubmit: handleFormChange,
+    validate: handleFormChange,
+  });
+
+  const handleDirectionChange = (previousDirection: string): void => {
+    const newDirection = previousDirection === QueryDirection.Ascending
+      ? QueryDirection.Descending
+      : QueryDirection.Ascending;
+    formik.setFieldValue('direction', newDirection);
+  };
+
+  const fields = useMemo(() => FilmQueryField.entires.map(([value, text]) => ({ value, text })), []);
 
   return (
     <div className={cls.header}>
       <div className={cls.options}>
         <div>Films</div>
         <div className={cls.buttons}>
-          <Tooltip title="Sort">
-            <IconButton size="small" onClick={handleFilterButtonClick(FilterType.Sort)}>
-              <SortIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Search">
-            <IconButton size="small" onClick={handleFilterButtonClick(FilterType.Search)}>
-              <SearchIcon fontSize="small" />
+          <Tooltip title={isQueryVisible ? 'Hide options' : 'Show options'}>
+            <IconButton onClick={handleOptionsToggle} size="small">
+              {isQueryVisible
+                ? <KeyboardArrowUpIcon fontSize="small" />
+                : <KeyboardArrowDownIcon fontSize="small" />}
             </IconButton>
           </Tooltip>
         </div>
       </div>
-      {currentFilterType === FilterType.Search && (
-        <div className={cls.filter}>
+      {isQueryVisible
+      && (
+      <>
+        <div className={cls.query}>
           <OutlinedInput
-            className={cls['search-input']}
+            className={cls['search-text']}
             placeholder="Search"
-            onChange={handleSearchTextChange}
+            name="searchText"
+            onChange={formik.handleChange}
+            value={formik.values.searchText}
           />
         </div>
-      )}
-      {currentFilterType === FilterType.Sort && (
-        <div className={cls.filter}>
-          <FilmFilterSort
-            selectedSortField={sortField}
-            selectedSortDirection={sortDirection}
-            onSortFieldChange={handleSortFieldChange}
-            onSortDirectionChange={handleSortDirectionChange}
-          />
+        <div className={cls.query}>
+          <Select
+            name="field"
+            className={cls['field-select']}
+            onChange={formik.handleChange}
+            input={<OutlinedInput className={cls['field-input']} label="Name" />}
+            value={formik.values.field}
+            label="Sort field"
+          >
+
+            {fields.map(field => (
+              <MenuItem
+                key={field.value}
+                value={field.value}
+              >
+                {field.text}
+              </MenuItem>
+            ))}
+          </Select>
+          <Tooltip title={QueryDirection.toReadable(formik.values.direction)}>
+            <IconButton onClick={() => handleDirectionChange(formik.values.direction)}>
+              {formik.values.direction === QueryDirection.Ascending
+                ? <ArrowUpwardIcon />
+                : <ArrowDownwardIcon />}
+            </IconButton>
+          </Tooltip>
         </div>
+      </>
       )}
     </div>
   );

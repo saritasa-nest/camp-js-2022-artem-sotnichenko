@@ -9,7 +9,7 @@ import {
   query,
   QueryConstraint,
 } from 'firebase/firestore';
-import { FirestoreWrapper } from '../dtos/firestore-wrapper.dto';
+import { FirestoreDto } from '../dtos/firestore';
 import { FirebaseService } from './firebase.service';
 
 export type FirestoreCollectionName = 'films' | 'characters' | 'planets';
@@ -33,7 +33,7 @@ export namespace FirestoreService {
   export async function fetchMany<T = DocumentData>(
     collectionName: FirestoreCollectionName,
     constraints: readonly QueryConstraint[] = [],
-  ): Promise<(T & FirestoreWrapper)[]> {
+  ): Promise<FirestoreDto<T>[]> {
     const querySnapshot = await getDocs<T>(query(getCollection(collectionName), ...constraints));
     return querySnapshot.docs.map(documentSnapshot => ({ ...documentSnapshot.data(), id: documentSnapshot.id }));
   }
