@@ -3,12 +3,15 @@ import { UserDto } from '../dtos/user.dto';
 
 const USER_PLACEHOLDER_NAME = 'Anon';
 
-export namespace UserMapper {
+/**
+ * User mapper.
+ */
+class UserMapper {
   /**
-   * Maps dto to model.
-   * @param dto User dto.
+   * Maps user DTO to user model.
+   * @param dto User DTO.
    */
-  export function fromDto(dto: UserDto): User {
+  public fromDto(dto: UserDto): User {
     return new User({
       id: dto.uid,
       name: dto.displayName ?? USER_PLACEHOLDER_NAME,
@@ -16,3 +19,5 @@ export namespace UserMapper {
     });
   }
 }
+
+export const userMapper = new UserMapper();

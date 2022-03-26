@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth';
 import { User } from 'src/models/user';
 import { FirebaseService } from './firebase.service';
-import { UserMapper } from '../mappers/user.mapper';
+import { userMapper } from '../mappers/user.mapper';
 
 export namespace AuthService {
   export const auth = getAuth(FirebaseService.app);
@@ -20,7 +20,7 @@ export namespace AuthService {
    */
   export async function signInWithGoogle(): Promise<User | null> {
     const { user } = await signInWithPopup(auth, provider);
-    return user ? UserMapper.fromDto(user) : null;
+    return user ? userMapper.fromDto(user) : null;
   }
 
   /**
@@ -35,7 +35,7 @@ export namespace AuthService {
    * @param callback Callback that runs when user logs in.
    */
   export function subscribeToAuthChange(callback: (user: User | null) => unknown): Unsubscribe {
-    return onAuthStateChanged(auth, userDto => callback(userDto !== null ? UserMapper.fromDto(userDto) : null));
+    return onAuthStateChanged(auth, userDto => callback(userDto !== null ? userMapper.fromDto(userDto) : null));
   }
 
   /**

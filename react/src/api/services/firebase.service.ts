@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
 export namespace FirebaseService {
   export const app = initializeApp({
@@ -6,4 +7,6 @@ export namespace FirebaseService {
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
     projectId: process.env.REACT_APP_PROJECT_ID,
   });
+
+  export const db = getFirestore(app);
 }

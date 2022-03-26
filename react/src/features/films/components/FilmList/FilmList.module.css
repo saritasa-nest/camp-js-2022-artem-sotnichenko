@@ -1,0 +1,7 @@
+.filmList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+  width: 100%;
+  align-items: center;
+}
