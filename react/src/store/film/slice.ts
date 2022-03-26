@@ -1,7 +1,5 @@
-import {
-  CaseReducer,
-  createSlice,
-} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { pendingReducer, rejectedReducer } from '../shared/reducers';
 import {
   fetchFilms,
   fetchFilmsOnTop,
@@ -9,17 +7,6 @@ import {
 import {
   filmsAdapter, FilmState, initialState,
 } from './state';
-
-const loadingReducer: CaseReducer<FilmState> = state => {
-  state.loading = true;
-};
-
-const rejectionReducer: CaseReducer<FilmState> = (state, action) => {
-  if (action.error.message) {
-    state.error = action.error.message;
-  }
-  state.loading = false;
-};
 
 export const filmsSlice = createSlice({
   name: 'films',
@@ -32,18 +19,18 @@ export const filmsSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchFilms.pending, loadingReducer)
+      .addCase(fetchFilms.pending, pendingReducer)
       .addCase(fetchFilms.fulfilled, (state, action) => {
         filmsAdapter.setAll(state as FilmState, action.payload);
         state.loading = false;
       })
-      .addCase(fetchFilms.rejected, rejectionReducer)
-      .addCase(fetchFilmsOnTop.pending, loadingReducer)
+      .addCase(fetchFilms.rejected, rejectedReducer)
+      .addCase(fetchFilmsOnTop.pending, pendingReducer)
       .addCase(fetchFilmsOnTop.fulfilled, (state, action) => {
         filmsAdapter.upsertMany(state as FilmState, action.payload);
         state.loading = false;
       })
-      .addCase(fetchFilmsOnTop.rejected, rejectionReducer);
+      .addCase(fetchFilmsOnTop.rejected, rejectedReducer);
   },
 });
 

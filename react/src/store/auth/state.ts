@@ -1,17 +1,12 @@
 import { User } from 'src/models/user';
+import { StateData } from '../shared/StateData';
 
 /**
  * Auth state.
  */
-export interface AuthState {
+export interface AuthState extends StateData {
   /** Auth. */
   readonly user: User | null;
-
-  /** Error. */
-  readonly error?: string;
-
-  /** Loading. */
-  readonly loading: boolean;
 }
 
 export const initialState: AuthState = {
