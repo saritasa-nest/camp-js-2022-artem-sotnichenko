@@ -33,7 +33,7 @@ export function useIntersectionObserver(
     observer.observe(node);
 
     // eslint-disable-next-line consistent-return
-    return () => observer.disconnect();
+    return observer.disconnect;
   }, [elementRef, JSON.stringify(threshold), root, rootMargin]);
 
   return entry;
