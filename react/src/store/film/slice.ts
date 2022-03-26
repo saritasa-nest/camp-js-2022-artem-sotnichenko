@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { pendingReducer, rejectedReducer } from '../shared/reducers';
 import {
+  fetchFilm,
   fetchFilms,
   fetchFilmsOnTop,
 } from './dispatchers';
@@ -28,6 +29,12 @@ export const filmsSlice = createSlice({
       .addCase(fetchFilmsOnTop.pending, pendingReducer)
       .addCase(fetchFilmsOnTop.fulfilled, (state, action) => {
         filmsAdapter.upsertMany(state as FilmState, action.payload);
+        state.loading = false;
+      })
+      .addCase(fetchFilm.rejected, rejectedReducer)
+      .addCase(fetchFilm.pending, pendingReducer)
+      .addCase(fetchFilm.fulfilled, (state, action) => {
+        filmsAdapter.upsertOne(state as FilmState, action.payload);
         state.loading = false;
       })
       .addCase(fetchFilmsOnTop.rejected, rejectedReducer);

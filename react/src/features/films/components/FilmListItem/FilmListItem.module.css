@@ -4,10 +4,17 @@
   flex-direction: column;
   border-radius: var(--rounded-md);
   width: 100%;
+  text-decoration: none;
+  color: var(--color-text);
 }
 
 .filmCard:hover {
   background: var(--color-foreground);
+}
+
+.filmCard.isActive {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
 }
 
 .header {

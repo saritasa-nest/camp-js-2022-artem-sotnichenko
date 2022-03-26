@@ -13,11 +13,14 @@ interface Props {
   /** Films. */
   readonly films: readonly Film[];
 
+  /** Active film id. */
+  readonly activeId?: Film['id'];
+
   /** Callback to load more films. */
   readonly onLoadMore: () => void;
 }
 
-const FilmListComponent: VFC<Props> = ({ films, onLoadMore }) => {
+const FilmListComponent: VFC<Props> = ({ films, activeId, onLoadMore }) => {
   const endOfListRef = useRef<HTMLDivElement | null>(null);
   const ioEntry = useIntersectionObserver(endOfListRef);
 
@@ -31,7 +34,7 @@ const FilmListComponent: VFC<Props> = ({ films, onLoadMore }) => {
 
   return (
     <div className={cls.filmList}>
-      {films.map(film => <FilmListItem key={film.id} film={film} />)}
+      {films.map(film => <FilmListItem isActive={film.id === activeId} key={film.id} film={film} />)}
       {isFilmLoading && <CircularProgress />}
       <div ref={endOfListRef} />
     </div>

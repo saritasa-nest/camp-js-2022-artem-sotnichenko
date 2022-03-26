@@ -26,4 +26,13 @@ export namespace FilmService {
     const filmDtos = await FirestoreService.fetchMany<FilmDocument>('films', constraints);
     return filmDtos.map(filmMapper.fromDto);
   }
+
+  /**
+   * Fetch film by id.
+   * @param id Film id.
+   */
+  export async function fetchOne(id: Film['id']): Promise<Film> {
+    const filmDto = await FirestoreService.fetchOne<FilmDocument>('films', id);
+    return filmMapper.fromDto(filmDto);
+  }
 }

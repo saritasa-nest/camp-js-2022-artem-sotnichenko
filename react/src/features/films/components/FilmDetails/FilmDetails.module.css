@@ -1,0 +1,42 @@
+.film {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.header {
+  border-bottom: var(--border);
+}
+
+.content {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.colItem,
+.rowItem {
+  border-bottom: var(--border);
+  width: 100%;
+  padding: var(--size-4) var(--size-6);
+  display: flex;
+  gap: var(--size-2);
+}
+
+.colItem {
+  flex-direction: column;
+}
+
+.rowItem {
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.subtitle {
+  font-weight: 500;
+}
+
+.chips {
+  display: flex;
+  gap: var(--size-2);
+  flex-wrap: wrap;
+}

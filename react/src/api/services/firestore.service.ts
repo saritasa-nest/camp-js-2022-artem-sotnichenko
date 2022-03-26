@@ -78,4 +78,17 @@ export namespace FirestoreService {
   ): Promise<DocumentSnapshot<T>> {
     return getDoc(doc(getCollection<T>(collectionName), id));
   }
+
+  /**
+   * Fetch one entity.
+   * @param collectionName Collection name.
+   * @param id Document id.
+   */
+  export async function fetchOne<T = DocumentData>(
+    collectionName: FirestoreCollectionName,
+    id: FirestoreId,
+  ): Promise<FirestoreDto<T>> {
+    const querySnapshot = await fetchSnapshot<T>(collectionName, id);
+    return firestoreMapper.toDto(querySnapshot);
+  }
 }

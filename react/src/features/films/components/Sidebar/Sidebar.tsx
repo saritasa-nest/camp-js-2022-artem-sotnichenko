@@ -8,6 +8,7 @@ import { clearFilms } from 'src/store/film/slice';
 import { debounce } from '@mui/material';
 import { Query } from 'src/api/services/query.service';
 import { FilmQueryField } from 'src/models/filmQueryField';
+import { useParams } from 'react-router-dom';
 import { SidebarHeader } from '../SidebarHeader';
 import { FilmList } from '../FilmList/FilmList';
 import cls from './Sidebar.module.css';
@@ -19,6 +20,10 @@ const SidebarComponent: VFC = () => {
 
   const [query, setQuery] = useState<Query<FilmQueryField> | null>(null);
   const fetchAfterId = films.at(-1)?.id;
+
+  const params = useParams<{ id: string; }>();
+
+  const filmId = useMemo(() => params.id ?? '', [params.id]);
 
   /**
    * Query change handler.
@@ -51,7 +56,7 @@ const SidebarComponent: VFC = () => {
     <aside className={cls.sidebar}>
       <SidebarHeader onChange={handleQueryChangeDebounced} />
       <div className={cls.listWrap}>
-        <FilmList films={films} onLoadMore={handleLoadMore} />
+        <FilmList activeId={filmId} films={films} onLoadMore={handleLoadMore} />
       </div>
     </aside>
   );

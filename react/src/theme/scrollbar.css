@@ -1,0 +1,11 @@
+::-webkit-scrollbar {
+  width: var(--size-3);
+}
+::-webkit-scrollbar-track {
+  background-color: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--rounded-xl);
+  border: var(--size-1) solid var(--color-background);
+}

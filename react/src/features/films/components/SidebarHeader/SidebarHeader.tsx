@@ -15,6 +15,7 @@ import { FilmQueryField } from 'src/models/filmQueryField';
 import { QueryDirection } from 'src/models/queryDirection';
 import { FilmQuery } from 'src/api/services/film.service';
 import cls from './SidebarHeader.module.css';
+import { Header } from '../Header';
 
 interface Props {
   /** Callback on query change. */
@@ -54,19 +55,18 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
   const fields = useMemo(() => FilmQueryField.entires.map(([value, text]) => ({ value, text })), []);
 
   return (
-    <div className={cls.header}>
-      <div className={cls.options}>
-        <div>Films</div>
-        <div className={cls.buttons}>
-          <Tooltip title={isQueryVisible ? 'Hide options' : 'Show options'}>
-            <IconButton onClick={handleOptionsToggle} size="small">
-              {isQueryVisible
-                ? <KeyboardArrowUpIcon fontSize="small" />
-                : <KeyboardArrowDownIcon fontSize="small" />}
-            </IconButton>
-          </Tooltip>
-        </div>
-      </div>
+    <Header
+      title="Films"
+      buttons={(
+        <Tooltip title={isQueryVisible ? 'Hide options' : 'Show options'}>
+          <IconButton onClick={handleOptionsToggle} size="small">
+            {isQueryVisible
+              ? <KeyboardArrowUpIcon fontSize="small" />
+              : <KeyboardArrowDownIcon fontSize="small" />}
+          </IconButton>
+        </Tooltip>
+      )}
+    >
       {isQueryVisible
       && (
       <>
@@ -107,7 +107,7 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
         </div>
       </>
       )}
-    </div>
+    </Header>
   );
 };
 
