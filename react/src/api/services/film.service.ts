@@ -2,7 +2,7 @@ import { Film } from 'src/models/film';
 import { FilmQueryField } from 'src/models/filmQueryField';
 import { QueryDirection } from 'src/models/queryDirection';
 import { FilmDocument } from '../dtos/film.dto';
-import { FilmMapper } from '../mappers/film.mapper';
+import { filmMapper } from '../mappers/film.mapper';
 import { FirestoreService } from './firestore.service';
 import { Query, QueryGetConstraintsOptions, QueryService } from './query.service';
 
@@ -24,6 +24,6 @@ export namespace FilmService {
 
     const constraints = await QueryService.getConstraints({ ...options, query });
     const filmDtos = await FirestoreService.fetchMany<FilmDocument>('films', constraints);
-    return filmDtos.map(FilmMapper.fromDto);
+    return filmDtos.map(filmMapper.fromDto);
   }
 }

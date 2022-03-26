@@ -3,14 +3,14 @@ import { splitByComma } from '../../utils/splitByComma';
 import { FilmDto } from '../dtos/film.dto';
 
 /**
- * Mapper for film.
+ * Film mapper.
  */
-export namespace FilmMapper {
+class FilmMapper {
   /**
-   * Maps Film DTO to Film model.
+   * Maps film DTO to film model.
    * @param dto Film DTO.
    */
-  export function fromDto(dto: FilmDto): Film {
+  public fromDto(dto: FilmDto): Film {
     return new Film({
       id: dto.id,
       title: dto.fields.title,
@@ -24,10 +24,10 @@ export namespace FilmMapper {
   }
 
   /**
-   * Maps Film model to Film dto.
+   * Maps film model to film DTO.
    * @param model Film model.
    */
-  export function toDto(model: Film): FilmDto {
+  public toDto(model: Film): FilmDto {
     return {
       id: model.id,
       fields: {
@@ -42,3 +42,5 @@ export namespace FilmMapper {
     };
   }
 }
+
+export const filmMapper = new FilmMapper();

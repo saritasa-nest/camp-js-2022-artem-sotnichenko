@@ -10,6 +10,7 @@ import {
   QueryConstraint,
 } from 'firebase/firestore';
 import { FirestoreDto } from '../dtos/firestore';
+import { firestoreMapper } from '../mappers/firestore.mapper';
 import { FirebaseService } from './firebase.service';
 
 export type FirestoreCollectionName = 'films' | 'characters' | 'planets';
@@ -35,7 +36,7 @@ export namespace FirestoreService {
     constraints: readonly QueryConstraint[] = [],
   ): Promise<FirestoreDto<T>[]> {
     const querySnapshot = await getDocs<T>(query(getCollection(collectionName), ...constraints));
-    return querySnapshot.docs.map(documentSnapshot => ({ ...documentSnapshot.data(), id: documentSnapshot.id }));
+    return querySnapshot.docs.map(firestoreMapper.toDto);
   }
 
   /**
