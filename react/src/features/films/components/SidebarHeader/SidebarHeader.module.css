@@ -29,10 +29,10 @@
   align-items: center;
 }
 
-.search-text {
+.searchText {
   width: 100%;
 }
 
-.field-input {
+.fieldInput {
   flex-grow: 1;
 }

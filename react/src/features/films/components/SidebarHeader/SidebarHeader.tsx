@@ -72,7 +72,7 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
       <>
         <div className={cls.query}>
           <OutlinedInput
-            className={cls['search-text']}
+            className={cls.searchText}
             placeholder="Search"
             name="searchText"
             onChange={formik.handleChange}
@@ -82,9 +82,8 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
         <div className={cls.query}>
           <Select
             name="field"
-            className={cls['field-select']}
             onChange={formik.handleChange}
-            input={<OutlinedInput className={cls['field-input']} label="Name" />}
+            input={<OutlinedInput className={cls.fieldInput} label="Name" />}
             value={formik.values.field}
             label="Sort field"
           >

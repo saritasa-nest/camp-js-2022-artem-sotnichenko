@@ -5,7 +5,7 @@ import {
 import { Film } from 'src/models/film';
 import { useAppSelector } from 'src/store';
 import { selectFilmLoading } from 'src/store/film/selectors';
-import { useIntersectionObserver } from '../../hooks/use-intersection-observer';
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 import { FilmListItem } from '../FilmListItem';
 import cls from './FilmList.module.css';
 
@@ -30,7 +30,7 @@ const FilmListComponent: VFC<Props> = ({ films, onLoadMore }) => {
   const isFilmLoading = useAppSelector(selectFilmLoading);
 
   return (
-    <div className={cls['film-list']}>
+    <div className={cls.filmList}>
       {films.map(film => <FilmListItem key={film.id} film={film} />)}
       {isFilmLoading && <CircularProgress />}
       <div ref={endOfListRef} />

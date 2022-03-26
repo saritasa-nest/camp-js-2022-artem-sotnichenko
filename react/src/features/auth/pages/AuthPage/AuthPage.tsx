@@ -13,7 +13,7 @@ const AuthPageComponent: VFC = () => {
   const handleGoogleSignInClick = useCallback(() => dispatch(signInWithGoogle()), [dispatch]);
 
   return (
-    <Stack className={cls['auth-page']}>
+    <Stack className={cls.authPage}>
       <Typography
         component="h2"
         variant="h5"

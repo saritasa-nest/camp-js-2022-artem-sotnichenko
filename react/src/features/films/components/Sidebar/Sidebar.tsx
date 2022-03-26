@@ -50,7 +50,7 @@ const SidebarComponent: VFC = () => {
   return (
     <aside className={cls.sidebar}>
       <SidebarHeader onChange={handleQueryChangeDebounced} />
-      <div className={cls['list-wrap']}>
+      <div className={cls.listWrap}>
         <FilmList films={films} onLoadMore={handleLoadMore} />
       </div>
     </aside>

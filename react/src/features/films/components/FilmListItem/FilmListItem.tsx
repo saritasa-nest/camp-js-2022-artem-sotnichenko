@@ -9,7 +9,7 @@ interface Props {
 }
 
 const FilmListItemComponent: VFC<Props> = ({ film }) => (
-  <div className={cls['film-card']}>
+  <div className={cls.filmCard}>
     <div className={cls.header}>
       <div className={cls.title}>{film.title}</div>
       <div className={cls.date}>{formatDate(film.releaseDate)}</div>

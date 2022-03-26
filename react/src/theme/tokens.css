@@ -11,17 +11,17 @@
    * A lot of ui frameworks are using it, chakra-ui and tailwindcss.
    */
   --size-1: 4px;
-  --size-2: 8px;
-  --size-3: 12px;
-  --size-4: 16px;
-  --size-5: 20px;
-  --size-6: 24px;
-  --size-7: 28px;
-  --size-8: 32px;
-  --size-9: 36px;
-  --size-10: 40px;
-  --size-11: 44px;
-  --size-12: 48px;
+  --size-2: calc(2 * var(--size-1));
+  --size-3: calc(3 * var(--size-1));
+  --size-4: calc(4 * var(--size-1));
+  --size-5: calc(5 * var(--size-1));
+  --size-6: calc(6 * var(--size-1));
+  --size-7: calc(7 * var(--size-1));
+  --size-8: calc(8 * var(--size-1));
+  --size-9: calc(9 * var(--size-1));
+  --size-10: calc(10 * var(--size-1));
+  --size-11: calc(11 * var(--size-1));
+  --size-12: calc(12 * var(--size-1));
 
   --font-size-sm: 16px;
   --font-size-md: 20px;
