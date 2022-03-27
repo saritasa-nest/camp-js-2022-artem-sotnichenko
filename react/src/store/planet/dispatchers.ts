@@ -5,3 +5,8 @@ export const fetchPlanetsByIds = createAsyncThunk(
   'planets/fetchPlanetsByIds',
   PlanetService.fetchPlanetsByIds,
 );
+
+export const fetchAllPlanets = createAsyncThunk(
+  'planets/fetchAllPlanets',
+  PlanetService.fetchAllPlanets,
+);

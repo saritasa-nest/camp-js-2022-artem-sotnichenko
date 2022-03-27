@@ -12,4 +12,12 @@ export namespace PlanetService {
     const planetDtos = await FirestoreService.getManyByIds<PlanetDto>('planets', ids);
     return planetDtos.map(planetMapper.fromDto);
   }
+
+  /**
+   * Get all planets.
+   */
+  export async function fetchAllPlanets(): Promise<Planet[]> {
+    const planetDtos = await FirestoreService.fetchMany<PlanetDto>('planets');
+    return planetDtos.map(planetMapper.fromDto);
+  }
 }

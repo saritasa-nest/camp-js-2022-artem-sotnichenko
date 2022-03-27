@@ -1,8 +1,10 @@
 import { Film } from 'src/models/film';
+import { FilmForm } from 'src/models/filmForm';
 import { FilmQueryField } from 'src/models/filmQueryField';
 import { QueryDirection } from 'src/models/queryDirection';
 import { FilmDocument } from '../dtos/film.dto';
 import { filmMapper } from '../mappers/film.mapper';
+import { filmFormMapper } from '../mappers/filmForm.mapper';
 import { FirestoreService } from './firestore.service';
 import { Query, QueryGetConstraintsOptions, QueryService } from './query.service';
 
@@ -34,5 +36,24 @@ export namespace FilmService {
   export async function fetchOne(id: Film['id']): Promise<Film> {
     const filmDto = await FirestoreService.fetchOne<FilmDocument>('films', id);
     return filmMapper.fromDto(filmDto);
+  }
+
+  /**
+   * Create film.
+   * @param filmForm Film form.
+   */
+  export async function create(filmForm: FilmForm): Promise<Film['id']> {
+    const filmFormDto = filmFormMapper.toDto(filmForm);
+    return FirestoreService.create('films', filmFormDto);
+  }
+
+  /**
+   * Update film.
+   * @param id Film id.
+   * @param filmForm Film form.
+   */
+  export async function update(id: Film['id'], filmForm: FilmForm): Promise<void> {
+    const filmFormDto = filmFormMapper.toDto(filmForm);
+    return FirestoreService.update('films', id, filmFormDto);
   }
 }

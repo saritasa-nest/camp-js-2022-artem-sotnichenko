@@ -1,0 +1,1 @@
+export { FilmCreatePage } from './FilmCreatePage';
