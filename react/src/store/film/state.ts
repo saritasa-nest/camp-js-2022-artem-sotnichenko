@@ -6,7 +6,12 @@ export const filmsAdapter = createEntityAdapter<Film>({
   selectId: film => film.id,
 });
 
-export const initialState = filmsAdapter.getInitialState<StateData>({
+interface FilmStateData extends StateData {
+  /** Active film id. */
+  readonly activeId?: Film['id'];
+}
+
+export const initialState = filmsAdapter.getInitialState<FilmStateData>({
   loading: false,
 });
 
