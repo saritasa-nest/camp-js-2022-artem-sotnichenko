@@ -9,7 +9,9 @@ interface Props {
 
 const ChipsSkeletonComponent: VFC<Props> = ({ dummyValues }) => (
   <>
-    {dummyValues.map(text => <Skeleton variant="rectangular" className={cls.chip}><Chip label={text} /></Skeleton>)}
+    {dummyValues.map(text => (
+      <Skeleton key={text} variant="rectangular" className={cls.chip}><Chip label={text} /></Skeleton>
+    ))}
   </>
 );
 

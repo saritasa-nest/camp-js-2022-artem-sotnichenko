@@ -1,6 +1,9 @@
-import { memo, useEffect, VFC } from 'react';
+import {
+  memo, useCallback, useEffect, VFC,
+} from 'react';
 import { Film } from 'src/models/film';
 import {
+  Edit as EditIcon,
   Delete as DeleteIcon,
 } from '@mui/icons-material';
 import {
@@ -11,6 +14,8 @@ import { selectPlanetLoading, selectPlanetsByIds } from 'src/store/planet/select
 import { fetchPlanetsByIds } from 'src/store/planet/dispatchers';
 import { selectCharacterLoading, selectCharactersByIds } from 'src/store/character/selectors';
 import { fetchCharactersByIds } from 'src/store/character/dispatchers';
+import { setActiveFilm } from 'src/store/film/slice';
+import { useNavigate } from 'react-router-dom';
 import { Header } from '../Header';
 import cls from './FilmDetails.module.css';
 import { ContentSkeleton } from './skeletons/ContentSkeleton';
@@ -34,6 +39,12 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    if (film?.id != null) {
+      dispatch(setActiveFilm(film.id));
+    }
+  }, [dispatch, film?.id]);
+
+  useEffect(() => {
     if (film?.planetIds != null) {
       dispatch(fetchPlanetsByIds(film.planetIds));
     }
@@ -45,16 +56,29 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
     }
   }, [dispatch, film?.characterIds]);
 
+  const navigate = useNavigate();
+
+  const handleUpdateClick = useCallback(() => {
+    navigate('update');
+  }, [navigate]);
+
   return (
     <div className={cls.film}>
       <Header
         title={film?.title}
         buttons={(
-          <Tooltip title="Delete">
-            <IconButton size="small">
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+          <>
+            <Tooltip title="Update">
+              <IconButton onClick={handleUpdateClick} size="small">
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton size="small">
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </>
       )}
       />
       <div className={cls.content}>
