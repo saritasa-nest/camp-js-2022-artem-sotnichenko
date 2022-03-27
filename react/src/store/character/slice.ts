@@ -3,6 +3,7 @@ import {
 } from '@reduxjs/toolkit';
 import { pendingReducer, rejectedReducer } from '../shared/reducers';
 import {
+  fetchAllCharacters,
   fetchCharactersByIds,
 } from './dispatchers';
 import {
@@ -22,10 +23,16 @@ export const charactersSlice = createSlice({
     builder
       .addCase(fetchCharactersByIds.pending, pendingReducer)
       .addCase(fetchCharactersByIds.fulfilled, (state, action) => {
-        charactersAdapter.setAll(state as CharactersState, action.payload);
+        charactersAdapter.upsertMany(state as CharactersState, action.payload);
         state.loading = false;
       })
-      .addCase(fetchCharactersByIds.rejected, rejectedReducer);
+      .addCase(fetchCharactersByIds.rejected, rejectedReducer)
+      .addCase(fetchAllCharacters.pending, pendingReducer)
+      .addCase(fetchAllCharacters.fulfilled, (state, action) => {
+        charactersAdapter.upsertMany(state as CharactersState, action.payload);
+        state.loading = false;
+      })
+      .addCase(fetchAllCharacters.rejected, rejectedReducer);
   },
 });
 

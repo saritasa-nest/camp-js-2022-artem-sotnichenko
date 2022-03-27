@@ -1,0 +1,1 @@
+export { FilmUpdatePage } from './FilmUpdatePage';

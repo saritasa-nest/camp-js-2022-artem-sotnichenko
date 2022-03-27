@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Film } from 'src/models/film';
 import { pendingReducer, rejectedReducer } from '../shared/reducers';
 import {
+  createFilm,
   fetchFilm,
   fetchFilms,
 } from './dispatchers';
@@ -34,7 +35,13 @@ export const filmsSlice = createSlice({
         filmsAdapter.upsertOne(state as FilmState, action.payload);
         state.loading = false;
       })
-      .addCase(fetchFilm.rejected, rejectedReducer);
+      .addCase(fetchFilm.rejected, rejectedReducer)
+      .addCase(createFilm.pending, pendingReducer)
+      .addCase(createFilm.fulfilled, (state, action) => {
+        filmsAdapter.upsertOne(state as FilmState, action.payload);
+        state.loading = false;
+      })
+      .addCase(createFilm.rejected, rejectedReducer);
   },
 });
 

@@ -3,6 +3,7 @@ import {
 } from '@reduxjs/toolkit';
 import { pendingReducer, rejectedReducer } from '../shared/reducers';
 import {
+  fetchAllPlanets,
   fetchPlanetsByIds,
 } from './dispatchers';
 import {
@@ -22,10 +23,16 @@ export const planetsSlice = createSlice({
     builder
       .addCase(fetchPlanetsByIds.pending, pendingReducer)
       .addCase(fetchPlanetsByIds.fulfilled, (state, action) => {
-        planetsAdapter.setAll(state as PlanetsState, action.payload);
+        planetsAdapter.upsertMany(state as PlanetsState, action.payload);
         state.loading = false;
       })
-      .addCase(fetchPlanetsByIds.rejected, rejectedReducer);
+      .addCase(fetchPlanetsByIds.rejected, rejectedReducer)
+      .addCase(fetchAllPlanets.pending, pendingReducer)
+      .addCase(fetchAllPlanets.fulfilled, (state, action) => {
+        planetsAdapter.upsertMany(state as PlanetsState, action.payload);
+        state.loading = false;
+      })
+      .addCase(fetchAllPlanets.rejected, rejectedReducer);
   },
 });
 

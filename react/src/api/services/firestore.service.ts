@@ -1,4 +1,5 @@
 import {
+  addDoc,
   collection,
   CollectionReference,
   doc,
@@ -9,6 +10,7 @@ import {
   getDocs,
   query,
   QueryConstraint,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import { FirestoreDto, FirestoreId } from '../dtos/firestore';
@@ -101,5 +103,32 @@ export namespace FirestoreService {
   ): Promise<FirestoreDto<T>> {
     const querySnapshot = await fetchSnapshot<T>(collectionName, id);
     return firestoreMapper.toDto(querySnapshot);
+  }
+
+  /**
+   * Create entity.
+   * @param collectionName Collection name.
+   * @param data Entity data.
+   */
+  export async function create(
+    collectionName: FirestoreCollectionName,
+    data: unknown,
+  ): Promise<FirestoreId> {
+    const docRef = await addDoc(getCollection(collectionName), data);
+    return docRef.id;
+  }
+
+  /**
+   * Update entity.
+   * @param collectionName Collection name.
+   * @param id Entity id.
+   * @param data Entity data.
+   */
+  export async function update(
+    collectionName: FirestoreCollectionName,
+    id: FirestoreId,
+    data: Partial<unknown>,
+  ): Promise<void> {
+    return updateDoc(doc(getCollection(collectionName), id), data);
   }
 }

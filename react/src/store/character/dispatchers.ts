@@ -5,3 +5,8 @@ export const fetchCharactersByIds = createAsyncThunk(
   'characters/fetchCharactersByIds',
   CharacterService.fetchCharactersByIds,
 );
+
+export const fetchAllCharacters = createAsyncThunk(
+  'characters/fetchAllCharacters',
+  CharacterService.fetchAllCharacters,
+);

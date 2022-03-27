@@ -9,8 +9,10 @@ import {
   KeyboardArrowUp as KeyboardArrowUpIcon,
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
+  Add as AddIcon,
 } from '@mui/icons-material';
 import { useFormik } from 'formik';
+import { Link } from 'react-router-dom';
 import { FilmQueryField } from 'src/models/filmQueryField';
 import { QueryDirection } from 'src/models/queryDirection';
 import { FilmQuery } from 'src/api/services/film.service';
@@ -58,13 +60,20 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
     <Header
       title="Films"
       buttons={(
-        <Tooltip title={isQueryVisible ? 'Hide options' : 'Show options'}>
-          <IconButton type="button" onClick={handleOptionsToggle} size="small">
-            {isQueryVisible
-              ? <KeyboardArrowUpIcon fontSize="small" />
-              : <KeyboardArrowDownIcon fontSize="small" />}
-          </IconButton>
-        </Tooltip>
+        <>
+          <Tooltip title="Create film">
+            <IconButton component={Link} to="create" size="small">
+              <AddIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={isQueryVisible ? 'Hide options' : 'Show options'}>
+            <IconButton className={cls.optionsButton} onClick={handleOptionsToggle} size="small">
+              {isQueryVisible
+                ? <KeyboardArrowUpIcon fontSize="small" />
+                : <KeyboardArrowDownIcon fontSize="small" />}
+            </IconButton>
+          </Tooltip>
+        </>
       )}
     >
       {isQueryVisible

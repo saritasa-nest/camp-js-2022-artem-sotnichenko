@@ -12,4 +12,12 @@ export namespace CharacterService {
     const characterDtos = await FirestoreService.fetchManyByIds<CharacterDto>('characters', ids);
     return characterDtos.map(characterMapper.fromDto);
   }
+
+  /**
+   * Get all characters.
+   */
+  export async function fetchAllCharacters(): Promise<Character[]> {
+    const characterDtos = await FirestoreService.fetchMany<CharacterDto>('characters');
+    return characterDtos.map(characterMapper.fromDto);
+  }
 }
