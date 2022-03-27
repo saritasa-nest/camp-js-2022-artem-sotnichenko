@@ -18,7 +18,7 @@ const HeaderComponent: VFC<Props> = ({ title, buttons = null, children = null })
     <div className={cls.options}>
       {title
         ? <div className={cls.title}>{title}</div>
-        : <Skeleton variant="rectangular" width={240} height={20} />}
+        : <Skeleton variant="text" width={240} />}
       <div className={cls.buttons}>
         {buttons}
       </div>

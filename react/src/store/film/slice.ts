@@ -47,4 +47,5 @@ export const filmsSlice = createSlice({
 
 export const {
   clearFilms,
+  setActiveFilm,
 } = filmsSlice.actions;

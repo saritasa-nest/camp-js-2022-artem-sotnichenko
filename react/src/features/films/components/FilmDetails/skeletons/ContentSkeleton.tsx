@@ -1,5 +1,6 @@
-import { Skeleton, Typography } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { memo, VFC } from 'react';
+import { formatDate } from 'src/utils/formatDate';
 import parentCls from '../FilmDetails.module.css';
 import { CharactersChipsSkeleton } from './CharactersChipsSkeleton';
 import { PlanetsChipsSkeleton } from './PlanetsChipsSkeleton';
@@ -15,28 +16,16 @@ const ContentSkeletonComponent: VFC = () => (
       </div>
     </div>
     <div className={parentCls.rowItem}>
-      <Typography>
-        <Skeleton width="120px" />
-      </Typography>
-      <Typography>
-        <Skeleton width="80px" />
-      </Typography>
+      <Skeleton variant="text"><div>Release date</div></Skeleton>
+      <Skeleton variant="text"><div>{formatDate(new Date())}</div></Skeleton>
     </div>
     <div className={parentCls.rowItem}>
-      <Typography>
-        <Skeleton width="80px" />
-      </Typography>
-      <Typography>
-        <Skeleton width="120px" />
-      </Typography>
+      <Skeleton variant="text"><div>Director</div></Skeleton>
+      <Skeleton variant="text"><div>Name Surname</div></Skeleton>
     </div>
     <div className={parentCls.rowItem}>
-      <Typography>
-        <Skeleton width="100px" />
-      </Typography>
-      <Typography>
-        <Skeleton width="240px" />
-      </Typography>
+      <Skeleton variant="text"><div>Producers</div></Skeleton>
+      <Skeleton variant="text"><div>Name Surname, Name Surname</div></Skeleton>
     </div>
     <div className={parentCls.colItem}>
       <Skeleton variant="text"><div>Planets</div></Skeleton>
