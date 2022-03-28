@@ -1,21 +1,21 @@
 import { memo, VFC } from 'react';
 import { ChipsSkeleton } from './ChipsSkeleton';
 
-const DUMMY_VALUES = [
-  'Luke Skywalker',
-  'C-3PO',
-  'Raymus Antilles',
-  'Wilhuff Tarkin',
-  'Lama Su',
-  'Beru Whitesun lars',
-  'Obi-Wan Kenobi',
-  'R2-D2',
-  'Chewbacca',
+const WIDTH_ARRAY = [
+  140,
+  50,
+  150,
+  130,
+  80,
+  200,
+  100,
+  40,
+  90,
 ];
 
 const CharactersChipsSkeletonComponent: VFC = () => (
   <ChipsSkeleton
-    dummyValues={DUMMY_VALUES}
+    widthArray={WIDTH_ARRAY}
   />
 );
 

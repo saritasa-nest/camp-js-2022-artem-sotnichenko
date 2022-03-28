@@ -1,16 +1,16 @@
-import { Chip, Skeleton } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { memo, VFC } from 'react';
 import cls from './ChipsSkeleton.module.css';
 
 interface Props {
   /** Dummy values of chips. */
-  readonly dummyValues: readonly string[];
+  readonly widthArray: readonly number[];
 }
 
-const ChipsSkeletonComponent: VFC<Props> = ({ dummyValues }) => (
+const ChipsSkeletonComponent: VFC<Props> = ({ widthArray }) => (
   <>
-    {dummyValues.map(text => (
-      <Skeleton key={text} variant="rectangular" className={cls.chip}><Chip label={text} /></Skeleton>
+    {widthArray.map(width => (
+      <Skeleton key={width} variant="rectangular" className={cls.chip} width={width} height={32} />
     ))}
   </>
 );

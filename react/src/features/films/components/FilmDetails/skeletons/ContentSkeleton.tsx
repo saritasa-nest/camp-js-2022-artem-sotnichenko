@@ -1,6 +1,5 @@
 import { Skeleton } from '@mui/material';
 import { memo, VFC } from 'react';
-import { formatDate } from 'src/utils/formatDate';
 import parentCls from '../FilmDetails.module.css';
 import { CharactersChipsSkeleton } from './CharactersChipsSkeleton';
 import { PlanetsChipsSkeleton } from './PlanetsChipsSkeleton';
@@ -16,19 +15,19 @@ const ContentSkeletonComponent: VFC = () => (
       </div>
     </div>
     <div className={parentCls.rowItem}>
-      <Skeleton variant="text"><div>Release date</div></Skeleton>
-      <Skeleton variant="text"><div>{formatDate(new Date())}</div></Skeleton>
+      <Skeleton variant="text" width="120px" />
+      <Skeleton variant="text" width="240px" />
     </div>
     <div className={parentCls.rowItem}>
-      <Skeleton variant="text"><div>Director</div></Skeleton>
-      <Skeleton variant="text"><div>Name Surname</div></Skeleton>
+      <Skeleton variant="text" width="80px" />
+      <Skeleton variant="text" width="120px" />
     </div>
     <div className={parentCls.rowItem}>
-      <Skeleton variant="text"><div>Producers</div></Skeleton>
-      <Skeleton variant="text"><div>Name Surname, Name Surname</div></Skeleton>
+      <Skeleton variant="text" width="100px" />
+      <Skeleton variant="text" width="160px" />
     </div>
     <div className={parentCls.colItem}>
-      <Skeleton variant="text"><div>Planets</div></Skeleton>
+      <Skeleton variant="text" width="80px" />
       <div className={parentCls.chips}>
         <PlanetsChipsSkeleton />
       </div>

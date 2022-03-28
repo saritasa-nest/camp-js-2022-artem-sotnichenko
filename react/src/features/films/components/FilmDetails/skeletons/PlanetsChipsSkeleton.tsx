@@ -1,11 +1,11 @@
 import { memo, VFC } from 'react';
 import { ChipsSkeleton } from './ChipsSkeleton';
 
-const DUMMY_VALUES = ['Tatooine', 'Yavin IV', 'Felucia'];
+const WIDTH_ARRAY = [70, 40, 100];
 
 const PlanetsChipsSkeletonComponent: VFC = () => (
   <ChipsSkeleton
-    dummyValues={DUMMY_VALUES}
+    widthArray={WIDTH_ARRAY}
   />
 );
 
