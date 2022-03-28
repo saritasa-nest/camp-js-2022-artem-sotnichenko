@@ -1,5 +1,5 @@
 import {
-  memo, useCallback, useEffect, VFC,
+  memo, useEffect, VFC,
 } from 'react';
 import { Film } from 'src/models/film';
 import {
