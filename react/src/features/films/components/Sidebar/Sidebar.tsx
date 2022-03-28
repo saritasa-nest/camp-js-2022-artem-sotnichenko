@@ -41,6 +41,8 @@ const SidebarComponent: VFC = () => {
   };
 
   /** Memoized and debounced version of query change handler. */
+  // `handleQueryChange` need to be wrapped with useCallback for this, that is unnecessary.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleQueryChangeDebounced = useMemo(() => debounce(handleQueryChange, 500), []);
 
   /**
@@ -50,7 +52,7 @@ const SidebarComponent: VFC = () => {
     if (!isFilmLoading) {
       dispatch(fetchFilms({ query: query ?? undefined, afterId: fetchAfterId }));
     }
-  }, [dispatch, query, fetchAfterId]);
+  }, [dispatch, query, fetchAfterId, isFilmLoading]);
 
   return (
     <aside className={cls.sidebar}>

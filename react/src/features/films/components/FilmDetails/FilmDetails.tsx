@@ -46,6 +46,9 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
       dispatch(fetchCharactersByIds(film.characterIds));
     }
     return () => dispatch(setActiveFilm(null));
+  // `film` as a dependency lead to unnecessary rerender,
+  // when film fetched two times width `fetchFilm` (film page), `fetchFilms` (film sidebar)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, film?.id]);
 
   return (
