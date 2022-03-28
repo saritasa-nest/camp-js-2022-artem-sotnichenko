@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { Character } from 'src/models/character';
+import { isNotNullish } from 'src/utils/isNotNullish';
 import { RootState } from '../store';
 import { charactersAdapter } from './state';
 
@@ -13,7 +14,7 @@ export const selectCharacterLoading = createSelector(
 export const selectCharactersByIds = createSelector(
   (state: RootState, ids: readonly Character['id'][]) => ids
     .map(id => state.characters.entities[id])
-    .filter((entity): entity is Character => entity != null),
+    .filter(isNotNullish),
   entities => entities,
 );
 

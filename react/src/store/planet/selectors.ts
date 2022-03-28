@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { Planet } from 'src/models/planet';
+import { isNotNullish } from 'src/utils/isNotNullish';
 import { RootState } from '../store';
 import { planetsAdapter } from './state';
 
@@ -10,7 +11,7 @@ export const selectPlanetLoading = createSelector((state: RootState) => state.pl
 export const selectPlanetsByIds = createSelector(
   (state: RootState, ids: readonly Planet['id'][]) => ids
     .map(id => state.planets.entities[id])
-    .filter((entity): entity is Planet => entity != null),
+    .filter(isNotNullish),
   entities => entities,
 );
 
