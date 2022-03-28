@@ -1,5 +1,5 @@
-import { Skeleton } from '@mui/material';
 import { memo, ReactNode, VFC } from 'react';
+import { Skeleton } from '@mui/material';
 import cls from './Header.module.css';
 
 interface Props {

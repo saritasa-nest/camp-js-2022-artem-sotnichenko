@@ -1,14 +1,14 @@
 import {
   memo, useCallback, useMemo, useState, VFC,
 } from 'react';
+import { useParams } from 'react-router-dom';
+import { debounce } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import { fetchFilms } from 'src/store/film/dispatchers';
 import { selectAllFilms, selectFilmLoading } from 'src/store/film/selectors';
 import { clearFilms } from 'src/store/film/slice';
-import { debounce } from '@mui/material';
 import { Query } from 'src/api/services/query.service';
 import { FilmQueryField } from 'src/models/filmQueryField';
-import { useParams } from 'react-router-dom';
 import { SidebarHeader } from '../SidebarHeader';
 import { FilmList } from '../FilmList/FilmList';
 import cls from './Sidebar.module.css';

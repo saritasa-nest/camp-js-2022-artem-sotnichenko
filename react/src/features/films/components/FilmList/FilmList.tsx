@@ -1,11 +1,11 @@
-import { CircularProgress } from '@mui/material';
 import {
   memo, useEffect, useRef, VFC,
 } from 'react';
+import { CircularProgress } from '@mui/material';
 import { Film } from 'src/models/film';
 import { useAppSelector } from 'src/store';
 import { selectFilmLoading } from 'src/store/film/selectors';
-import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
+import { useIntersectionObserver } from 'src/utils/hooks/useIntersectionObserver';
 import { FilmListItem } from '../FilmListItem';
 import cls from './FilmList.module.css';
 

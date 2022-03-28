@@ -14,8 +14,8 @@ import { useFormik } from 'formik';
 import { FilmQueryField } from 'src/models/filmQueryField';
 import { QueryDirection } from 'src/models/queryDirection';
 import { FilmQuery } from 'src/api/services/film.service';
-import cls from './SidebarHeader.module.css';
 import { Header } from '../Header';
+import cls from './SidebarHeader.module.css';
 
 interface Props {
   /** Callback on query change. */

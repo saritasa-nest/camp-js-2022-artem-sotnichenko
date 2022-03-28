@@ -1,7 +1,6 @@
 import {
   memo, useEffect, VFC,
 } from 'react';
-import { Film } from 'src/models/film';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -9,18 +8,19 @@ import {
 import {
   Chip, IconButton, Tooltip,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Film } from 'src/models/film';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import { selectPlanetLoading, selectPlanetsByIds } from 'src/store/planet/selectors';
 import { fetchPlanetsByIds } from 'src/store/planet/dispatchers';
 import { selectCharacterLoading, selectCharactersByIds } from 'src/store/character/selectors';
 import { fetchCharactersByIds } from 'src/store/character/dispatchers';
 import { setActiveFilm } from 'src/store/film/slice';
-import { Link } from 'react-router-dom';
 import { Header } from '../Header';
-import cls from './FilmDetails.module.css';
 import { ContentSkeleton } from './skeletons/ContentSkeleton';
 import { PlanetsChipsSkeleton } from './skeletons/PlanetsChipsSkeleton';
 import { CharactersChipsSkeleton } from './skeletons/CharactersChipsSkeleton';
+import cls from './FilmDetails.module.css';
 
 interface Props {
   /** Film. */
