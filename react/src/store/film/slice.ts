@@ -18,7 +18,7 @@ export const filmsSlice = createSlice({
       filmsAdapter.removeMany(state as FilmState, state.ids.filter(id => id !== state.activeId));
       state.loading = false;
     },
-    setActiveFilm(state, action: PayloadAction<Film['id']>) {
+    setActiveFilm(state, action: PayloadAction<Film['id'] | null>) {
       state.activeId = action.payload;
     },
   },

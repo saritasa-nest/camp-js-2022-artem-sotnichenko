@@ -38,10 +38,11 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  useEffect((): (() => void) => {
     if (film?.id != null) {
       dispatch(setActiveFilm(film.id));
     }
+    return () => dispatch(setActiveFilm(null));
   }, [dispatch, film?.id]);
 
   useEffect(() => {
