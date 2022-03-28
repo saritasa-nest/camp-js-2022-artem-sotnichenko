@@ -31,7 +31,7 @@ const FilmUpdatePageComponent: VFC = () => {
       const updatedFilm = await dispatch(updateFilm({ id: filmId, filmForm })).unwrap();
       navigate(`/films/${updatedFilm.id}`);
     }
-  }, [filmForm, dispatch, navigate]);
+  }, [filmForm, dispatch, navigate, filmId]);
 
   const handleFilmFormChange = useCallback(setFilmForm, [setFilmForm]);
 
