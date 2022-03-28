@@ -67,7 +67,7 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
       )}
       />
       <div className={cls.content}>
-        {film
+        {film != null
           ? (
             <>
               <div className={cls.colItem}>
