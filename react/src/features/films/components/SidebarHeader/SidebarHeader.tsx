@@ -45,12 +45,12 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
     validate: handleFormChange,
   });
 
-  const handleDirectionChange = (previousDirection: string): void => {
+  const handleDirectionChange = useCallback((previousDirection: string) => () => {
     const newDirection = previousDirection === QueryDirection.Ascending
       ? QueryDirection.Descending
       : QueryDirection.Ascending;
     formik.setFieldValue('direction', newDirection);
-  };
+  }, [formik]);
 
   const fields = useMemo(() => FilmQueryField.entires.map(([value, text]) => ({ value, text })), []);
 
@@ -59,7 +59,7 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
       title="Films"
       buttons={(
         <Tooltip title={isQueryVisible ? 'Hide options' : 'Show options'}>
-          <IconButton onClick={handleOptionsToggle} size="small">
+          <IconButton type="button" onClick={handleOptionsToggle} size="small">
             {isQueryVisible
               ? <KeyboardArrowUpIcon fontSize="small" />
               : <KeyboardArrowDownIcon fontSize="small" />}
@@ -98,7 +98,7 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
             ))}
           </Select>
           <Tooltip title={QueryDirection.toReadable(formik.values.direction)}>
-            <IconButton onClick={() => handleDirectionChange(formik.values.direction)}>
+            <IconButton type="button" onClick={handleDirectionChange(formik.values.direction)}>
               {formik.values.direction === QueryDirection.Ascending
                 ? <ArrowUpwardIcon />
                 : <ArrowDownwardIcon />}

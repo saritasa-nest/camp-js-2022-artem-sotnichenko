@@ -57,12 +57,12 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
         buttons={(
           <>
             <Tooltip title="Update">
-              <IconButton component={Link} to="update" size="small">
+              <IconButton type="button" component={Link} to="update" size="small">
                 <EditIcon fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton size="small">
+              <IconButton type="button" size="small">
                 <DeleteIcon fontSize="small" />
               </IconButton>
             </Tooltip>
