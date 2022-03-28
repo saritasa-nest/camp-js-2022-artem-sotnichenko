@@ -2,7 +2,7 @@ import {
   memo, useCallback, useMemo, useState, VFC,
 } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import { fetchFilms, fetchFilmsOnTop } from 'src/store/film/dispatchers';
+import { fetchFilms } from 'src/store/film/dispatchers';
 import { selectAllFilms, selectFilmLoading } from 'src/store/film/selectors';
 import { clearFilms } from 'src/store/film/slice';
 import { debounce } from '@mui/material';
@@ -48,7 +48,7 @@ const SidebarComponent: VFC = () => {
    */
   const handleLoadMore = useCallback(() => {
     if (!isFilmLoading) {
-      dispatch(fetchFilmsOnTop({ query: query ?? undefined, afterId: fetchAfterId }));
+      dispatch(fetchFilms({ query: query ?? undefined, afterId: fetchAfterId }));
     }
   }, [dispatch, query, fetchAfterId]);
 

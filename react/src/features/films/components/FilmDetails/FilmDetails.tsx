@@ -15,7 +15,7 @@ import { fetchPlanetsByIds } from 'src/store/planet/dispatchers';
 import { selectCharacterLoading, selectCharactersByIds } from 'src/store/character/selectors';
 import { fetchCharactersByIds } from 'src/store/character/dispatchers';
 import { setActiveFilm } from 'src/store/film/slice';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Header } from '../Header';
 import cls from './FilmDetails.module.css';
 import { ContentSkeleton } from './skeletons/ContentSkeleton';
@@ -39,29 +39,13 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
   const dispatch = useAppDispatch();
 
   useEffect((): (() => void) => {
-    if (film?.id != null) {
+    if (film != null) {
       dispatch(setActiveFilm(film.id));
+      dispatch(fetchPlanetsByIds(film.planetIds));
+      dispatch(fetchCharactersByIds(film.characterIds));
     }
     return () => dispatch(setActiveFilm(null));
   }, [dispatch, film?.id]);
-
-  useEffect(() => {
-    if (film?.planetIds != null) {
-      dispatch(fetchPlanetsByIds(film.planetIds));
-    }
-  }, [dispatch, film?.planetIds]);
-
-  useEffect(() => {
-    if (film?.characterIds != null) {
-      dispatch(fetchCharactersByIds(film.characterIds));
-    }
-  }, [dispatch, film?.characterIds]);
-
-  const navigate = useNavigate();
-
-  const handleUpdateClick = useCallback(() => {
-    navigate('update');
-  }, [navigate]);
 
   return (
     <div className={cls.film}>
@@ -70,7 +54,7 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
         buttons={(
           <>
             <Tooltip title="Update">
-              <IconButton onClick={handleUpdateClick} size="small">
+              <IconButton component={Link} to="update" size="small">
                 <EditIcon fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -88,34 +72,34 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
             <>
               <div className={cls.colItem}>
                 <h2 className={cls.subtitle}>Description</h2>
-                <div>{film?.openingCrawl}</div>
+                <div>{film.openingCrawl}</div>
               </div>
               <div className={cls.rowItem}>
                 <h2 className={cls.subtitle}>Release date</h2>
-                <div>{film?.releaseDate.toISOString()}</div>
+                <div>{film.releaseDate.toISOString()}</div>
               </div>
               <div className={cls.rowItem}>
                 <h2 className={cls.subtitle}>Director</h2>
-                <div>{film?.director}</div>
+                <div>{film.director}</div>
               </div>
               <div className={cls.rowItem}>
                 <h2 className={cls.subtitle}>Producers</h2>
-                <div>{film?.producers.join(', ')}</div>
+                <div>{film.producers.join(', ')}</div>
               </div>
               <div className={cls.colItem}>
                 <h2 className={cls.subtitle}>Planets</h2>
                 <div className={cls.chips}>
-                  {!isPlanetsLoading
-                    ? planetNames.map(name => <Chip key={name} label={name} />)
-                    : <PlanetsChipsSkeleton />}
+                  {isPlanetsLoading
+                    ? <PlanetsChipsSkeleton />
+                    : planetNames.map(name => <Chip key={name} label={name} />)}
                 </div>
               </div>
               <div className={cls.colItem}>
                 <h2 className={cls.subtitle}>Characters</h2>
                 <div className={cls.chips}>
-                  {!isCharactersLoading
-                    ? characterNames.map(name => <Chip key={name} label={name} />)
-                    : <CharactersChipsSkeleton />}
+                  {isCharactersLoading
+                    ? <CharactersChipsSkeleton />
+                    : characterNames.map(name => <Chip key={name} label={name} />)}
                 </div>
               </div>
             </>

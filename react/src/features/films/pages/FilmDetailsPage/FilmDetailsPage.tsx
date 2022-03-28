@@ -13,10 +13,8 @@ const FilmDetailsPageComponent: VFC = () => {
   const film = useAppSelector(state => selectFilmById(state, filmId));
 
   useEffect(() => {
-    if (film == null) {
-      dispatch(fetchFilm(filmId));
-    }
-  }, [film, dispatch, filmId]);
+    dispatch(fetchFilm(filmId));
+  }, [dispatch, filmId]);
 
   return <FilmDetails film={film} />;
 };
