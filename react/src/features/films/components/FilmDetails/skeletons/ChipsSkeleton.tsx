@@ -4,12 +4,23 @@ import cls from './ChipsSkeleton.module.css';
 
 interface Props {
   /** Dummy values of chips. */
-  readonly widthArray: readonly number[];
+  readonly count: number;
 }
 
-const ChipsSkeletonComponent: VFC<Props> = ({ widthArray }) => (
+const MAX_WIDTH = 200;
+const MIN_WIDTH = 50;
+
+/**
+ * Create width array.
+ * @param count Items count.
+ */
+function createWidthArray(count: number): number[] {
+  return Array.from({ length: count }).map(() => Math.floor(Math.random() * (MAX_WIDTH - MIN_WIDTH) + MIN_WIDTH));
+}
+
+const ChipsSkeletonComponent: VFC<Props> = ({ count }) => (
   <>
-    {widthArray.map(width => (
+    {createWidthArray(count).map(width => (
       <Skeleton key={width} variant="rectangular" className={cls.chip} width={width} height={32} />
     ))}
   </>

@@ -19,8 +19,7 @@ import { setActiveFilm } from 'src/store/film/slice';
 import { formatDate } from 'src/utils/formatDate';
 import { Header } from '../Header';
 import { ContentSkeleton } from './skeletons/ContentSkeleton';
-import { PlanetsChipsSkeleton } from './skeletons/PlanetsChipsSkeleton';
-import { CharactersChipsSkeleton } from './skeletons/CharactersChipsSkeleton';
+import { ChipsSkeleton } from './skeletons/ChipsSkeleton';
 import cls from './FilmDetails.module.css';
 
 interface Props {
@@ -94,7 +93,7 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
                 <Typography component="h2" className={cls.subtitle}>Planets</Typography>
                 <div className={cls.chips}>
                   {isPlanetsLoading
-                    ? <PlanetsChipsSkeleton />
+                    ? <ChipsSkeleton count={5} />
                     : planetNames.map(name => <Chip key={name} label={name} />)}
                 </div>
               </div>
@@ -102,7 +101,7 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
                 <Typography component="h2" className={cls.subtitle}>Characters</Typography>
                 <div className={cls.chips}>
                   {isCharactersLoading
-                    ? <CharactersChipsSkeleton />
+                    ? <ChipsSkeleton count={10} />
                     : characterNames.map(name => <Chip key={name} label={name} />)}
                 </div>
               </div>

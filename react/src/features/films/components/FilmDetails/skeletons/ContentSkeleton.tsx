@@ -1,8 +1,7 @@
 import { memo, VFC } from 'react';
 import { Skeleton } from '@mui/material';
 import cls from '../FilmDetails.module.css';
-import { CharactersChipsSkeleton } from './CharactersChipsSkeleton';
-import { PlanetsChipsSkeleton } from './PlanetsChipsSkeleton';
+import { ChipsSkeleton } from './ChipsSkeleton';
 
 const ContentSkeletonComponent: VFC = () => (
   <>
@@ -29,13 +28,13 @@ const ContentSkeletonComponent: VFC = () => (
     <div className={cls.colItem}>
       <Skeleton variant="text" width="80px" />
       <div className={cls.chips}>
-        <PlanetsChipsSkeleton />
+        <ChipsSkeleton count={5} />
       </div>
     </div>
     <div className={cls.colItem}>
       <Skeleton variant="text"><div>Characters</div></Skeleton>
       <div className={cls.chips}>
-        <CharactersChipsSkeleton />
+        <ChipsSkeleton count={10} />
       </div>
     </div>
   </>
