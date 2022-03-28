@@ -1,5 +1,5 @@
 import {
-  memo, useEffect, VFC,
+  memo, useCallback, useEffect, useState, VFC,
 } from 'react';
 import {
   Edit as EditIcon,
@@ -8,7 +8,7 @@ import {
 import {
   Chip, IconButton, Tooltip, Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Film } from 'src/models/film';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import { selectPlanetLoading, selectPlanetsByIds } from 'src/store/planet/selectors';
@@ -17,9 +17,11 @@ import { selectCharacterLoading, selectCharactersByIds } from 'src/store/charact
 import { fetchCharactersByIds } from 'src/store/character/dispatchers';
 import { setActiveFilm } from 'src/store/film/slice';
 import { formatDate } from 'src/utils/formatDate';
+import { removeFilm } from 'src/store/film/dispatchers';
 import { Header } from '../Header';
 import { ContentSkeleton } from './skeletons/ContentSkeleton';
 import { ChipsSkeleton } from './skeletons/ChipsSkeleton';
+import { FilmDeleteDialog } from '../FilmDeleteDialog';
 import cls from './FilmDetails.module.css';
 
 interface Props {
@@ -50,8 +52,34 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, film?.id]);
 
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const handleDeleteDialogOpen = useCallback(() => {
+    setIsDeleteDialogOpen(true);
+  }, [setIsDeleteDialogOpen]);
+
+  const handleDeleteDialogClose = useCallback(() => {
+    setIsDeleteDialogOpen(false);
+  }, [setIsDeleteDialogOpen]);
+
+  const navigate = useNavigate();
+
+  const handleDelete = useCallback(() => {
+    setIsDeleteDialogOpen(false);
+    if (film != null) {
+      navigate('..');
+      dispatch(removeFilm(film?.id));
+    }
+  }, [setIsDeleteDialogOpen, dispatch, film, navigate]);
+
   return (
     <div className={cls.film}>
+      <FilmDeleteDialog
+        title={film?.title}
+        isOpen={isDeleteDialogOpen}
+        onClose={handleDeleteDialogClose}
+        onConfirm={handleDelete}
+      />
       <Header
         title={film?.title}
         buttons={(
@@ -62,7 +90,7 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton type="button" size="small">
+              <IconButton onClick={handleDeleteDialogOpen} type="button" size="small">
                 <DeleteIcon fontSize="small" />
               </IconButton>
             </Tooltip>

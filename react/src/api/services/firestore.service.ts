@@ -2,6 +2,7 @@ import {
   addDoc,
   collection,
   CollectionReference,
+  deleteDoc,
   doc,
   DocumentData,
   documentId,
@@ -117,7 +118,21 @@ export namespace FirestoreService {
     collectionName: FirestoreCollectionName,
     id: FirestoreId,
     data: Partial<unknown>,
-  ): Promise<void> {
-    return updateDoc(doc(getCollection(collectionName), id), data);
+  ): Promise<FirestoreId> {
+    await updateDoc(doc(getCollection(collectionName), id), data);
+    return id;
+  }
+
+  /**
+   * Update entity.
+   * @param collectionName Collection name.
+   * @param id Entity id.
+   */
+  export async function remove(
+    collectionName: FirestoreCollectionName,
+    id: FirestoreId,
+  ): Promise<FirestoreId> {
+    await deleteDoc(doc(getCollection(collectionName), id));
+    return id;
   }
 }
