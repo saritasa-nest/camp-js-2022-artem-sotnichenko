@@ -52,8 +52,16 @@ export namespace FilmService {
    * @param id Film id.
    * @param filmForm Film form.
    */
-  export async function update(id: Film['id'], filmForm: FilmForm): Promise<void> {
+  export async function update(id: Film['id'], filmForm: FilmForm): Promise<Film['id']> {
     const filmFormDto = filmFormMapper.toDto(filmForm);
     return FirestoreService.update('films', id, filmFormDto);
+  }
+
+  /**
+   * Update film.
+   * @param id Film id.
+   */
+  export async function remove(id: Film['id']): Promise<Film['id']> {
+    return FirestoreService.remove('films', id);
   }
 }

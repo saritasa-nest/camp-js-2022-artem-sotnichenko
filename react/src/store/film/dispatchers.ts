@@ -28,3 +28,8 @@ export const updateFilm = createAsyncThunk(
     return FilmService.fetchOne(id);
   },
 );
+
+export const removeFilm = createAsyncThunk(
+  'films/removeFilm',
+  FilmService.remove,
+);

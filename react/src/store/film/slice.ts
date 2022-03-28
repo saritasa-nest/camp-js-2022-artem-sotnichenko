@@ -5,6 +5,7 @@ import {
   createFilm,
   fetchFilm,
   fetchFilms,
+  removeFilm,
 } from './dispatchers';
 import {
   filmsAdapter, FilmState, initialState,
@@ -41,7 +42,13 @@ export const filmsSlice = createSlice({
         filmsAdapter.upsertOne(state as FilmState, action.payload);
         state.loading = false;
       })
-      .addCase(createFilm.rejected, rejectedReducer);
+      .addCase(createFilm.rejected, rejectedReducer)
+      .addCase(removeFilm.pending, pendingReducer)
+      .addCase(removeFilm.fulfilled, (state, action) => {
+        filmsAdapter.removeOne(state as FilmState, action.payload);
+        state.loading = false;
+      })
+      .addCase(removeFilm.rejected, rejectedReducer);
   },
 });
 
