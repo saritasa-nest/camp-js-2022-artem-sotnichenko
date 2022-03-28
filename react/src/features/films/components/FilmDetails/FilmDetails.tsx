@@ -6,7 +6,7 @@ import {
   Delete as DeleteIcon,
 } from '@mui/icons-material';
 import {
-  Chip, IconButton, Tooltip,
+  Chip, IconButton, Tooltip, Typography,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Film } from 'src/models/film';
@@ -16,6 +16,7 @@ import { fetchPlanetsByIds } from 'src/store/planet/dispatchers';
 import { selectCharacterLoading, selectCharactersByIds } from 'src/store/character/selectors';
 import { fetchCharactersByIds } from 'src/store/character/dispatchers';
 import { setActiveFilm } from 'src/store/film/slice';
+import { formatDate } from 'src/utils/formatDate';
 import { Header } from '../Header';
 import { ContentSkeleton } from './skeletons/ContentSkeleton';
 import { PlanetsChipsSkeleton } from './skeletons/PlanetsChipsSkeleton';
@@ -71,23 +72,23 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
           ? (
             <>
               <div className={cls.colItem}>
-                <h2 className={cls.subtitle}>Description</h2>
+                <Typography component="h2" className={cls.subtitle}>Description</Typography>
                 <div>{film.openingCrawl}</div>
               </div>
               <div className={cls.rowItem}>
-                <h2 className={cls.subtitle}>Release date</h2>
-                <div>{film.releaseDate.toISOString()}</div>
+                <Typography component="h2" className={cls.subtitle}>Release date</Typography>
+                <div>{formatDate(film.releaseDate)}</div>
               </div>
               <div className={cls.rowItem}>
-                <h2 className={cls.subtitle}>Director</h2>
+                <Typography component="h2" className={cls.subtitle}>Director</Typography>
                 <div>{film.director}</div>
               </div>
               <div className={cls.rowItem}>
-                <h2 className={cls.subtitle}>Producers</h2>
+                <Typography component="h2" className={cls.subtitle}>Producers</Typography>
                 <div>{film.producers.join(', ')}</div>
               </div>
               <div className={cls.colItem}>
-                <h2 className={cls.subtitle}>Planets</h2>
+                <Typography component="h2" className={cls.subtitle}>Planets</Typography>
                 <div className={cls.chips}>
                   {isPlanetsLoading
                     ? <PlanetsChipsSkeleton />
@@ -95,7 +96,7 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
                 </div>
               </div>
               <div className={cls.colItem}>
-                <h2 className={cls.subtitle}>Characters</h2>
+                <Typography component="h2" className={cls.subtitle}>Characters</Typography>
                 <div className={cls.chips}>
                   {isCharactersLoading
                     ? <CharactersChipsSkeleton />
