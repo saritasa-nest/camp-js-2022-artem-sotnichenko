@@ -65,7 +65,7 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
     setIsDeleteDialogOpen(false);
     if (film != null) {
       navigate('..');
-      dispatch(removeFilm(film?.id));
+      dispatch(removeFilm(film.id));
     }
   }, [setIsDeleteDialogOpen, dispatch, film, navigate]);
 
@@ -87,7 +87,7 @@ const FilmDetailsComponent: VFC<Props> = ({ film }) => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton onClick={handleDeleteDialogOpen} type="button" size="small">
+              <IconButton type="button" onClick={handleDeleteDialogOpen} size="small">
                 <DeleteIcon fontSize="small" />
               </IconButton>
             </Tooltip>

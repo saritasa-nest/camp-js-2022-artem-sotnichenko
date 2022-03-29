@@ -67,7 +67,7 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
             </IconButton>
           </Tooltip>
           <Tooltip title={isQueryVisible ? 'Hide options' : 'Show options'}>
-            <IconButton className={cls.optionsButton} onClick={handleOptionsToggle} size="small">
+            <IconButton type="button" className={cls.optionsButton} onClick={handleOptionsToggle} size="small">
               {isQueryVisible
                 ? <KeyboardArrowUpIcon fontSize="small" />
                 : <KeyboardArrowDownIcon fontSize="small" />}

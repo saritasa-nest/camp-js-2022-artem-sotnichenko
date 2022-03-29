@@ -20,8 +20,9 @@ function createWidthArray(count: number): number[] {
 
 const ChipsSkeletonComponent: VFC<Props> = ({ count }) => (
   <>
-    {createWidthArray(count).map(width => (
-      <Skeleton key={width} variant="rectangular" className={cls.chip} width={`${width}ch`} height={32} />
+    {createWidthArray(count).map((width, index) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <Skeleton variant="rectangular" key={index} className={cls.chip} width={width} height={32} />
     ))}
   </>
 );
