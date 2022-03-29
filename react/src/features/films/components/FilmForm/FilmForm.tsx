@@ -1,7 +1,7 @@
 import {
   ChangeEvent, memo, ReactNode, useCallback, useEffect, useMemo, VFC,
 } from 'react';
-import { useFormik } from 'formik';
+import { Form, Formik, useFormik } from 'formik';
 import { Film } from 'src/models/film';
 import type { FilmForm as FilmFormType } from 'src/models/filmForm';
 import { TextField } from '@mui/material';
@@ -15,6 +15,9 @@ import { Character } from 'src/models/character';
 import { MultiSelectField } from 'src/components/MultiSelectField';
 import cls from './FilmForm.module.css';
 import { FilmFormSchema } from './FilmFormSchema';
+import { FilmFormTextField } from '../FilmFormTextField/FilmFormTextField';
+import { FilmFormDateField } from '../FilmFormDateField/FilmFormDateField';
+import { FilmFormListField } from '../FilmFormListField/FilmFormListField';
 
 interface Props {
   /** Initial film value. */
@@ -25,14 +28,6 @@ interface Props {
 
   /** Header. */
   readonly header: ReactNode;
-}
-
-/**
- * Format date for input with type date.
- * @param date Date.
- */
-function formatDate(date: Date): string {
-  return date.toISOString().slice(0, 10);
 }
 
 const DEFAULT_FILM_FORM: FilmFormType = {
@@ -70,16 +65,6 @@ const FilmFormComponent: VFC<Props> = ({
     dispatch(fetchAllCharacters());
   }, [dispatch]);
 
-  const producers = useMemo(() => formik.values.producers.join(','), [formik.values.producers]);
-  const handleProducersChange = useCallback((event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    formik.setFieldValue('producers', event.target.value.split(','));
-  }, [formik]);
-
-  const releaseDate = useMemo(() => formatDate(formik.values.releaseDate), [formik.values.releaseDate]);
-  const handleReleaseDateChange = useCallback((event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    formik.setFieldValue('releaseDate', new Date(event.target.value));
-  }, [formik]);
-
   const handlePlanetsChange = useCallback((planetIds: readonly Planet['id'][]) => {
     formik.setFieldValue('planetIds', planetIds);
   }, [formik]);
@@ -89,10 +74,21 @@ const FilmFormComponent: VFC<Props> = ({
   }, [formik]);
 
   return (
-    <form className={cls.filmForm} onSubmit={formik.handleSubmit}>
-      {header}
-      <div className={cls.fields}>
-        <TextField
+    <Formik
+      initialValues={initialValues}
+      validationSchema={FilmFormSchema}
+      onSubmit={v => console.log(v)}
+      validate={v => console.log(v)}
+    >
+      <Form className={cls.filmForm}>
+        {header}
+        <div className={cls.fields}>
+          <FilmFormTextField label="Title" name="title" />
+          <FilmFormTextField isMultiline label="Opening crawl" name="openingCrawl" />
+          <FilmFormTextField label="Director" name="director" />
+          <FilmFormListField label="Producer" name="producers" />
+          <FilmFormDateField label="Release date" name="releaseDate" />
+          {/* <TextField
           variant="outlined"
           label="Title"
           name="title"
@@ -100,68 +96,69 @@ const FilmFormComponent: VFC<Props> = ({
           onChange={formik.handleChange}
           error={Boolean(formik.errors.title)}
           helperText={formik.errors.title}
-        />
-        <TextField
-          variant="outlined"
-          multiline
-          rows={4}
-          label="Opening crawl"
-          name="openingCrawl"
-          value={formik.values.openingCrawl}
-          onChange={formik.handleChange}
-          error={Boolean(formik.errors.openingCrawl)}
-          helperText={formik.errors.openingCrawl}
-        />
-        <div className={cls.row}>
-          <TextField
+        /> */}
+          {/* <TextField
             variant="outlined"
-            label="Director"
-            name="director"
-            value={formik.values.director}
+            multiline
+            rows={4}
+            label="Opening crawl"
+            name="openingCrawl"
+            value={formik.values.openingCrawl}
             onChange={formik.handleChange}
-            error={Boolean(formik.errors.director)}
-            helperText={formik.errors.director}
+            error={Boolean(formik.errors.openingCrawl)}
+            helperText={formik.errors.openingCrawl}
+          /> */}
+          {/* <div className={cls.row}>
+            <TextField
+              variant="outlined"
+              label="Director"
+              name="director"
+              onChange={formik.handleChange}
+              error={Boolean(formik.errors.director)}
+              value={formik.values[name]}
+              helperText={formik.errors[name]}
+            />
+            <TextField
+              variant="outlined"
+              label="Producers"
+              name="producers"
+              value={producers}
+              onChange={handleProducersChange}
+              error={Boolean(formik.errors.producers)}
+              helperText={formik.errors.producers}
+            />
+            <TextField
+              variant="outlined"
+              label="Release date"
+              name="releaseDate"
+              type="date"
+              value={releaseDate}
+              onChange={handleReleaseDateChange}
+              error={Boolean(formik.errors.releaseDate)}
+              helperText={formik.errors.releaseDate}
+            />
+          </div>
+          <MultiSelectField
+            name="planets"
+            label="Planets"
+            entities={planets}
+            error={Boolean(formik.errors.planetIds)}
+            helperText={formik.errors.planetIds}
+            selectedIds={formik.values.planetIds}
+            onChange={handlePlanetsChange}
           />
-          <TextField
-            variant="outlined"
-            label="Producers"
-            name="producers"
-            value={producers}
-            onChange={handleProducersChange}
-            error={Boolean(formik.errors.producers)}
-            helperText={formik.errors.producers}
-          />
-          <TextField
-            variant="outlined"
-            label="Release date"
-            name="releaseDate"
-            type="date"
-            value={releaseDate}
-            onChange={handleReleaseDateChange}
-            error={Boolean(formik.errors.releaseDate)}
-            helperText={formik.errors.releaseDate}
-          />
+          <MultiSelectField
+            name="characters"
+            label="Characters"
+            entities={characters}
+            error={Boolean(formik.errors.characterIds)}
+            helperText={formik.errors.characterIds}
+            selectedIds={formik.values.characterIds}
+            onChange={handleCharactersChange}
+          /> */}
         </div>
-          <MultiSelectField
-          name="planets"
-          label="Planets"
-          entities={planets}
-          error={Boolean(formik.errors.planetIds)}
-          helperText={formik.errors.planetIds}
-          selectedIds={formik.values.planetIds}
-          onChange={handlePlanetsChange}
-        />
-          <MultiSelectField
-          name="characters"
-          label="Characters"
-          entities={characters}
-          error={Boolean(formik.errors.characterIds)}
-          helperText={formik.errors.characterIds}
-          selectedIds={formik.values.characterIds}
-          onChange={handleCharactersChange}
-        />
-      </div>
-    </form>
+      </Form>
+    </Formik>
   );
 };
 
