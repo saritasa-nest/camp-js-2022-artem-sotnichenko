@@ -11,7 +11,7 @@ const MAX_WIDTH = 200;
 const MIN_WIDTH = 50;
 
 /**
- * Create width array.
+ * Create array of random width.
  * @param count Items count.
  */
 function createWidthArray(count: number): number[] {
@@ -21,7 +21,7 @@ function createWidthArray(count: number): number[] {
 const ChipsSkeletonComponent: VFC<Props> = ({ count }) => (
   <>
     {createWidthArray(count).map(width => (
-      <Skeleton key={width} variant="rectangular" className={cls.chip} width={width} height={32} />
+      <Skeleton variant="rectangular" key={width} className={cls.chip} width={width} height={32} />
     ))}
   </>
 );
