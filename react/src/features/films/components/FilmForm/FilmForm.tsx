@@ -52,7 +52,11 @@ const FilmFormComponent: VFC<Props> = ({
   const formik = useFormik({
     initialValues,
     validationSchema: FilmFormSchema,
-    onSubmit,
+    onSubmit: values => {
+      if (formik.isValid) {
+        onSubmit(values);
+      }
+    },
   });
 
   const dispatch = useAppDispatch();
