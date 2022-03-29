@@ -16,7 +16,7 @@ interface Props {
 }
 
 const FilmFormTextFieldComponent: VFC<Props & FieldHookConfig<string>> = ({
-  label, name, isMultiline = false,
+  label, name, isMultiline,
 }) => {
   const [field, meta] = useField(name);
 
