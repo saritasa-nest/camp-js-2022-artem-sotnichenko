@@ -12,7 +12,7 @@ import { fetchAllCharacters } from 'src/store/character/dispatchers';
 import { selectAllCharacters } from 'src/store/character/selectors';
 import { Planet } from 'src/models/planet';
 import { Character } from 'src/models/character';
-import { FilmMultiSelectField } from '../FilmMultiSelectField';
+import { MultiSelectField } from 'src/components/MultiSelectField';
 import cls from './FilmForm.module.css';
 import { FilmFormSchema } from './FilmFormSchema';
 
@@ -142,7 +142,7 @@ const FilmFormComponent: VFC<Props> = ({
             helperText={formik.errors.releaseDate}
           />
         </div>
-        <FilmMultiSelectField
+          <MultiSelectField
           name="planets"
           label="Planets"
           entities={planets}
@@ -151,7 +151,7 @@ const FilmFormComponent: VFC<Props> = ({
           selectedIds={formik.values.planetIds}
           onChange={handlePlanetsChange}
         />
-        <FilmMultiSelectField
+          <MultiSelectField
           name="characters"
           label="Characters"
           entities={characters}
