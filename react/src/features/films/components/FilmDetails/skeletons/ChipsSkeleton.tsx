@@ -11,7 +11,7 @@ const MAX_WIDTH = 20;
 const MIN_WIDTH = 5;
 
 /**
- * Create width array.
+ * Create array of random width.
  * @param count Items count.
  */
 function createWidthArray(count: number): number[] {

@@ -1,8 +1,8 @@
 import {
-  Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent,
+  Chip, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, OutlinedInputProps, Select, SelectChangeEvent,
 } from '@mui/material';
 import {
-  memo, useCallback, VFC,
+  memo, ReactNode, useCallback, VFC,
 } from 'react';
 import cls from './FilmMultiSelectField.module.css';
 
@@ -14,7 +14,7 @@ interface Entity {
   readonly name: string;
 }
 
-interface Props {
+interface Props extends Pick<OutlinedInputProps, 'error'> {
   /** Input name. */
   readonly name: string;
 
@@ -29,10 +29,13 @@ interface Props {
 
   /** Selected entities ids. */
   readonly selectedIds: readonly Entity['id'][];
+
+  /** Helper text. */
+  readonly helperText: ReactNode;
 }
 
 const FilmMultiSelectFieldComponent: VFC<Props> = ({
-  name, label, onChange, entities, selectedIds,
+  name, label, onChange, entities, selectedIds, error, helperText,
 }) => {
   const handleChange = useCallback((event: SelectChangeEvent<readonly string[]>): void => {
     const ids = event.target.value;
@@ -49,13 +52,13 @@ const FilmMultiSelectFieldComponent: VFC<Props> = ({
 
   return (
     <FormControl>
-      <InputLabel id={`${name}-label`}>{label}</InputLabel>
+      <InputLabel error={error} id={`${name}-label`}>{label}</InputLabel>
       <Select
         labelId={`${name}-label`}
         multiple
         value={selectedIds}
         onChange={handleChange}
-        input={<OutlinedInput label={label} />}
+        input={<OutlinedInput error={error} label={label} />}
         renderValue={selected => (
           <div className={cls.chips}>
             {selected.map(selectedId => (
@@ -73,6 +76,7 @@ const FilmMultiSelectFieldComponent: VFC<Props> = ({
           </MenuItem>
         ))}
       </Select>
+      <FormHelperText error={error}>{helperText}</FormHelperText>
     </FormControl>
   );
 };

@@ -1,5 +1,5 @@
 import {
-  memo, useCallback, useState, VFC,
+  memo, useCallback, VFC,
 } from 'react';
 import { FilmForm as FilmFormType } from 'src/models/filmForm';
 import {
@@ -16,33 +16,31 @@ import { FilmForm } from '../../components/FilmForm';
 import cls from './FilmCreatePage.module.css';
 
 const FilmCreatePageComponent: VFC = () => {
-  const [filmForm, setFilmForm] = useState<FilmFormType>();
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleSave = useCallback(async () => {
-    if (filmForm != null) {
-      const createdFilm = await dispatch(createFilm(filmForm)).unwrap();
-      navigate(`/films/${createdFilm.id}`);
-    }
-  }, [filmForm, dispatch, navigate]);
-
-  const handleFilmFormChange = useCallback(setFilmForm, [setFilmForm]);
+  const handleFilmFormSubmit = useCallback(async (filmForm: FilmFormType) => {
+    const createdFilm = await dispatch(createFilm(filmForm)).unwrap();
+    navigate(`/films/${createdFilm.id}`);
+  }, [dispatch, navigate]);
 
   return (
     <div className={cls.filmCreate}>
-      <Header
-        title="Creating film"
-        buttons={(
-          <Tooltip title="Save">
-            <IconButton onClick={handleSave} size="small">
-              <SaveIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+      <FilmForm
+        onSubmit={handleFilmFormSubmit}
+        header={(
+          <Header
+            title="Creating film"
+            buttons={(
+              <Tooltip title="Save">
+                <IconButton type="submit" size="small">
+                  <SaveIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+          />
         )}
       />
-      <FilmForm onChange={handleFilmFormChange} />
     </div>
   );
 };

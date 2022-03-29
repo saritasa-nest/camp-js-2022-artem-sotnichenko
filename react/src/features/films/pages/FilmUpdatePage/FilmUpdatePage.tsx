@@ -1,8 +1,9 @@
 import {
-  memo, useCallback, useState, VFC,
+  memo, useCallback, VFC,
 } from 'react';
 import { FilmForm as FilmFormType } from 'src/models/filmForm';
 import {
+  CircularProgress,
   IconButton, Tooltip,
 } from '@mui/material';
 import {
@@ -21,33 +22,36 @@ const FilmUpdatePageComponent: VFC = () => {
   const filmId = params.id ?? '';
   const film = useAppSelector(state => selectFilmById(state, filmId));
 
-  const [filmForm, setFilmForm] = useState<FilmFormType | undefined>();
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleSave = useCallback(async () => {
-    if (filmForm != null && filmId != null) {
-      const updatedFilm = await dispatch(updateFilm({ id: filmId, filmForm })).unwrap();
-      navigate(`/films/${updatedFilm.id}`);
-    }
-  }, [filmForm, dispatch, navigate, filmId]);
-
-  const handleFilmFormChange = useCallback(setFilmForm, [setFilmForm]);
+  const handleFilmFormSubmit = useCallback(async (filmForm: FilmFormType) => {
+    const updatedFilm = await dispatch(updateFilm({ id: filmId, filmForm })).unwrap();
+    navigate(`/films/${updatedFilm.id}`);
+  }, [dispatch, navigate, filmId]);
 
   return (
     <div className={cls.filmCreate}>
-      <Header
-        title="Updating film"
-        buttons={(
-          <Tooltip title="Save">
-            <IconButton onClick={handleSave} size="small">
-              <SaveIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        )}
-      />
-      <FilmForm film={film} onChange={handleFilmFormChange} />
+      {film != null
+        ? (
+          <FilmForm
+            film={film}
+            onSubmit={handleFilmFormSubmit}
+            header={(
+              <Header
+                title="Updating film"
+                buttons={(
+                  <Tooltip title="Save">
+                    <IconButton type="submit" size="small">
+                      <SaveIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              />
+            )}
+          />
+        )
+        : <CircularProgress />}
     </div>
   );
 };
