@@ -28,3 +28,7 @@ interface FilmData {
 export type FilmDocument = FirestoreDocument<FilmData>;
 
 export type FilmDto = FirestoreDto<FilmDocument>;
+
+export type FilmCreateDto = Omit<FilmDto, 'id'>;
+
+export type FilmUpdateDto = Omit<FilmDto, 'id'>;
