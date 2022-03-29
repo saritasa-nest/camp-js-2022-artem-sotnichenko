@@ -1,15 +1,15 @@
-import { FilmForm } from 'src/models/filmForm';
-import { FilmFormDto } from '../dtos/filmForm.dto';
+import { FilmCreate } from 'src/models/filmCreate';
+import { FilmCreateDto } from '../dtos/filmCreate.dto';
 
 /**
  * Film form mapper.
  */
-class FilmFormMapper {
+class FilmCreateMapper {
   /**
-   * Maps film form model to film form DTO.
-   * @param model Film form model.
+   * Maps model to DTO.
+   * @param model Film create model.
    */
-  public toDto(model: FilmForm): FilmFormDto {
+  public toDto(model: FilmCreate): FilmCreateDto {
     return {
       fields: {
         title: model.title,
@@ -24,4 +24,4 @@ class FilmFormMapper {
   }
 }
 
-export const filmFormMapper = new FilmFormMapper();
+export const filmCreateMapper = new FilmCreateMapper();

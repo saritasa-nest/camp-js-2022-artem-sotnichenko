@@ -1,5 +1,5 @@
 import {
-  ChangeEvent, memo, ReactNode, useCallback, useEffect, VFC,
+  ChangeEvent, memo, ReactNode, useCallback, useEffect, useMemo, VFC,
 } from 'react';
 import { useFormik } from 'formik';
 import { Film } from 'src/models/film';
@@ -22,6 +22,7 @@ interface Props {
 
   /** Change handler. */
   readonly onSubmit: (film: FilmFormType) => void;
+
   /** Header. */
   readonly header: ReactNode;
 }
@@ -69,12 +70,12 @@ const FilmFormComponent: VFC<Props> = ({
     dispatch(fetchAllCharacters());
   }, [dispatch]);
 
-  const producers = formik.values.producers.join(',');
+  const producers = useMemo(() => formik.values.producers.join(','), [formik.values.producers]);
   const handleProducersChange = useCallback((event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     formik.setFieldValue('producers', event.target.value.split(','));
   }, [formik]);
 
-  const releaseDate = formatDate(formik.values.releaseDate);
+  const releaseDate = useMemo(() => formatDate(formik.values.releaseDate), [formik.values.releaseDate]);
   const handleReleaseDateChange = useCallback((event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     formik.setFieldValue('releaseDate', new Date(event.target.value));
   }, [formik]);
