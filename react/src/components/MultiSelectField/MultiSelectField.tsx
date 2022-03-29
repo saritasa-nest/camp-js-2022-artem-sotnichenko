@@ -4,15 +4,8 @@ import {
 import {
   Chip, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, OutlinedInputProps, Select, SelectChangeEvent,
 } from '@mui/material';
+import { Entity } from 'src/models/entity';
 import cls from './MultiSelectField.module.css';
-
-interface Entity {
-  /** Entity id. */
-  readonly id: string;
-
-  /** Entity name. */
-  readonly name: string;
-}
 
 interface Props extends Pick<OutlinedInputProps, 'error'> {
   /** Input name. */
