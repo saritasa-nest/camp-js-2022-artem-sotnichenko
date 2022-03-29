@@ -27,25 +27,27 @@ interface Props {
 }
 
 /**
- * Format date.
+ * Format date for input with type date.
  * @param date Date.
  */
 function formatDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
+const DEFAULT_FILM_FORM: FilmFormType = {
+  title: '',
+  openingCrawl: '',
+  director: '',
+  producers: [],
+  releaseDate: new Date(),
+  characterIds: [],
+  planetIds: [],
+};
+
 const FilmFormComponent: VFC<Props> = ({
   film, onSubmit, header,
 }) => {
-  const initialValues: FilmFormType = film ?? {
-    title: '',
-    openingCrawl: '',
-    director: '',
-    producers: [],
-    releaseDate: new Date(),
-    characterIds: [],
-    planetIds: [],
-  };
+  const initialValues = film ?? DEFAULT_FILM_FORM;
 
   const formik = useFormik({
     initialValues,
