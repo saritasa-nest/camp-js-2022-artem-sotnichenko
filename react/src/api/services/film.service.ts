@@ -1,10 +1,12 @@
 import { Film } from 'src/models/film';
-import { FilmForm } from 'src/models/filmForm';
+import { FilmCreate } from 'src/models/filmCreate';
 import { FilmQueryField } from 'src/models/filmQueryField';
+import { FilmUpdate } from 'src/models/filmUpdate';
 import { QueryDirection } from 'src/models/queryDirection';
 import { FilmDocument } from '../dtos/film.dto';
 import { filmMapper } from '../mappers/film.mapper';
-import { filmFormMapper } from '../mappers/filmForm.mapper';
+import { filmCreateMapper } from '../mappers/filmCreate.mapper';
+import { filmUpdateMapper } from '../mappers/filmUpdate.mapper';
 import { FirestoreService } from './firestore.service';
 import { Query, QueryGetConstraintsOptions, QueryService } from './query.service';
 
@@ -40,21 +42,21 @@ export namespace FilmService {
 
   /**
    * Create film.
-   * @param filmForm Film form.
+   * @param film Film form.
    */
-  export async function create(filmForm: FilmForm): Promise<Film['id']> {
-    const filmFormDto = filmFormMapper.toDto(filmForm);
-    return FirestoreService.create('films', filmFormDto);
+  export async function create(film: FilmCreate): Promise<Film['id']> {
+    const filmCreateDto = filmCreateMapper.toDto(film);
+    return FirestoreService.create('films', filmCreateDto);
   }
 
   /**
    * Update film.
    * @param id Film id.
-   * @param filmForm Film form.
+   * @param film Film form.
    */
-  export async function update(id: Film['id'], filmForm: FilmForm): Promise<Film['id']> {
-    const filmFormDto = filmFormMapper.toDto(filmForm);
-    return FirestoreService.update('films', id, filmFormDto);
+  export async function update(id: Film['id'], film: FilmUpdate): Promise<Film['id']> {
+    const filmUpdateDto = filmUpdateMapper.toDto(film);
+    return FirestoreService.update('films', id, filmUpdateDto);
   }
 
   /**
