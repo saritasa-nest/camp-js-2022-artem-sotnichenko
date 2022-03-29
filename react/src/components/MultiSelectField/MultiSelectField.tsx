@@ -1,10 +1,10 @@
 import {
-  Chip, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, OutlinedInputProps, Select, SelectChangeEvent,
-} from '@mui/material';
-import {
   memo, ReactNode, useCallback, VFC,
 } from 'react';
-import cls from './FilmMultiSelectField.module.css';
+import {
+  Chip, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, OutlinedInputProps, Select, SelectChangeEvent,
+} from '@mui/material';
+import cls from './MultiSelectField.module.css';
 
 interface Entity {
   /** Entity id. */
@@ -34,7 +34,7 @@ interface Props extends Pick<OutlinedInputProps, 'error'> {
   readonly helperText: ReactNode;
 }
 
-const FilmMultiSelectFieldComponent: VFC<Props> = ({
+const MultiSelectFieldComponent: VFC<Props> = ({
   name, label, onChange, entities, selectedIds, error, helperText,
 }) => {
   const handleChange = useCallback((event: SelectChangeEvent<readonly string[]>): void => {
@@ -81,4 +81,4 @@ const FilmMultiSelectFieldComponent: VFC<Props> = ({
   );
 };
 
-export const FilmMultiSelectField = memo(FilmMultiSelectFieldComponent);
+export const MultiSelectField = memo(MultiSelectFieldComponent);
