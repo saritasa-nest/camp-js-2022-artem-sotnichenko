@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { debounce } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import { fetchFilms } from 'src/store/film/dispatchers';
-import { selectAllFilms, selectFilmLoading } from 'src/store/film/selectors';
+import { selectActiveFilmId, selectAllFilms, selectFilmLoading } from 'src/store/film/selectors';
 import { clearFilms } from 'src/store/film/slice';
 import { Query } from 'src/api/services/query.service';
 import { FilmQueryField } from 'src/models/filmQueryField';
@@ -45,6 +45,15 @@ const SidebarComponent: VFC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleQueryChangeDebounced = useMemo(() => debounce(handleQueryChange, 500), []);
 
+  // Placing active film first.
+  const activeFilmId = useAppSelector(selectActiveFilmId);
+  const filteredFilms = useMemo(() => [...films].sort(film => {
+    if (film.id === activeFilmId) {
+      return -1;
+    }
+    return 0;
+  }), [activeFilmId, films]);
+
   /**
    * Load more films handler.
    */
@@ -58,7 +67,7 @@ const SidebarComponent: VFC = () => {
     <aside className={cls.sidebar}>
       <SidebarHeader onChange={handleQueryChangeDebounced} />
       <div className={cls.listWrap}>
-        <FilmList activeId={filmId} films={films} onLoadMore={handleLoadMore} />
+        <FilmList activeId={filmId} films={filteredFilms} onLoadMore={handleLoadMore} />
       </div>
     </aside>
   );
