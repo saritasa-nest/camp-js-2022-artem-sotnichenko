@@ -7,8 +7,8 @@ interface Props {
   readonly count: number;
 }
 
-const MAX_WIDTH = 200;
-const MIN_WIDTH = 50;
+const MAX_WIDTH = 20;
+const MIN_WIDTH = 5;
 
 /**
  * Create width array.
@@ -21,7 +21,7 @@ function createWidthArray(count: number): number[] {
 const ChipsSkeletonComponent: VFC<Props> = ({ count }) => (
   <>
     {createWidthArray(count).map(width => (
-      <Skeleton key={width} variant="rectangular" className={cls.chip} width={width} height={32} />
+      <Skeleton key={width} variant="rectangular" className={cls.chip} width={`${width}ch`} height={32} />
     ))}
   </>
 );

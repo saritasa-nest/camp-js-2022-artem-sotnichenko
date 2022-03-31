@@ -16,8 +16,8 @@ interface Props {
 const HeaderComponent: VFC<Props> = ({ title, buttons = null, children = null }) => (
   <div className={cls.header}>
     <div className={cls.options}>
-      {title
-        ? <div className={cls.title}>{title}</div>
+      {title != null
+        ? <div className={cls.title}>{title !== '' ? title : 'No title'}</div>
         : <Skeleton variant="text" width={240} />}
       <div className={cls.buttons}>
         {buttons}

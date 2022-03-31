@@ -35,6 +35,14 @@
   font-weight: 500;
 }
 
+.listItem {
+  display: inline;
+}
+
+.listItem:not(:last-child)::after {
+  content: ", "
+}
+
 .chips {
   display: flex;
   gap: var(--size-2);
