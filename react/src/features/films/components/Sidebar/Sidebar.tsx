@@ -47,12 +47,11 @@ const SidebarComponent: VFC = () => {
 
   // Placing active film first.
   const activeFilmId = useAppSelector(selectActiveFilmId);
-  const filteredFilms = useMemo(() => [...films].sort(film => {
-    if (film.id === activeFilmId) {
-      return -1;
-    }
-    return 0;
-  }), [activeFilmId, films]);
+  const filteredFilms = useMemo(() => {
+    const activeFilm = films.find(film => film.id === activeFilmId);
+    const inactiveFilms = films.filter(film => film.id !== activeFilmId);
+    return activeFilm != null ? [activeFilm, ...inactiveFilms] : inactiveFilms;
+  }, [activeFilmId, films]);
 
   /**
    * Load more films handler.
