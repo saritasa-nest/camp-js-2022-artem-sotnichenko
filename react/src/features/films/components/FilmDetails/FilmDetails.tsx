@@ -11,9 +11,9 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { Film } from 'src/models/film';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import { selectPlanetLoading, selectPlanetsByIds } from 'src/store/planet/selectors';
+import { selectPlanetsByIds } from 'src/store/planet/selectors';
 import { fetchPlanetsByIds } from 'src/store/planet/dispatchers';
-import { selectCharacterLoading, selectCharactersByIds } from 'src/store/character/selectors';
+import { selectCharactersByIds } from 'src/store/character/selectors';
 import { fetchCharactersByIds } from 'src/store/character/dispatchers';
 import { setActiveFilm } from 'src/store/film/slice';
 import { formatDate } from 'src/utils/formatDate';
@@ -30,13 +30,13 @@ interface Props {
 }
 
 const FilmDetailsComponent: VFC<Props> = ({ film }) => {
-  const isPlanetsLoading = useAppSelector(selectPlanetLoading);
   const planets = useAppSelector(state => selectPlanetsByIds(state, film?.planetIds ?? []));
   const planetNames = planets.map(planet => planet.name);
+  const isPlanetsLoading = planets.length !== film?.planetIds.length;
 
-  const isCharactersLoading = useAppSelector(selectCharacterLoading);
   const characters = useAppSelector(state => selectCharactersByIds(state, film?.characterIds ?? []));
   const characterNames = characters.map(character => character.name);
+  const isCharactersLoading = characters.length !== film?.characterIds.length;
 
   const dispatch = useAppDispatch();
 
