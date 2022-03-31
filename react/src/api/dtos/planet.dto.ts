@@ -1,7 +1,7 @@
 import { FirestoreDocument, FirestoreDto } from './firestore';
 
 /** Planet data. */
-export interface PlanetData {
+interface PlanetData {
   /** The name of this planet. */
   readonly name: string;
 }
