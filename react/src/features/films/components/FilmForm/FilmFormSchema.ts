@@ -2,26 +2,28 @@ import * as Yup from 'yup';
 
 export const FilmFormSchema = Yup.object().shape({
   title: Yup.string()
-    .min(3, 'Should be at least 3 characters long.')
-    .required('Required.'),
+    .min(3)
+    .required(),
   openingCrawl: Yup.string()
-    .min(3, 'Should be at least 3 characters long.')
-    .required('Required'),
+    .min(3)
+    .required(),
   director: Yup.string()
-    .min(3, 'Should be at least 3 characters long.')
-    .required('Required'),
+    .min(3)
+    .required(),
   producers: Yup.array().of(
     Yup.string()
-      .min(3, 'Should be at least 3 characters long.'),
+      .min(3),
   )
-    .min(1, 'Should have at least 1 producer.')
-    .required('Required'),
+    .min(1)
+    .required(),
   releaseDate: Yup.string()
-    .required('Required'),
+    .required(),
   characterIds: Yup.array()
-    .min(1, 'Should have at least 1 character.')
-    .required('Required'),
+    .label('characters')
+    .min(1)
+    .required(),
   planetIds: Yup.array()
-    .min(1, 'Should have at least 1 planet.')
-    .required('Required'),
+    .label('planets')
+    .min(1)
+    .required(),
 });
