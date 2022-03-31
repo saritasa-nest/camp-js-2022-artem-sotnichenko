@@ -5,7 +5,9 @@ import { useParams } from 'react-router-dom';
 import { debounce } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import { fetchFilms } from 'src/store/film/dispatchers';
-import { selectActiveFilmId, selectAllFilms, selectFilmLoading } from 'src/store/film/selectors';
+import {
+  selectAllFilms, selectFilmLoading, selectFilteredFilms,
+} from 'src/store/film/selectors';
 import { clearFilms } from 'src/store/film/slice';
 import { Query } from 'src/api/services/query.service';
 import { FilmQueryField } from 'src/models/filmQueryField';
@@ -62,13 +64,7 @@ const SidebarComponent: VFC = () => {
     }
   }, [dispatch, query, fetchAfterId, isFilmLoading]);
 
-  // Placing active film first.
-  const activeFilmId = useAppSelector(selectActiveFilmId);
-  const filteredFilms = useMemo(() => {
-    const activeFilm = films.find(film => film.id === activeFilmId);
-    const inactiveFilms = films.filter(film => film.id !== activeFilmId);
-    return activeFilm != null ? [activeFilm, ...inactiveFilms] : inactiveFilms;
-  }, [activeFilmId, films]);
+  const filteredFilms = useAppSelector(selectFilteredFilms);
 
   return (
     <aside className={cls.sidebar}>

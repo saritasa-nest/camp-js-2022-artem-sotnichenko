@@ -58,7 +58,7 @@ export namespace FilmService {
   }
 
   /**
-   * Update film.
+   * Remove film.
    * @param id Film id.
    */
   export async function remove(id: Film['id']): Promise<Film['id']> {
