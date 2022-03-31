@@ -1,7 +1,8 @@
 import {
-  memo, useCallback, VFC,
+  memo, useCallback, useState, VFC,
 } from 'react';
 import {
+  Backdrop,
   CircularProgress, IconButton, Tooltip,
 } from '@mui/material';
 import {
@@ -24,8 +25,12 @@ const FilmUpdatePageComponent: VFC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleFilmFormSubmit = useCallback(async (filmForm: FilmUpdate) => {
+    setIsLoading(true);
     const updatedFilm = await dispatch(updateFilm({ id: filmId, filmForm })).unwrap();
+    setIsLoading(false);
     navigate(`/films/${updatedFilm.id}`);
   }, [dispatch, navigate, filmId]);
 
@@ -51,6 +56,12 @@ const FilmUpdatePageComponent: VFC = () => {
           />
         )
         : <CircularProgress />}
+      <Backdrop
+        sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 };
