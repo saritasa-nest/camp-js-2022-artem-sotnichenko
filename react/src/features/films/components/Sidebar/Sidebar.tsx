@@ -1,5 +1,5 @@
 import {
-  memo, useCallback, useMemo, useState, VFC,
+  memo, useCallback, useEffect, useMemo, useState, VFC,
 } from 'react';
 import { useParams } from 'react-router-dom';
 import { debounce } from '@mui/material';
@@ -25,6 +25,14 @@ const SidebarComponent: VFC = () => {
 
   const filmId = useMemo(() => params.id ?? '', [params.id]);
 
+  // Load first batch here, because `fetchAfterId` can be active film id.
+  useEffect(() => {
+    if (!isFilmLoading) {
+      dispatch(fetchFilms({}));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   /**
    * Query change handler.
    * @param newQuery Film query.
@@ -45,14 +53,6 @@ const SidebarComponent: VFC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleQueryChangeDebounced = useMemo(() => debounce(handleQueryChange, 500), []);
 
-  // Placing active film first.
-  const activeFilmId = useAppSelector(selectActiveFilmId);
-  const filteredFilms = useMemo(() => {
-    const activeFilm = films.find(film => film.id === activeFilmId);
-    const inactiveFilms = films.filter(film => film.id !== activeFilmId);
-    return activeFilm != null ? [activeFilm, ...inactiveFilms] : inactiveFilms;
-  }, [activeFilmId, films]);
-
   /**
    * Load more films handler.
    */
@@ -61,6 +61,14 @@ const SidebarComponent: VFC = () => {
       dispatch(fetchFilms({ query: query ?? undefined, afterId: fetchAfterId }));
     }
   }, [dispatch, query, fetchAfterId, isFilmLoading]);
+
+  // Placing active film first.
+  const activeFilmId = useAppSelector(selectActiveFilmId);
+  const filteredFilms = useMemo(() => {
+    const activeFilm = films.find(film => film.id === activeFilmId);
+    const inactiveFilms = films.filter(film => film.id !== activeFilmId);
+    return activeFilm != null ? [activeFilm, ...inactiveFilms] : inactiveFilms;
+  }, [activeFilmId, films]);
 
   return (
     <aside className={cls.sidebar}>
