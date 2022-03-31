@@ -9,7 +9,7 @@ export namespace CharacterService {
    * @param ids Character ids.
    */
   export async function fetchCharactersByIds(ids: readonly Character['id'][]): Promise<Character[]> {
-    const characterDtos = await FirestoreService.getManyByIds<CharacterDto>('characters', ids);
+    const characterDtos = await FirestoreService.fetchManyByIds<CharacterDto>('characters', ids);
     return characterDtos.map(characterMapper.fromDto);
   }
 }

@@ -15,11 +15,23 @@ import { FirestoreDto, FirestoreId } from '../dtos/firestore';
 import { firestoreMapper } from '../mappers/firestore.mapper';
 import { FirebaseService } from './firebase.service';
 
+const FIRESTORE_BATCH_MAX_SIZE = 10;
+
+/**
+ * Divide array into batches.
+ * @param items Items array.
+ */
+function createBatches<T>(items: readonly T[]): T[][] {
+  const batches = [];
+  for (let i = 0; i < items.length; i += FIRESTORE_BATCH_MAX_SIZE) {
+    batches.push(items.slice(i, i + FIRESTORE_BATCH_MAX_SIZE));
+  }
+  return batches;
+}
+
 export type FirestoreCollectionName = 'films' | 'characters' | 'planets';
 
 export namespace FirestoreService {
-  export const FIRESTORE_BATCH_MAX_SIZE = 10;
-
   /**
    * Create typed collection.
    * @param db Firestore instance.
@@ -48,23 +60,22 @@ export namespace FirestoreService {
    * @param ids Entities ids.
    * @param constraints Query constraints.
    */
-  export async function getManyByIds<T>(
+  export async function fetchManyByIds<T>(
     collectionName: FirestoreCollectionName,
     ids: readonly FirestoreId[],
   ): Promise<FirestoreDto<T>[]> {
-    const entitiesBatches = [];
+    const batches = createBatches(ids);
 
-    for (let i = 0; i < ids.length; i += FIRESTORE_BATCH_MAX_SIZE) {
+    const snapshotPromises = batches.map(batch => {
       const entitiesQuery = query<T>(
         getCollection(collectionName),
-        where(documentId(), 'in', ids.slice(i, i + FIRESTORE_BATCH_MAX_SIZE)),
+        where(documentId(), 'in', batch),
       );
-      entitiesBatches.push(getDocs<T>(entitiesQuery));
-    }
+      return getDocs<T>(entitiesQuery);
+    });
 
-    const entities = await Promise.all(entitiesBatches);
-
-    return entities.flatMap(snapshot => snapshot.docs.map(firestoreMapper.toDto));
+    const snapshots = await Promise.all(snapshotPromises);
+    return snapshots.flatMap(snapshot => snapshot.docs.map(firestoreMapper.toDto));
   }
 
   /**

@@ -9,7 +9,7 @@ export namespace PlanetService {
    * @param ids Planet ids.
    */
   export async function fetchPlanetsByIds(ids: readonly Planet['id'][]): Promise<Planet[]> {
-    const planetDtos = await FirestoreService.getManyByIds<PlanetDto>('planets', ids);
+    const planetDtos = await FirestoreService.fetchManyByIds<PlanetDto>('planets', ids);
     return planetDtos.map(planetMapper.fromDto);
   }
 }
