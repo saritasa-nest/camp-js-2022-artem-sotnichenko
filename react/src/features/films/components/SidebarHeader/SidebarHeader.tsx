@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 import { FilmQueryField } from 'src/models/filmQueryField';
 import { QueryDirection } from 'src/models/queryDirection';
 import { FilmQuery } from 'src/api/services/film.service';
+import { Header } from '../Header';
 import cls from './SidebarHeader.module.css';
 
 interface Props {
@@ -44,29 +45,28 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
     validate: handleFormChange,
   });
 
-  const handleDirectionChange = (previousDirection: string): void => {
+  const handleDirectionChange = useCallback((previousDirection: string) => () => {
     const newDirection = previousDirection === QueryDirection.Ascending
       ? QueryDirection.Descending
       : QueryDirection.Ascending;
     formik.setFieldValue('direction', newDirection);
-  };
+  }, [formik]);
 
   const fields = useMemo(() => FilmQueryField.entires.map(([value, text]) => ({ value, text })), []);
 
   return (
-    <div className={cls.header}>
-      <div className={cls.options}>
-        <div>Films</div>
-        <div className={cls.buttons}>
-          <Tooltip title={isQueryVisible ? 'Hide options' : 'Show options'}>
-            <IconButton onClick={handleOptionsToggle} size="small">
-              {isQueryVisible
-                ? <KeyboardArrowUpIcon fontSize="small" />
-                : <KeyboardArrowDownIcon fontSize="small" />}
-            </IconButton>
-          </Tooltip>
-        </div>
-      </div>
+    <Header
+      title="Films"
+      buttons={(
+        <Tooltip title={isQueryVisible ? 'Hide options' : 'Show options'}>
+          <IconButton type="button" onClick={handleOptionsToggle} size="small">
+            {isQueryVisible
+              ? <KeyboardArrowUpIcon fontSize="small" />
+              : <KeyboardArrowDownIcon fontSize="small" />}
+          </IconButton>
+        </Tooltip>
+      )}
+    >
       {isQueryVisible
       && (
       <>
@@ -98,7 +98,7 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
             ))}
           </Select>
           <Tooltip title={QueryDirection.toReadable(formik.values.direction)}>
-            <IconButton onClick={() => handleDirectionChange(formik.values.direction)}>
+            <IconButton type="button" onClick={handleDirectionChange(formik.values.direction)}>
               {formik.values.direction === QueryDirection.Ascending
                 ? <ArrowUpwardIcon />
                 : <ArrowDownwardIcon />}
@@ -107,7 +107,7 @@ const SidebarHeaderComponent: VFC<Props> = ({ onChange }) => {
         </div>
       </>
       )}
-    </div>
+    </Header>
   );
 };
 

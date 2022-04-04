@@ -1,17 +1,7 @@
-import { CaseReducer, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { pendingReducer, rejectedReducer } from '../shared/reducers';
 import { fetchUser, signInWithGoogle, signOut } from './dispatchers';
-import { AuthState, initialState } from './state';
-
-const pendingReducer: CaseReducer<AuthState> = state => {
-  state.loading = true;
-};
-
-const rejectedReducer: CaseReducer<AuthState> = (state, action) => {
-  if (action.error.message) {
-    state.error = action.error.message;
-  }
-  state.loading = false;
-};
+import { initialState } from './state';
 
 export const authSlice = createSlice({
   name: 'auth',

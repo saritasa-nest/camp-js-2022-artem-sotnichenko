@@ -1,5 +1,5 @@
-import { LinearProgress } from '@mui/material';
 import { useEffect, VFC } from 'react';
+import { LinearProgress } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import { fetchUser } from 'src/store/auth/dispatchers';

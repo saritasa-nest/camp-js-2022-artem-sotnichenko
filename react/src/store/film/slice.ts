@@ -1,52 +1,44 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Film } from 'src/models/film';
+import { pendingReducer, rejectedReducer } from '../shared/reducers';
 import {
-  CaseReducer,
-  createSlice,
-} from '@reduxjs/toolkit';
-import {
+  fetchFilm,
   fetchFilms,
-  fetchFilmsOnTop,
 } from './dispatchers';
 import {
   filmsAdapter, FilmState, initialState,
 } from './state';
-
-const loadingReducer: CaseReducer<FilmState> = state => {
-  state.loading = true;
-};
-
-const rejectionReducer: CaseReducer<FilmState> = (state, action) => {
-  if (action.error.message) {
-    state.error = action.error.message;
-  }
-  state.loading = false;
-};
 
 export const filmsSlice = createSlice({
   name: 'films',
   initialState,
   reducers: {
     clearFilms(state) {
-      filmsAdapter.removeAll(state as FilmState);
+      filmsAdapter.removeMany(state as FilmState, state.ids.filter(id => id !== state.activeId));
       state.loading = false;
+    },
+    setActiveFilm(state, action: PayloadAction<Film['id'] | null>) {
+      state.activeId = action.payload;
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchFilms.pending, loadingReducer)
+      .addCase(fetchFilms.pending, pendingReducer)
       .addCase(fetchFilms.fulfilled, (state, action) => {
-        filmsAdapter.setAll(state as FilmState, action.payload);
-        state.loading = false;
-      })
-      .addCase(fetchFilms.rejected, rejectionReducer)
-      .addCase(fetchFilmsOnTop.pending, loadingReducer)
-      .addCase(fetchFilmsOnTop.fulfilled, (state, action) => {
         filmsAdapter.upsertMany(state as FilmState, action.payload);
         state.loading = false;
       })
-      .addCase(fetchFilmsOnTop.rejected, rejectionReducer);
+      .addCase(fetchFilms.rejected, rejectedReducer)
+      .addCase(fetchFilm.pending, pendingReducer)
+      .addCase(fetchFilm.fulfilled, (state, action) => {
+        filmsAdapter.upsertOne(state as FilmState, action.payload);
+        state.loading = false;
+      })
+      .addCase(fetchFilm.rejected, rejectedReducer);
   },
 });
 
 export const {
   clearFilms,
+  setActiveFilm,
 } = filmsSlice.actions;

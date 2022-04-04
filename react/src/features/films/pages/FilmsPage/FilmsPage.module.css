@@ -1,4 +1,9 @@
 .films {
   height: 100%;
   display: flex;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  border-right: var(--border);
+  border-left: var(--border);
 }

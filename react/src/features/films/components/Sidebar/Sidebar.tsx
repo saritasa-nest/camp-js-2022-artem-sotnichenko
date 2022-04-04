@@ -1,11 +1,12 @@
 import {
   memo, useCallback, useMemo, useState, VFC,
 } from 'react';
+import { useParams } from 'react-router-dom';
+import { debounce } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import { fetchFilms, fetchFilmsOnTop } from 'src/store/film/dispatchers';
+import { fetchFilms } from 'src/store/film/dispatchers';
 import { selectAllFilms, selectFilmLoading } from 'src/store/film/selectors';
 import { clearFilms } from 'src/store/film/slice';
-import { debounce } from '@mui/material';
 import { Query } from 'src/api/services/query.service';
 import { FilmQueryField } from 'src/models/filmQueryField';
 import { SidebarHeader } from '../SidebarHeader';
@@ -19,6 +20,10 @@ const SidebarComponent: VFC = () => {
 
   const [query, setQuery] = useState<Query<FilmQueryField> | null>(null);
   const fetchAfterId = films.at(-1)?.id;
+
+  const params = useParams<{ id: string; }>();
+
+  const filmId = useMemo(() => params.id ?? '', [params.id]);
 
   /**
    * Query change handler.
@@ -36,6 +41,8 @@ const SidebarComponent: VFC = () => {
   };
 
   /** Memoized and debounced version of query change handler. */
+  // `handleQueryChange` need to be wrapped with useCallback for this, that is unnecessary.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleQueryChangeDebounced = useMemo(() => debounce(handleQueryChange, 500), []);
 
   /**
@@ -43,15 +50,15 @@ const SidebarComponent: VFC = () => {
    */
   const handleLoadMore = useCallback(() => {
     if (!isFilmLoading) {
-      dispatch(fetchFilmsOnTop({ query: query ?? undefined, afterId: fetchAfterId }));
+      dispatch(fetchFilms({ query: query ?? undefined, afterId: fetchAfterId }));
     }
-  }, [dispatch, query, fetchAfterId]);
+  }, [dispatch, query, fetchAfterId, isFilmLoading]);
 
   return (
     <aside className={cls.sidebar}>
       <SidebarHeader onChange={handleQueryChangeDebounced} />
       <div className={cls.listWrap}>
-        <FilmList films={films} onLoadMore={handleLoadMore} />
+        <FilmList activeId={filmId} films={films} onLoadMore={handleLoadMore} />
       </div>
     </aside>
   );

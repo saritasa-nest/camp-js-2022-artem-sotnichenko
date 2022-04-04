@@ -6,7 +6,7 @@ export const fetchFilms = createAsyncThunk(
   FilmService.fetchMany,
 );
 
-export const fetchFilmsOnTop = createAsyncThunk(
-  'films/fetchFilmsOnTop',
-  FilmService.fetchMany,
+export const fetchFilm = createAsyncThunk(
+  'films/fetchFilm',
+  FilmService.fetchOne,
 );
